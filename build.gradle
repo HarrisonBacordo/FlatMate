@@ -1,0 +1,39 @@
+import com.harrisonbacordo.flatmate.buildsrc.Libs
+import com.harrisonbacordo.flatmate.buildsrc.Versions
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath Libs.androidGradlePlugin
+        classpath Libs.Kotlin.gradlePlugin
+        classpath Libs.AndroidX.Hilt.plugin
+    }
+}
+
+plugins {
+    id 'com.diffplug.spotless' version '5.7.0'
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+subprojects {
+    apply plugin: 'com.diffplug.spotless'
+    spotless {
+        kotlin {
+            target '**/*.kt'
+            targetExclude("$buildDir/**/*.kt")
+            targetExclude('bin/**/*.kt')
+            ktlint(Versions.ktlint)
+            licenseHeaderFile rootProject.file('spotless/copyright.kt')
+            trimTrailingWhitespace()
+        }
+    }
+}
