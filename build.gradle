@@ -27,13 +27,18 @@ allprojects {
 subprojects {
     apply plugin: 'com.diffplug.spotless'
     spotless {
+        format 'misc', {
+            target '*.kt'
+            trimTrailingWhitespace()
+            indentWithTabs()
+            endWithNewline()
+        }
         kotlin {
             target '**/*.kt'
             targetExclude("$buildDir/**/*.kt")
             targetExclude('bin/**/*.kt')
             ktlint(Versions.ktlint)
             licenseHeaderFile rootProject.file('spotless/copyright.kt')
-            trimTrailingWhitespace()
         }
     }
 }
