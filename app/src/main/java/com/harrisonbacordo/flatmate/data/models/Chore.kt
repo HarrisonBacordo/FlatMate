@@ -13,4 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.harrisonbacordo.flatmate.ui.home.groceries
+package com.harrisonbacordo.flatmate.data.models
+
+data class Chore(
+    val title: String,
+    val assignedFlatmateName: String,
+    val interval: Interval
+)
+
+enum class Interval {
+    Daily,
+    Weekly,
+    Fortnightly,
+    Monthly
+}

@@ -15,7 +15,23 @@
  */
 package com.harrisonbacordo.flatmate.ui
 
-import androidx.activity.OnBackPressedDispatcher
+import androidx.compose.foundation.Text
+import androidx.compose.material.Scaffold
+import androidx.compose.material.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.ui.tooling.preview.Preview
+import com.harrisonbacordo.flatmate.ui.home.chores.Chores
+import com.harrisonbacordo.flatmate.ui.theme.FlatMateTheme
 
-fun FlatMateEntryPoint(backDispatcher: OnBackPressedDispatcher) {
+@Preview
+@Composable
+fun FlatMateEntryPoint() {
+    FlatMateTheme(darkTheme = true) {
+        Scaffold(
+            topBar = {
+                TopAppBar(title = { Text("Flatmate") })
+            },
+            bodyContent = { Chores() }
+        )
+    }
 }
