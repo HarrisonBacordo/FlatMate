@@ -14,3 +14,12 @@
  * limitations under the License.
  */
 package com.harrisonbacordo.flatmate.ui.onboarding
+
+import androidx.compose.foundation.Text
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
+
+@Composable
+fun OnboardingScreen(navController: NavController) {
+    Text(text = "Onboarding")
+}

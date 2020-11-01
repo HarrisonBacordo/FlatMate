@@ -14,3 +14,11 @@
  * limitations under the License.
  */
 package com.harrisonbacordo.flatmate.ui.home.calendar
+
+import androidx.compose.foundation.Text
+import androidx.compose.runtime.Composable
+
+@Composable
+fun CalendarScreen() {
+    Text("Calendar")
+}

@@ -14,3 +14,12 @@
  * limitations under the License.
  */
 package com.harrisonbacordo.flatmate.ui.home.groceries
+
+import androidx.compose.foundation.Text
+import androidx.compose.runtime.Composable
+
+
+@Composable
+fun GroceriesScreen() {
+    Text("Groceries")
+}

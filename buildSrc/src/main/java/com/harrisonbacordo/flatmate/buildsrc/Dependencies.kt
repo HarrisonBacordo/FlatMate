@@ -9,6 +9,11 @@ object Libs {
     const val junit = "junit:junit:4.13"
     const val material = "com.google.android.material:material:1.1.0"
 
+    object Accompanist {
+        private const val version = "0.3.2"
+        const val coil = "dev.chrisbanes.accompanist:accompanist-coil:$version"
+    }
+
     object Kotlin {
         private const val version = "1.4.10"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"

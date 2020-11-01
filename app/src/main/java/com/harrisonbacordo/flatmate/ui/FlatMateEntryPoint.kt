@@ -19,19 +19,56 @@ import androidx.compose.foundation.Text
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.ui.tooling.preview.Preview
-import com.harrisonbacordo.flatmate.ui.home.chores.Chores
+import com.harrisonbacordo.flatmate.ui.auth.landing.LandingScreen
+import com.harrisonbacordo.flatmate.ui.home.HomeScreen
+import com.harrisonbacordo.flatmate.ui.onboarding.OnboardingScreen
 import com.harrisonbacordo.flatmate.ui.theme.FlatMateTheme
 
 @Preview
 @Composable
 fun FlatMateEntryPoint() {
-    FlatMateTheme(darkTheme = true) {
-        Scaffold(
-            topBar = {
-                TopAppBar(title = { Text("Flatmate") })
-            },
-            bodyContent = { Chores() }
-        )
+    val navController = rememberNavController()
+    NavHost(navController, startDestination = Destinations.Auth.name) {
+        composable(Destinations.Auth.name) {
+            FlatMateTheme(darkTheme = false) {
+                Scaffold(
+                    topBar = {
+                        TopAppBar(title = { Text("Flatmate") })
+                    },
+                    bodyContent = { LandingScreen(navController) }
+                )
+            }
+        }
+        composable(Destinations.Onboarding.name) {
+            FlatMateTheme(darkTheme = false) {
+                Scaffold(
+                    topBar = {
+                        TopAppBar(title = { Text("Flatmate") })
+                    },
+                    bodyContent = { OnboardingScreen(navController) }
+                )
+            }
+        }
+        composable(Destinations.Home.name) {
+            FlatMateTheme(darkTheme = false) {
+                Scaffold(
+                    topBar = {
+                        TopAppBar(title = { Text("Flatmate") })
+                    },
+                    bodyContent = { HomeScreen(navController) }
+                )
+            }
+        }
     }
+
+}
+
+enum class Destinations {
+    Auth,
+    Onboarding,
+    Home,
 }

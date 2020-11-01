@@ -14,3 +14,25 @@
  * limitations under the License.
  */
 package com.harrisonbacordo.flatmate.ui.home.settings
+
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material.Button
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
+import androidx.navigation.compose.navigate
+import com.harrisonbacordo.flatmate.ui.Destinations
+
+
+@Composable
+fun SettingsScreen(navController: NavController) {
+    Row {
+        val authRoute = {
+            navController.navigate(Destinations.Auth.name)
+        }
+        Text("Settings")
+        Button(onClick = authRoute) {
+            Text("Back to auth")
+        }
+    }
+}

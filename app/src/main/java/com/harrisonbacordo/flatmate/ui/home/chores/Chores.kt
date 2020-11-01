@@ -15,48 +15,41 @@
  */
 package com.harrisonbacordo.flatmate.ui.home.chores
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredHeight
+import androidx.compose.foundation.layout.preferredSize
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import com.harrisonbacordo.flatmate.R
 import com.harrisonbacordo.flatmate.data.models.Chore
 import com.harrisonbacordo.flatmate.data.models.Interval
+import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Preview
 @Composable
-fun Chores() {
-    ScrollableColumn(Modifier.fillMaxHeight()) {
-        for (i in 0..10) {
-            Chore(Chore("Clean kitchen", "Elon Musk", Interval.Fortnightly))
-        }
+fun ChoresScreen() {
+    LazyColumnFor(List(20) { Chore("Clean kitchen", "Elon Musk", Interval.Fortnightly) }, Modifier.fillMaxHeight()) {
+        ChoreCard(it)
     }
 }
 
 @Composable
-private fun Chore(chore: Chore) {
+private fun ChoreCard(chore: Chore) {
     Card(Modifier.padding(bottom = 8.dp).fillMaxWidth().wrapContentHeight()) {
         Column(Modifier.padding(horizontal = 8.dp, vertical = 8.dp)) {
             Row(Modifier.padding(bottom = 8.dp)) {
-                Image(
-                    imageResource(R.drawable.mock_profile_picture),
-                    Modifier.preferredHeight(45.dp).wrapContentWidth()
-                )
+                CoilImage(data = R.drawable.ic_logo, modifier = Modifier.preferredSize(45.dp))
                 Text(chore.title, Modifier.padding(start = 8.dp).align(Alignment.CenterVertically))
             }
             Text(chore.assignedFlatmateName)

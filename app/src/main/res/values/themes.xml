@@ -7,7 +7,7 @@
         <item name="colorSecondary">@color/flatmate_blue</item>
         <item name="colorSecondaryVariant">@color/flatmate_darkblue</item>
         <item name="colorOnSecondary">@color/grey_50</item>
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/flatmate_blue</item>
         <item name="colorError">@color/red_500</item>
         <item name="colorOnError">@color/grey_50</item>
         <item name="colorSurface">@color/grey_50</item>
