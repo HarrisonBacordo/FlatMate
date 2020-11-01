@@ -6,6 +6,7 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CleaningServices
 import androidx.compose.material.icons.filled.Event
@@ -38,6 +39,9 @@ fun HomeScreen(navController: NavController) {
         HomeDestinations.Settings
     )
     Scaffold(
+        topBar = {
+            TopAppBar(title = { Text("Flatmate") })
+        },
         bottomBar = {
             BottomNavigation {
                 val navBackStackEntry by bottomNavController.currentBackStackEntryAsState()

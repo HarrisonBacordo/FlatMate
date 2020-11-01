@@ -13,4 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.harrisonbacordo.flatmate.ui.auth.signin
+package com.harrisonbacordo.flatmate.ui.auth.login
+
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.Button
+import androidx.compose.runtime.Composable
+
+@Composable
+fun AuthLoginScreen(onLoginClicked: () -> Unit, onForgotPasswordClicked: () -> Unit) {
+    Column {
+        Text("Login")
+        Button(onLoginClicked) {
+            Text("Login")
+        }
+        Button(onForgotPasswordClicked) {
+            Text("Forgot Password")
+        }
+    }
+}

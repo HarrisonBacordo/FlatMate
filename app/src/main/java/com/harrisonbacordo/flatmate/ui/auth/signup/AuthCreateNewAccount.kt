@@ -14,3 +14,18 @@
  * limitations under the License.
  */
 package com.harrisonbacordo.flatmate.ui.auth.signup
+
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.Button
+import androidx.compose.runtime.Composable
+
+@Composable
+fun AuthCreateNewAccountScreen(onCreateNewAccountClicked: () -> Unit) {
+    Column {
+        Text("Create New Account")
+        Button(onClick = onCreateNewAccountClicked) {
+            Text("Create new Account")
+        }
+    }
+}

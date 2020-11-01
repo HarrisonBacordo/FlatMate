@@ -16,10 +16,17 @@
 package com.harrisonbacordo.flatmate.ui.onboarding
 
 import androidx.compose.foundation.Text
+import androidx.compose.material.Scaffold
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 
 @Composable
-fun OnboardingScreen(navController: NavController) {
-    Text(text = "Onboarding")
+fun OnboardingScreen() {
+    Scaffold(
+        topBar = {
+            TopAppBar(title = { Text("Flatmate") })
+        },
+        bodyContent = { Text(text = "Onboarding") }
+    )
 }

@@ -16,32 +16,22 @@
 package com.harrisonbacordo.flatmate.ui.auth.landing
 
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.navigate
-import com.harrisonbacordo.flatmate.ui.Destinations
+
 
 @Composable
-fun LandingScreen(navController: NavController) {
-    val onboardingRoute = {
-        navController.navigate(Destinations.Onboarding.name)
-    }
-    val homeRoute = {
-        navController.navigate(Destinations.Home.name)
-    }
-    Row(Modifier.fillMaxWidth()) {
+fun AuthLandingScreen(onCreateNewAccountClicked: () -> Unit, onLoginClicked: () -> Unit) {
+    Column(Modifier.fillMaxWidth()) {
         Text(text = "Landing")
-        Button(onClick = onboardingRoute) {
-            Text("Onboarding")
+        Button(onClick = onCreateNewAccountClicked) {
+            Text("Create New Account")
         }
-        Button(onClick = homeRoute) {
-            Text("Home")
+        Button(onClick = onLoginClicked) {
+            Text("Log in")
         }
     }
-
 }

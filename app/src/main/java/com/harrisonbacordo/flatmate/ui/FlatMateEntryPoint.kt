@@ -19,11 +19,13 @@ import androidx.compose.foundation.Text
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import androidx.ui.tooling.preview.Preview
-import com.harrisonbacordo.flatmate.ui.auth.landing.LandingScreen
+import com.harrisonbacordo.flatmate.ui.auth.AuthScreen
 import com.harrisonbacordo.flatmate.ui.home.HomeScreen
 import com.harrisonbacordo.flatmate.ui.onboarding.OnboardingScreen
 import com.harrisonbacordo.flatmate.ui.theme.FlatMateTheme
@@ -32,39 +34,30 @@ import com.harrisonbacordo.flatmate.ui.theme.FlatMateTheme
 @Composable
 fun FlatMateEntryPoint() {
     val navController = rememberNavController()
+    val onboardingRoute = { createNavRoute(navController, Destinations.Onboarding.name) }
+    val homeRoute = { createNavRoute(navController, Destinations.Home.name) }
     NavHost(navController, startDestination = Destinations.Auth.name) {
         composable(Destinations.Auth.name) {
             FlatMateTheme(darkTheme = false) {
-                Scaffold(
-                    topBar = {
-                        TopAppBar(title = { Text("Flatmate") })
-                    },
-                    bodyContent = { LandingScreen(navController) }
-                )
+                AuthScreen(onLoginSuccessful = homeRoute, onCreateNewAccountSuccessful = onboardingRoute)
             }
         }
         composable(Destinations.Onboarding.name) {
             FlatMateTheme(darkTheme = false) {
-                Scaffold(
-                    topBar = {
-                        TopAppBar(title = { Text("Flatmate") })
-                    },
-                    bodyContent = { OnboardingScreen(navController) }
-                )
+                OnboardingScreen()
             }
         }
         composable(Destinations.Home.name) {
             FlatMateTheme(darkTheme = false) {
-                Scaffold(
-                    topBar = {
-                        TopAppBar(title = { Text("Flatmate") })
-                    },
-                    bodyContent = { HomeScreen(navController) }
-                )
+                HomeScreen(navController = navController)
             }
         }
     }
+}
 
+private fun createNavRoute(navController: NavController, route: String) {
+    navController.popBackStack()
+    navController.navigate(route)
 }
 
 enum class Destinations {
