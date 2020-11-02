@@ -21,6 +21,9 @@ import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
 import androidx.ui.tooling.preview.Preview
 
+/**
+ * High-level composable that displays the settings screen
+ */
 @Composable
 fun SettingsScreen(onLogoutClicked: () -> Unit) {
     Row {

@@ -16,31 +16,45 @@
 package com.harrisonbacordo.flatmate.ui.auth
 
 import androidx.compose.foundation.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.ui.tooling.preview.Preview
 
+/**
+ * High-level composable that displays a standard [OutlinedTextField]
+ *
+ * @param value [String] that is currently populating the [OutlinedTextField]
+ * @param hint [String] that is used in the [OutlinedTextField]
+ * @param onValueChange Callback that is executed when the value of [OutlinedTextField] is changed
+ */
 @Composable
 fun AuthTextInput(
     value: String,
     hint: String,
     onValueChange: (String) -> Unit
 ) {
-    TextField(
+    OutlinedTextField(
         value = value,
         label = { Text(hint) },
         onValueChange = onValueChange
     )
 }
 
+/**
+ * High-level composable that displays a password-specific [OutlinedTextField]
+ *
+ * @param value [String] that is currently populating the [OutlinedTextField]
+ * @param hint [String] that is used in the [OutlinedTextField]
+ * @param onValueChange Callback that is executed when the value of [OutlinedTextField] is changed
+ */
 @Composable
 fun AuthHiddenTextInput(
     value: String,
     hint: String,
     onValueChange: (String) -> Unit
 ) {
-    TextField(
+    OutlinedTextField(
         value = value,
         label = { Text(hint) },
         visualTransformation = PasswordVisualTransformation(),

@@ -24,14 +24,20 @@ import androidx.ui.tooling.preview.Preview
 import com.harrisonbacordo.flatmate.ui.auth.AuthHiddenTextInput
 import com.harrisonbacordo.flatmate.ui.auth.AuthTextInput
 
+/**
+ * High-level composable that displays the login screen
+ *
+ * @param onLoginSuccessful Callback that is executed when a login is successful
+ * @param onForgotPasswordClicked Callback that is executed when the forgot password button is clicked
+ */
 @Composable
-fun AuthLoginScreen(onLoginClicked: () -> Unit, onForgotPasswordClicked: () -> Unit) {
+fun AuthLoginScreen(onLoginSuccessful: () -> Unit, onForgotPasswordClicked: () -> Unit) {
     val viewModel: AuthLoginViewModel = viewModel()
     Column {
         Text("Login")
-        AuthTextInput(value = viewModel.email, hint = "Email", onValueChange = { viewModel.onEmailFieldChanged(it) })
-        AuthHiddenTextInput(value = viewModel.password, hint = "Password", onValueChange = { viewModel.onPasswordFieldChanged(it) })
-        Button(onClick = { viewModel.executeLoginFlow() }) {
+        AuthTextInput(value = viewModel.email, hint = "Email", onValueChange = viewModel::onEmailFieldChanged)
+        AuthHiddenTextInput(value = viewModel.password, hint = "Password", onValueChange = viewModel::onPasswordFieldChanged)
+        Button(onClick = viewModel::executeLoginFlow) {
             Text("Login")
         }
         Button(onForgotPasswordClicked) {
@@ -43,5 +49,5 @@ fun AuthLoginScreen(onLoginClicked: () -> Unit, onForgotPasswordClicked: () -> U
 @Preview
 @Composable
 private fun PreviewAuthLoginScreen() {
-    AuthLoginScreen(onLoginClicked = {}, onForgotPasswordClicked = {})
+    AuthLoginScreen(onLoginSuccessful = {}, onForgotPasswordClicked = {})
 }

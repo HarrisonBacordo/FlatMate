@@ -23,8 +23,13 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.ui.tooling.preview.Preview
 
+/**
+ * High level composable that coordinates the routes and screens for the Onboarding flow
+ *
+ * @param onOnboardingComplete Callback that is executed when onboarding has been successfully completed
+ */
 @Composable
-fun OnboardingScreen(onOnboardingComplete: () -> Unit) {
+fun OnboardingFlow(onOnboardingComplete: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(title = { Text("Flatmate") })
@@ -43,5 +48,5 @@ fun OnboardingScreen(onOnboardingComplete: () -> Unit) {
 @Preview
 @Composable
 private fun PreviewOnboarding() {
-    OnboardingScreen(onOnboardingComplete = {})
+    OnboardingFlow(onOnboardingComplete = {})
 }

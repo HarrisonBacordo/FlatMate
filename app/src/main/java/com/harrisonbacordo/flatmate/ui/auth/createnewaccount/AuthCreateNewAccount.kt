@@ -13,22 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.harrisonbacordo.flatmate.ui.auth.signup
+package com.harrisonbacordo.flatmate.ui.auth.createnewaccount
 
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
+import com.harrisonbacordo.flatmate.ui.auth.AuthHiddenTextInput
 import com.harrisonbacordo.flatmate.ui.auth.AuthTextInput
 
+/**
+ * High-level composable that displays the create new account screen
+ *
+ * @param onCreateNewAccountClicked Callback that is executed when an account is successfully created
+ */
 @Composable
 fun AuthCreateNewAccountScreen(onCreateNewAccountClicked: () -> Unit) {
+    val viewModel: AuthCreateNewAccountViewModel = viewModel()
     Column {
         Text("Create New Account")
-        AuthTextInput(value = "", hint = "Email", onValueChange = {})
-        AuthTextInput(value = "", hint = "Password", onValueChange = {})
-        Button(onClick = onCreateNewAccountClicked) {
+        AuthTextInput(value = viewModel.email, hint = "Email", onValueChange = viewModel::onEmailFieldChanged)
+        AuthHiddenTextInput(value = viewModel.password, hint = "Password", onValueChange = viewModel::onPasswordFieldChanged)
+        Button(onClick = viewModel::executeCreateNewAccountFlow) {
             Text("Create new account")
         }
     }

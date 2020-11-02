@@ -36,14 +36,11 @@ import com.harrisonbacordo.flatmate.data.models.Chore
 import com.harrisonbacordo.flatmate.data.models.Interval
 import dev.chrisbanes.accompanist.coil.CoilImage
 
-@Preview
-@Composable
-fun ChoresScreen() {
-    LazyColumnFor(List(20) { Chore("Clean kitchen", "Elon Musk", Interval.Fortnightly) }, Modifier.fillMaxHeight()) {
-        ChoreCard(it)
-    }
-}
-
+/**
+ * High-level composable that displays a chore card
+ *
+ * @param chore [Chore] to populated this [ChoreCard] with
+ */
 @Composable
 private fun ChoreCard(chore: Chore) {
     Card(Modifier.padding(bottom = 8.dp).fillMaxWidth().wrapContentHeight()) {
@@ -63,5 +60,13 @@ private fun ChoreCard(chore: Chore) {
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun ChoresScreen() {
+    LazyColumnFor(List(20) { Chore("Clean kitchen", "Elon Musk", Interval.Fortnightly) }, Modifier.fillMaxHeight()) {
+        ChoreCard(it)
     }
 }

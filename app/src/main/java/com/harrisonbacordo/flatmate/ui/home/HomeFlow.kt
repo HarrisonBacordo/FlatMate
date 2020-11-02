@@ -44,8 +44,13 @@ import com.harrisonbacordo.flatmate.ui.home.chores.ChoresScreen
 import com.harrisonbacordo.flatmate.ui.home.groceries.GroceriesScreen
 import com.harrisonbacordo.flatmate.ui.home.settings.SettingsScreen
 
+/**
+ * High level composable that coordinates the routes and screens for the Home flow
+ *
+ * @param onLogoutClicked Callback that is executed when a logout event has successfully completed
+ */
 @Composable
-fun HomeScreen(onLogoutClicked: () -> Unit) {
+fun HomeFlow(onLogoutClicked: () -> Unit) {
     val bottomNavController = rememberNavController()
     val homeDestinations = listOf(
         HomeDestinations.Chores,
@@ -96,5 +101,5 @@ sealed class HomeDestinations(val route: String, @StringRes val resourceId: Int,
 @Preview
 @Composable
 private fun PreviewHomeScreen() {
-    HomeScreen(onLogoutClicked = {})
+    HomeFlow(onLogoutClicked = {})
 }

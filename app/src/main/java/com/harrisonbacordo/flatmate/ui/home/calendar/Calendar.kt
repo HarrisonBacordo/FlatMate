@@ -19,6 +19,9 @@ import androidx.compose.foundation.Text
 import androidx.compose.runtime.Composable
 import androidx.ui.tooling.preview.Preview
 
+/**
+ * High-level composable that displays the calendar screen
+ */
 @Composable
 fun CalendarScreen() {
     Text("Calendar")

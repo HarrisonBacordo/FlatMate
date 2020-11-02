@@ -20,6 +20,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.setContent
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * Single [AppCompatActivity] that contains all of FlatMate
+ */
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

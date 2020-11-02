@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.harrisonbacordo.flatmate.ui.auth.login
+package com.harrisonbacordo.flatmate.ui.auth.createnewaccount
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,9 +22,9 @@ import androidx.lifecycle.ViewModel
 import com.harrisonbacordo.flatmate.util.TextValidators
 
 /**
- * [ViewModel] associated with [AuthLoginScreen]
+ * [ViewModel] associated with [AuthCreateNewAccountScreen]
  */
-class AuthLoginViewModel : ViewModel() {
+class AuthCreateNewAccountViewModel : ViewModel() {
     var email: String by mutableStateOf("")
         private set
     var password: String by mutableStateOf("")
@@ -54,9 +54,9 @@ class AuthLoginViewModel : ViewModel() {
      * 2. Hits login endpoint
      * 3. Return results of login
      */
-    fun executeLoginFlow() {
-        if (loginFieldsAreValid()) {
-            attemptLogin()
+    fun executeCreateNewAccountFlow() {
+        if (createNewAccountFieldsAreValid()) {
+            attemptCreateNewAccount()
         }
     }
 
@@ -65,13 +65,13 @@ class AuthLoginViewModel : ViewModel() {
      *
      * @return true if both [email] and [password] are in valid format
      */
-    private fun loginFieldsAreValid(): Boolean {
+    private fun createNewAccountFieldsAreValid(): Boolean {
         return TextValidators.emailIsValid(email) && TextValidators.passwordIsValid(password)
     }
 
     /**
      * Attempts to log user in with [email] and [password]
      */
-    private fun attemptLogin() {
+    private fun attemptCreateNewAccount() {
     }
 }

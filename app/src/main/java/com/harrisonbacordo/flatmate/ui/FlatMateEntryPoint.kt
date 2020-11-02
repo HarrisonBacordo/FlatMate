@@ -22,11 +22,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import androidx.ui.tooling.preview.Preview
-import com.harrisonbacordo.flatmate.ui.auth.AuthScreen
-import com.harrisonbacordo.flatmate.ui.home.HomeScreen
-import com.harrisonbacordo.flatmate.ui.onboarding.OnboardingScreen
+import com.harrisonbacordo.flatmate.ui.auth.AuthDestinations
+import com.harrisonbacordo.flatmate.ui.auth.AuthFlow
+import com.harrisonbacordo.flatmate.ui.home.HomeFlow
+import com.harrisonbacordo.flatmate.ui.onboarding.OnboardingFlow
 import com.harrisonbacordo.flatmate.ui.theme.FlatMateTheme
 
+/**
+ * Entrypoint for the FlatMate application
+ */
 @Preview
 @Composable
 fun FlatMateEntryPoint() {
@@ -37,7 +41,7 @@ fun FlatMateEntryPoint() {
     NavHost(navController, startDestination = Destinations.Auth.name) {
         composable(Destinations.Auth.name) {
             FlatMateTheme(darkTheme = false) {
-                AuthScreen(
+                AuthFlow(
                     onLoginSuccessful = homeRoute,
                     onCreateNewAccountSuccessful = onboardingRoute
                 )
@@ -45,22 +49,32 @@ fun FlatMateEntryPoint() {
         }
         composable(Destinations.Onboarding.name) {
             FlatMateTheme(darkTheme = false) {
-                OnboardingScreen(onOnboardingComplete = homeRoute)
+                OnboardingFlow(onOnboardingComplete = homeRoute)
             }
         }
         composable(Destinations.Home.name) {
             FlatMateTheme(darkTheme = false) {
-                HomeScreen(onLogoutClicked = authRoute)
+                HomeFlow(onLogoutClicked = authRoute)
             }
         }
     }
 }
 
+/**
+ * Executes app-wide navigation to [route] via [navController]. Clears the backstack
+ * to ensure that the application closes if back is pressed from the root of any flow.
+ *
+ * @param navController [NavController] to navigate with
+ * @param route [String] that identifies the route
+ */
 private fun createNavRoute(navController: NavController, route: String) {
     navController.popBackStack()
     navController.navigate(route)
 }
 
+/**
+ * Identifies the different destinations that can be reached app-wide
+ */
 enum class Destinations {
     Auth,
     Onboarding,

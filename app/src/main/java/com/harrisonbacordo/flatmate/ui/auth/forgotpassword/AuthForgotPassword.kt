@@ -22,6 +22,9 @@ import androidx.compose.runtime.Composable
 import androidx.ui.tooling.preview.Preview
 import com.harrisonbacordo.flatmate.ui.auth.AuthTextInput
 
+/**
+ * High-level composable that displays the forgot password screen
+ */
 @Composable
 fun AuthForgotPasswordScreen() {
     Column {

@@ -17,6 +17,9 @@ package com.harrisonbacordo.flatmate.util
 
 import android.text.TextUtils
 
+/**
+ * A set of helper functions specifically made for specific text validation
+ */
 object TextValidators {
 
     /**
