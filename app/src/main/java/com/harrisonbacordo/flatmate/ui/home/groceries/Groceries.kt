@@ -17,9 +17,15 @@ package com.harrisonbacordo.flatmate.ui.home.groceries
 
 import androidx.compose.foundation.Text
 import androidx.compose.runtime.Composable
-
+import androidx.ui.tooling.preview.Preview
 
 @Composable
 fun GroceriesScreen() {
     Text("Groceries")
+}
+
+@Preview
+@Composable
+private fun PreviewGroceriesScreen() {
+    GroceriesScreen()
 }

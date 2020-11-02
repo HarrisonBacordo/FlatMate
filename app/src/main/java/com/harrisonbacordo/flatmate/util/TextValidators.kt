@@ -13,26 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.harrisonbacordo.flatmate.ui.home.settings
+package com.harrisonbacordo.flatmate.util
 
-import androidx.compose.foundation.Text
-import androidx.compose.foundation.layout.Row
-import androidx.compose.material.Button
-import androidx.compose.runtime.Composable
-import androidx.ui.tooling.preview.Preview
+import android.text.TextUtils
 
-@Composable
-fun SettingsScreen(onLogoutClicked: () -> Unit) {
-    Row {
-        Text("Settings")
-        Button(onClick = onLogoutClicked) {
-            Text("Back to auth")
-        }
+object TextValidators {
+
+    /**
+     * Ensures that [email] is in valid format with regex
+     *
+     * @return true if email is in valid format
+     */
+    fun emailIsValid(email: String): Boolean {
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
-}
 
-@Preview
-@Composable
-private fun PreviewSettingsScreen() {
-    SettingsScreen(onLogoutClicked = {})
+    /**
+     * Ensures that [password] is in valid format with regex
+     *
+     * @return true if password is in valid format with regex
+     */
+    fun passwordIsValid(password: String): Boolean {
+//        TODO
+        return true
+    }
 }

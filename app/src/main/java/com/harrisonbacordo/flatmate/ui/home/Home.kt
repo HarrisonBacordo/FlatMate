@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2020 FlatMate (Harrison Bacordo)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.harrisonbacordo.flatmate.ui.home
 
 import androidx.annotation.StringRes
@@ -16,13 +31,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.VectorAsset
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavController
 import androidx.navigation.compose.KEY_ROUTE
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
+import androidx.ui.tooling.preview.Preview
 import com.harrisonbacordo.flatmate.R
 import com.harrisonbacordo.flatmate.ui.home.calendar.CalendarScreen
 import com.harrisonbacordo.flatmate.ui.home.chores.ChoresScreen
@@ -30,7 +45,7 @@ import com.harrisonbacordo.flatmate.ui.home.groceries.GroceriesScreen
 import com.harrisonbacordo.flatmate.ui.home.settings.SettingsScreen
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(onLogoutClicked: () -> Unit) {
     val bottomNavController = rememberNavController()
     val homeDestinations = listOf(
         HomeDestinations.Chores,
@@ -56,7 +71,8 @@ fun HomeScreen(navController: NavController) {
                             if (currentRoute != screen.route) {
                                 bottomNavController.navigate(screen.route)
                             }
-                        })
+                        }
+                    )
                 }
             }
         }
@@ -65,7 +81,7 @@ fun HomeScreen(navController: NavController) {
             composable(HomeDestinations.Chores.route) { ChoresScreen() }
             composable(HomeDestinations.Calendar.route) { CalendarScreen() }
             composable(HomeDestinations.Groceries.route) { GroceriesScreen() }
-            composable(HomeDestinations.Settings.route) { SettingsScreen(navController) }
+            composable(HomeDestinations.Settings.route) { SettingsScreen(onLogoutClicked = onLogoutClicked) }
         }
     }
 }
@@ -75,4 +91,10 @@ sealed class HomeDestinations(val route: String, @StringRes val resourceId: Int,
     object Calendar : HomeDestinations("calendar", R.string.calendar, Icons.Filled.Event)
     object Groceries : HomeDestinations("groceries", R.string.groceries, Icons.Filled.LocalGroceryStore)
     object Settings : HomeDestinations("settings", R.string.settings, Icons.Filled.Settings)
+}
+
+@Preview
+@Composable
+private fun PreviewHomeScreen() {
+    HomeScreen(onLogoutClicked = {})
 }

@@ -19,13 +19,23 @@ import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
+import androidx.ui.tooling.preview.Preview
+import com.harrisonbacordo.flatmate.ui.auth.AuthTextInput
 
 @Composable
 fun AuthCreateNewAccountScreen(onCreateNewAccountClicked: () -> Unit) {
     Column {
         Text("Create New Account")
+        AuthTextInput(value = "", hint = "Email", onValueChange = {})
+        AuthTextInput(value = "", hint = "Password", onValueChange = {})
         Button(onClick = onCreateNewAccountClicked) {
-            Text("Create new Account")
+            Text("Create new account")
         }
     }
+}
+
+@Preview
+@Composable
+private fun PreviewAuthCreateNewAccountScreen() {
+    AuthCreateNewAccountScreen(onCreateNewAccountClicked = {})
 }

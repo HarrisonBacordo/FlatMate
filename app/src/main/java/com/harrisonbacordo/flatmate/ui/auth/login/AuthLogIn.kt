@@ -19,16 +19,29 @@ import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.viewinterop.viewModel
+import androidx.ui.tooling.preview.Preview
+import com.harrisonbacordo.flatmate.ui.auth.AuthHiddenTextInput
+import com.harrisonbacordo.flatmate.ui.auth.AuthTextInput
 
 @Composable
 fun AuthLoginScreen(onLoginClicked: () -> Unit, onForgotPasswordClicked: () -> Unit) {
+    val viewModel: AuthLoginViewModel = viewModel()
     Column {
         Text("Login")
-        Button(onLoginClicked) {
+        AuthTextInput(value = viewModel.email, hint = "Email", onValueChange = { viewModel.onEmailFieldChanged(it) })
+        AuthHiddenTextInput(value = viewModel.password, hint = "Password", onValueChange = { viewModel.onPasswordFieldChanged(it) })
+        Button(onClick = { viewModel.executeLoginFlow() }) {
             Text("Login")
         }
         Button(onForgotPasswordClicked) {
             Text("Forgot Password")
         }
     }
+}
+
+@Preview
+@Composable
+private fun PreviewAuthLoginScreen() {
+    AuthLoginScreen(onLoginClicked = {}, onForgotPasswordClicked = {})
 }

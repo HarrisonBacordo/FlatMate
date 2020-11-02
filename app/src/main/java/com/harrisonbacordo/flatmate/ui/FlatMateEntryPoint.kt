@@ -15,9 +15,6 @@
  */
 package com.harrisonbacordo.flatmate.ui
 
-import androidx.compose.foundation.Text
-import androidx.compose.material.Scaffold
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -34,22 +31,26 @@ import com.harrisonbacordo.flatmate.ui.theme.FlatMateTheme
 @Composable
 fun FlatMateEntryPoint() {
     val navController = rememberNavController()
+    val authRoute = { createNavRoute(navController, Destinations.Auth.name) }
     val onboardingRoute = { createNavRoute(navController, Destinations.Onboarding.name) }
     val homeRoute = { createNavRoute(navController, Destinations.Home.name) }
     NavHost(navController, startDestination = Destinations.Auth.name) {
         composable(Destinations.Auth.name) {
             FlatMateTheme(darkTheme = false) {
-                AuthScreen(onLoginSuccessful = homeRoute, onCreateNewAccountSuccessful = onboardingRoute)
+                AuthScreen(
+                    onLoginSuccessful = homeRoute,
+                    onCreateNewAccountSuccessful = onboardingRoute
+                )
             }
         }
         composable(Destinations.Onboarding.name) {
             FlatMateTheme(darkTheme = false) {
-                OnboardingScreen()
+                OnboardingScreen(onOnboardingComplete = homeRoute)
             }
         }
         composable(Destinations.Home.name) {
             FlatMateTheme(darkTheme = false) {
-                HomeScreen(navController = navController)
+                HomeScreen(onLogoutClicked = authRoute)
             }
         }
     }
