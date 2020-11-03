@@ -39,6 +39,7 @@ import com.harrisonbacordo.flatmate.ui.theme.FlatMateTheme
  */
 @Composable
 fun AuthFlow(onLoginSuccessful: () -> Unit, onCreateNewAccountSuccessful: () -> Unit) {
+
     val authNavController = rememberNavController()
     val landingRoute = { executeNavRoute(authNavController, AuthDestinations.Landing.name) }
     val loginRoute = { executeNavRoute(authNavController, AuthDestinations.LogIn.name) }
