@@ -82,6 +82,8 @@ dependencies {
     kapt Libs.AndroidX.Hilt.compiler
     kapt Libs.AndroidX.Hilt.viewModelCompiler
 
+    implementation Libs.AndroidX.DataStore.preferences
+
     androidTestImplementation Libs.Coroutines.test
     androidTestImplementation Libs.junit
     androidTestImplementation Libs.AndroidX.Test.core

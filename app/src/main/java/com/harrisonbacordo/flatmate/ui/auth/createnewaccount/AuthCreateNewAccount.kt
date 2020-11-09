@@ -25,18 +25,44 @@ import com.harrisonbacordo.flatmate.ui.auth.AuthHiddenTextInput
 import com.harrisonbacordo.flatmate.ui.auth.AuthTextInput
 
 /**
- * High-level composable that displays the create new account screen
+ * High-level composable that holds the state and high-level UI composable of the create new account screen
  *
  * @param onCreateNewAccountClicked Callback that is executed when an account is successfully created
  */
 @Composable
 fun AuthCreateNewAccountScreen(onCreateNewAccountClicked: () -> Unit) {
     val viewModel: AuthCreateNewAccountViewModel = viewModel()
+    CreateNewAccountScreen(
+        viewModel.email,
+        viewModel.password,
+        viewModel::onEmailFieldChanged,
+        viewModel::onPasswordFieldChanged,
+        viewModel::executeCreateNewAccountFlow
+    )
+}
+
+/**
+ * High-level composable that displays the login screen
+ *
+ * @param email String that represents the current state of the email text field
+ * @param password String that represents the current state of the password text field
+ * @param onEmailFieldChanged Callback that is executed when a change is made to the email text field
+ * @param onPasswordFieldChanged Callback that is executed when a change is made to the password text field
+ * @param onFormSubmitted Callback that is executed when the form's login  button has been clicked
+ */
+@Composable
+private fun CreateNewAccountScreen(
+    email: String,
+    password: String,
+    onEmailFieldChanged: (String) -> Unit,
+    onPasswordFieldChanged: (String) -> Unit,
+    onFormSubmitted: () -> Unit,
+) {
     Column {
         Text("Create New Account")
-        AuthTextInput(value = viewModel.email, hint = "Email", onValueChange = viewModel::onEmailFieldChanged)
-        AuthHiddenTextInput(value = viewModel.password, hint = "Password", onValueChange = viewModel::onPasswordFieldChanged)
-        Button(onClick = viewModel::executeCreateNewAccountFlow) {
+        AuthTextInput(value = email, hint = "Email", onValueChange = onEmailFieldChanged)
+        AuthHiddenTextInput(value = password, hint = "Password", onValueChange = onPasswordFieldChanged)
+        Button(onClick = onFormSubmitted) {
             Text("Create new account")
         }
     }

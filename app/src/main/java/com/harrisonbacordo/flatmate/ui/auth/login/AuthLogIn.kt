@@ -25,7 +25,7 @@ import com.harrisonbacordo.flatmate.ui.auth.AuthHiddenTextInput
 import com.harrisonbacordo.flatmate.ui.auth.AuthTextInput
 
 /**
- * High-level composable that displays the login screen
+ * High-level composable that holds the state and high-level UI composable of the login screen
  *
  * @param onLoginSuccessful Callback that is executed when a login is successful
  * @param onForgotPasswordClicked Callback that is executed when the forgot password button is clicked
@@ -33,11 +33,40 @@ import com.harrisonbacordo.flatmate.ui.auth.AuthTextInput
 @Composable
 fun AuthLoginScreen(onLoginSuccessful: () -> Unit, onForgotPasswordClicked: () -> Unit) {
     val viewModel: AuthLoginViewModel = viewModel()
+    LoginScreen(
+        viewModel.email,
+        viewModel.password,
+        viewModel::onEmailFieldChanged,
+        viewModel::onPasswordFieldChanged,
+        viewModel::executeLoginFlow,
+        onForgotPasswordClicked
+    )
+}
+
+/**
+ * High-level composable that displays the login screen
+ *
+ * @param email String that represents the current state of the email text field
+ * @param password String that represents the current state of the password text field
+ * @param onEmailFieldChanged Callback that is executed when a change is made to the email text field
+ * @param onPasswordFieldChanged Callback that is executed when a change is made to the password text field
+ * @param onFormSubmitted Callback that is executed when the form's login  button has been clicked
+ */
+@Composable
+private fun LoginScreen(
+    email: String,
+    password: String,
+    onEmailFieldChanged: (String) -> Unit,
+    onPasswordFieldChanged: (String) -> Unit,
+    onFormSubmitted: () -> Unit,
+    onForgotPasswordClicked: () -> Unit
+
+) {
     Column {
         Text("Login")
-        AuthTextInput(value = viewModel.email, hint = "Email", onValueChange = viewModel::onEmailFieldChanged)
-        AuthHiddenTextInput(value = viewModel.password, hint = "Password", onValueChange = viewModel::onPasswordFieldChanged)
-        Button(onClick = viewModel::executeLoginFlow) {
+        AuthTextInput(value = email, hint = "Email", onValueChange = onEmailFieldChanged)
+        AuthHiddenTextInput(value = password, hint = "Password", onValueChange = onPasswordFieldChanged)
+        Button(onClick = onFormSubmitted) {
             Text("Login")
         }
         Button(onForgotPasswordClicked) {
@@ -48,6 +77,6 @@ fun AuthLoginScreen(onLoginSuccessful: () -> Unit, onForgotPasswordClicked: () -
 
 @Preview
 @Composable
-private fun PreviewAuthLoginScreen() {
-    AuthLoginScreen(onLoginSuccessful = {}, onForgotPasswordClicked = {})
+private fun PreviewAuthLoginForm() {
+    LoginScreen("harrisonbacordo@gmail.com", "TestTest", {}, {}, {}, {})
 }

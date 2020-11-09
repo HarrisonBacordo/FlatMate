@@ -22,7 +22,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import androidx.ui.tooling.preview.Preview
-import com.harrisonbacordo.flatmate.ui.auth.AuthDestinations
 import com.harrisonbacordo.flatmate.ui.auth.AuthFlow
 import com.harrisonbacordo.flatmate.ui.home.HomeFlow
 import com.harrisonbacordo.flatmate.ui.onboarding.OnboardingFlow

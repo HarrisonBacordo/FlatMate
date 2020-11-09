@@ -32,6 +32,7 @@ object Libs {
         const val appcompat = "androidx.appcompat:appcompat:1.2.0-rc01"
         const val coreKtx = "androidx.core:core-ktx:1.5.0-alpha02"
         const val navCompose = "androidx.navigation:navigation-compose:1.0.0-alpha01"
+
         object Compose {
             const val snapshot = ""
             const val version = "1.0.0-alpha06"
@@ -70,19 +71,21 @@ object Libs {
             const val compiler = "com.google.dagger:hilt-android-compiler:$version"
             const val viewModel = "androidx.hilt:hilt-lifecycle-viewmodel:$viewModelVersion"
             const val viewModelCompiler = "androidx.hilt:hilt-compiler:$viewModelVersion"
+        }
 
+        object DataStore {
+            private const val version = "1.0.0-alpha02"
+            const val preferences = "androidx.datastore:datastore-preferences:$version"
         }
 
         object Test {
             private const val version = "1.2.0"
             const val core = "androidx.test:core:$version"
             const val rules = "androidx.test:rules:$version"
-
             object Ext {
                 private const val version = "1.1.2-rc01"
                 const val junit = "androidx.test.ext:junit-ktx:$version"
             }
-
             const val espressoCore = "androidx.test.espresso:espresso-core:3.2.0"
         }
 

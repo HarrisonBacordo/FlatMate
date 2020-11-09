@@ -40,7 +40,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.ui.tooling.preview.Preview
 import com.harrisonbacordo.flatmate.R
 import com.harrisonbacordo.flatmate.ui.home.calendar.CalendarScreen
-import com.harrisonbacordo.flatmate.ui.home.chores.ChoresScreen
+import com.harrisonbacordo.flatmate.ui.home.chores.HomeChoresScreen
 import com.harrisonbacordo.flatmate.ui.home.groceries.GroceriesScreen
 import com.harrisonbacordo.flatmate.ui.home.settings.SettingsScreen
 
@@ -83,7 +83,7 @@ fun HomeFlow(onLogoutClicked: () -> Unit) {
         }
     ) {
         NavHost(bottomNavController, startDestination = HomeDestinations.Chores.route) {
-            composable(HomeDestinations.Chores.route) { ChoresScreen() }
+            composable(HomeDestinations.Chores.route) { HomeChoresScreen() }
             composable(HomeDestinations.Calendar.route) { CalendarScreen() }
             composable(HomeDestinations.Groceries.route) { GroceriesScreen() }
             composable(HomeDestinations.Settings.route) { SettingsScreen(onLogoutClicked = onLogoutClicked) }

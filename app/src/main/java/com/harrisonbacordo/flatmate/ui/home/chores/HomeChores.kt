@@ -30,11 +30,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
 import com.harrisonbacordo.flatmate.R
 import com.harrisonbacordo.flatmate.data.models.Chore
 import com.harrisonbacordo.flatmate.data.models.Interval
 import dev.chrisbanes.accompanist.coil.CoilImage
+
+/**
+ * High-level composable that holds the state and high-level UI composable of the chores screen
+ */
+@Composable
+fun HomeChoresScreen() {
+    val viewModel: HomeChoresViewModel = viewModel()
+    ChoresScreen(chores = viewModel.chores)
+}
+
+/**
+ * High-level composable that displays the chores screen
+ */
+@Composable
+private fun ChoresScreen(chores: List<Chore>) {
+    LazyColumnFor(chores, Modifier.fillMaxHeight()) {
+        ChoreCard(it)
+    }
+}
 
 /**
  * High-level composable that displays a chore card
@@ -65,8 +85,12 @@ private fun ChoreCard(chore: Chore) {
 
 @Preview
 @Composable
-fun ChoresScreen() {
-    LazyColumnFor(List(20) { Chore("Clean kitchen", "Elon Musk", Interval.Fortnightly) }, Modifier.fillMaxHeight()) {
-        ChoreCard(it)
-    }
+fun ChoresScreenPreview() {
+    ChoresScreen(List(10) { Chore("Clean kitchen", "Elon Musk", Interval.Fortnightly) })
+}
+
+@Preview
+@Composable
+fun ChoreCardPreview() {
+    ChoreCard(Chore("Clean kitchen", "Elon Musk", Interval.Fortnightly))
 }
