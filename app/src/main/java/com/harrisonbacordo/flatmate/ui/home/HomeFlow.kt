@@ -39,10 +39,10 @@ import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import androidx.ui.tooling.preview.Preview
 import com.harrisonbacordo.flatmate.R
-import com.harrisonbacordo.flatmate.ui.home.calendar.CalendarScreen
-import com.harrisonbacordo.flatmate.ui.home.chores.HomeChoresScreen
-import com.harrisonbacordo.flatmate.ui.home.groceries.GroceriesScreen
-import com.harrisonbacordo.flatmate.ui.home.settings.SettingsScreen
+import com.harrisonbacordo.flatmate.ui.home.calendar.HomeCalendar
+import com.harrisonbacordo.flatmate.ui.home.chores.HomeChores
+import com.harrisonbacordo.flatmate.ui.home.groceries.HomeGroceries
+import com.harrisonbacordo.flatmate.ui.home.settings.HomeSettings
 
 /**
  * High level composable that coordinates the routes and screens for the Home flow
@@ -83,10 +83,10 @@ fun HomeFlow(onLogoutClicked: () -> Unit) {
         }
     ) {
         NavHost(bottomNavController, startDestination = HomeDestinations.Chores.route) {
-            composable(HomeDestinations.Chores.route) { HomeChoresScreen() }
-            composable(HomeDestinations.Calendar.route) { CalendarScreen() }
-            composable(HomeDestinations.Groceries.route) { GroceriesScreen() }
-            composable(HomeDestinations.Settings.route) { SettingsScreen(onLogoutClicked = onLogoutClicked) }
+            composable(HomeDestinations.Chores.route) { HomeChores() }
+            composable(HomeDestinations.Calendar.route) { HomeCalendar() }
+            composable(HomeDestinations.Groceries.route) { HomeGroceries() }
+            composable(HomeDestinations.Settings.route) { HomeSettings(onLogoutClicked = onLogoutClicked) }
         }
     }
 }

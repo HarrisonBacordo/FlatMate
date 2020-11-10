@@ -21,12 +21,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.viewinterop.viewModel
+import androidx.ui.tooling.preview.Preview
 
 /**
- * High-level component that displays the landing page in AuthFlow
+ * High-level composable that holds the state and high-level UI composable of the auth landing screen
  */
 @Composable
-fun AuthLandingScreen(onCreateNewAccountClicked: () -> Unit, onLoginClicked: () -> Unit) {
+fun AuthLanding(onCreateNewAccountClicked: () -> Unit, onLoginClicked: () -> Unit) {
+    val viewModel: AuthLandingViewModel = viewModel()
+    AuthLandingScreen(onCreateNewAccountClicked, onLoginClicked)
+}
+
+/**
+ * High-level component that displays the auth landing screen
+ */
+@Composable
+private fun AuthLandingScreen(onCreateNewAccountClicked: () -> Unit, onLoginClicked: () -> Unit) {
     Column(Modifier.fillMaxWidth()) {
         Text(text = "Landing")
         Button(onClick = onCreateNewAccountClicked) {
@@ -35,5 +46,17 @@ fun AuthLandingScreen(onCreateNewAccountClicked: () -> Unit, onLoginClicked: () 
         Button(onClick = onLoginClicked) {
             Text("Log in")
         }
+        Button(onClick = {}) {
+            Text("Continue with Facebook")
+        }
+        Button(onClick = {}) {
+            Text("Continue with Google")
+        }
     }
+}
+
+@Preview
+@Composable
+private fun AuthLandingScreenPreview() {
+    AuthLandingScreen({}, {})
 }

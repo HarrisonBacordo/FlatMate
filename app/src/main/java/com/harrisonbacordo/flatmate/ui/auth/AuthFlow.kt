@@ -25,10 +25,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import androidx.ui.tooling.preview.Preview
-import com.harrisonbacordo.flatmate.ui.auth.createnewaccount.AuthCreateNewAccountScreen
-import com.harrisonbacordo.flatmate.ui.auth.forgotpassword.AuthForgotPasswordScreen
-import com.harrisonbacordo.flatmate.ui.auth.landing.AuthLandingScreen
-import com.harrisonbacordo.flatmate.ui.auth.login.AuthLoginScreen
+import com.harrisonbacordo.flatmate.ui.auth.createnewaccount.AuthCreateNewAccount
+import com.harrisonbacordo.flatmate.ui.auth.forgotpassword.AuthForgotPassword
+import com.harrisonbacordo.flatmate.ui.auth.landing.AuthLanding
+import com.harrisonbacordo.flatmate.ui.auth.login.AuthLogin
 import com.harrisonbacordo.flatmate.ui.theme.FlatMateTheme
 
 /**
@@ -52,24 +52,16 @@ fun AuthFlow(onLoginSuccessful: () -> Unit, onCreateNewAccountSuccessful: () -> 
         bodyContent = {
             NavHost(authNavController, startDestination = AuthDestinations.Landing.name) {
                 composable(AuthDestinations.Landing.name) {
-                    FlatMateTheme(darkTheme = false) {
-                        AuthLandingScreen(onCreateNewAccountClicked = createNewAccountRoute, onLoginClicked = loginRoute)
-                    }
+                    AuthLanding(onCreateNewAccountClicked = createNewAccountRoute, onLoginClicked = loginRoute)
                 }
                 composable(AuthDestinations.CreateNewAccount.name) {
-                    FlatMateTheme(darkTheme = false) {
-                        AuthCreateNewAccountScreen(onCreateNewAccountClicked = onCreateNewAccountSuccessful)
-                    }
+                    AuthCreateNewAccount(onCreateNewAccountClicked = onCreateNewAccountSuccessful)
                 }
                 composable(AuthDestinations.LogIn.name) {
-                    FlatMateTheme(darkTheme = false) {
-                        AuthLoginScreen(onLoginSuccessful = onLoginSuccessful, onForgotPasswordClicked = forgotPasswordRoute)
-                    }
+                    AuthLogin(onLoginSuccessful = onLoginSuccessful, onForgotPasswordClicked = forgotPasswordRoute)
                 }
                 composable(AuthDestinations.ForgotPassword.name) {
-                    FlatMateTheme(darkTheme = false) {
-                        AuthForgotPasswordScreen()
-                    }
+                    AuthForgotPassword()
                 }
             }
         }

@@ -34,8 +34,8 @@ object Libs {
         const val navCompose = "androidx.navigation:navigation-compose:1.0.0-alpha01"
 
         object Compose {
+            private const val version = "1.0.0-alpha06"
             const val snapshot = ""
-            const val version = "1.0.0-alpha06"
             const val core = "androidx.compose.ui:ui:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"
             const val layout = "androidx.compose.foundation:foundation-layout:$version"

@@ -25,12 +25,12 @@ import com.harrisonbacordo.flatmate.ui.auth.AuthHiddenTextInput
 import com.harrisonbacordo.flatmate.ui.auth.AuthTextInput
 
 /**
- * High-level composable that holds the state and high-level UI composable of the create new account screen
+ * High-level composable that holds the state and high-level UI composable of the auth create new account screen
  *
  * @param onCreateNewAccountClicked Callback that is executed when an account is successfully created
  */
 @Composable
-fun AuthCreateNewAccountScreen(onCreateNewAccountClicked: () -> Unit) {
+fun AuthCreateNewAccount(onCreateNewAccountClicked: () -> Unit) {
     val viewModel: AuthCreateNewAccountViewModel = viewModel()
     CreateNewAccountScreen(
         viewModel.email,
@@ -42,7 +42,7 @@ fun AuthCreateNewAccountScreen(onCreateNewAccountClicked: () -> Unit) {
 }
 
 /**
- * High-level composable that displays the login screen
+ * High-level composable that displays the auth create new account screen
  *
  * @param email String that represents the current state of the email text field
  * @param password String that represents the current state of the password text field
@@ -71,5 +71,5 @@ private fun CreateNewAccountScreen(
 @Preview
 @Composable
 private fun PreviewAuthCreateNewAccountScreen() {
-    AuthCreateNewAccountScreen(onCreateNewAccountClicked = {})
+    CreateNewAccountScreen("harrisonbacordo@gmail.com", "TestTest", {}, {}, {})
 }

@@ -4,7 +4,7 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ *C
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -14,3 +14,10 @@
  * limitations under the License.
  */
 package com.harrisonbacordo.flatmate.data.mocks
+
+import com.harrisonbacordo.flatmate.data.models.Chore
+import com.harrisonbacordo.flatmate.data.models.Interval
+
+object Mocks {
+    val ChoreMock = Chore("Clean kitchen", "Elon Musk", Interval.Fortnightly)
+}

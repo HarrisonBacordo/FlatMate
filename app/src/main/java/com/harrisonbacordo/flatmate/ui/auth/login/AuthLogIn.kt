@@ -25,15 +25,16 @@ import com.harrisonbacordo.flatmate.ui.auth.AuthHiddenTextInput
 import com.harrisonbacordo.flatmate.ui.auth.AuthTextInput
 
 /**
- * High-level composable that holds the state and high-level UI composable of the login screen
+ * High-level composable that holds the state and high-level UI composable of the auth login screen
  *
  * @param onLoginSuccessful Callback that is executed when a login is successful
  * @param onForgotPasswordClicked Callback that is executed when the forgot password button is clicked
  */
 @Composable
-fun AuthLoginScreen(onLoginSuccessful: () -> Unit, onForgotPasswordClicked: () -> Unit) {
+fun AuthLogin(onLoginSuccessful: () -> Unit, onForgotPasswordClicked: () -> Unit) {
+//    FIXME cannot instantiate this viewmodel with hilt
     val viewModel: AuthLoginViewModel = viewModel()
-    LoginScreen(
+    AuthLoginScreen(
         viewModel.email,
         viewModel.password,
         viewModel::onEmailFieldChanged,
@@ -44,16 +45,17 @@ fun AuthLoginScreen(onLoginSuccessful: () -> Unit, onForgotPasswordClicked: () -
 }
 
 /**
- * High-level composable that displays the login screen
+ * High-level composable that displays the auth login screen
  *
  * @param email String that represents the current state of the email text field
  * @param password String that represents the current state of the password text field
  * @param onEmailFieldChanged Callback that is executed when a change is made to the email text field
  * @param onPasswordFieldChanged Callback that is executed when a change is made to the password text field
  * @param onFormSubmitted Callback that is executed when the form's login  button has been clicked
+ * @param onForgotPasswordClicked Callback that is executed when the form's forgot password button has been clicked
  */
 @Composable
-private fun LoginScreen(
+private fun AuthLoginScreen(
     email: String,
     password: String,
     onEmailFieldChanged: (String) -> Unit,
@@ -78,5 +80,5 @@ private fun LoginScreen(
 @Preview
 @Composable
 private fun PreviewAuthLoginForm() {
-    LoginScreen("harrisonbacordo@gmail.com", "TestTest", {}, {}, {}, {})
+    AuthLoginScreen("harrisonbacordo@gmail.com", "TestTest", {}, {}, {}, {})
 }

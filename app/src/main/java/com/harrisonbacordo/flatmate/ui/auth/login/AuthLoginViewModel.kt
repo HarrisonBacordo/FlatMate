@@ -18,13 +18,20 @@ package com.harrisonbacordo.flatmate.ui.auth.login
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.harrisonbacordo.flatmate.data.repositories.AuthRepository
 import com.harrisonbacordo.flatmate.util.TextValidators
 
 /**
- * [ViewModel] associated with [AuthLoginScreen]
+ * [ViewModel] associated with [AuthLogin]
  */
-class AuthLoginViewModel : ViewModel() {
+class AuthLoginViewModel @ViewModelInject constructor(
+    private val authRepository: AuthRepository,
+    @Assisted private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
     var email: String by mutableStateOf("")
         private set
     var password: String by mutableStateOf("")

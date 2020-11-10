@@ -19,26 +19,48 @@ import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
 import com.harrisonbacordo.flatmate.ui.auth.AuthTextInput
 
 /**
- * High-level composable that displays the forgot password screen
+ * High-level composable that holds the state and high-level UI composable of the auth forgot password screen
  */
 @Composable
-fun AuthForgotPasswordScreen() {
+fun AuthForgotPassword() {
+    val viewModel: AuthForgotPasswordViewModel = viewModel()
+    AuthForgotPasswordScreen(
+        viewModel.email,
+        viewModel::onEmailFieldChanged,
+        viewModel::executeResetPasswordFlow
+    )
+}
+
+/**
+ * High-level composable that displays the auth forgot password screen
+ *
+ * @param email String that represents the current state of the email text field
+ * @param onEmailFieldChanged Callback that is executed when a change is made to the email text field
+ * @param onFormSubmitted Callback that is executed when the form's submit button has been clicked
+ */
+@Composable
+private fun AuthForgotPasswordScreen(
+    email: String,
+    onEmailFieldChanged: (String) -> Unit,
+    onFormSubmitted: () -> Unit
+) {
     Column {
-        val onEmailSubmitted = {}
         Text("Forgot password Screen")
-        AuthTextInput(value = "", hint = "Email", onValueChange = {})
-        Button(onClick = onEmailSubmitted) {
+        AuthTextInput(value = email, hint = "Email", onValueChange = onEmailFieldChanged)
+        Button(onClick = onFormSubmitted) {
             Text("Submit Email")
         }
     }
 }
 
+
 @Preview
 @Composable
 private fun PreviewAuthForgotPasswordScreen() {
-    AuthForgotPasswordScreen()
+    AuthForgotPasswordScreen("harrisonbacordo@gmail.com", {}, {})
 }

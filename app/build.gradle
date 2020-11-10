@@ -70,6 +70,7 @@ dependencies {
     implementation Libs.AndroidX.Compose.runtimeLivedata
 
     implementation Libs.AndroidX.Room.runtime
+    implementation project(path: ':')
     kapt Libs.AndroidX.Room.compiler
     implementation Libs.AndroidX.Room.ktx
 

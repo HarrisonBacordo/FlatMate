@@ -22,7 +22,7 @@ import androidx.lifecycle.ViewModel
 import com.harrisonbacordo.flatmate.util.TextValidators
 
 /**
- * [ViewModel] associated with [AuthCreateNewAccountScreen]
+ * [ViewModel] associated with [AuthCreateNewAccount]
  */
 class AuthCreateNewAccountViewModel : ViewModel() {
     var email: String by mutableStateOf("")

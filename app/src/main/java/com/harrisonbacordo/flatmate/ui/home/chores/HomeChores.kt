@@ -38,16 +38,16 @@ import com.harrisonbacordo.flatmate.data.models.Interval
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 /**
- * High-level composable that holds the state and high-level UI composable of the chores screen
+ * High-level composable that holds the state and high-level UI composable of the home chores screen
  */
 @Composable
-fun HomeChoresScreen() {
+fun HomeChores() {
     val viewModel: HomeChoresViewModel = viewModel()
     ChoresScreen(chores = viewModel.chores)
 }
 
 /**
- * High-level composable that displays the chores screen
+ * High-level composable that displays the home chores screen
  */
 @Composable
 private fun ChoresScreen(chores: List<Chore>) {

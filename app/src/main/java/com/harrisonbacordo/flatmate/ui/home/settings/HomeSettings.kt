@@ -13,22 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.harrisonbacordo.flatmate.ui.home.calendar
+package com.harrisonbacordo.flatmate.ui.home.settings
 
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
 
 /**
- * High-level composable that displays the calendar screen
+ * High-level composable that holds the state and high-level UI composable of the home settings screen
  */
 @Composable
-fun CalendarScreen() {
-    Text("Calendar")
+fun HomeSettings(onLogoutClicked: () -> Unit) {
+    val viewModel: HomeSettingsViewModel = viewModel()
+    HomeSettingsScreen(onLogoutClicked)
+}
+
+/**
+ * High-level composable that displays the home settings screen
+ */
+@Composable
+private fun HomeSettingsScreen(onLogoutClicked: () -> Unit) {
+    Row {
+        Text("Settings")
+        Button(onClick = onLogoutClicked) {
+            Text("Back to auth")
+        }
+    }
 }
 
 @Preview
 @Composable
-private fun PreviewCalendarScreen() {
-    CalendarScreen()
+private fun PreviewSettingsScreen() {
+    HomeSettingsScreen {}
 }

@@ -13,29 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.harrisonbacordo.flatmate.ui.home.settings
+package com.harrisonbacordo.flatmate.ui.home.groceries
 
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.layout.Row
-import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
 
 /**
- * High-level composable that displays the settings screen
+ * High-level composable that holds the state and high-level UI composable of the home groceries screen
  */
 @Composable
-fun SettingsScreen(onLogoutClicked: () -> Unit) {
-    Row {
-        Text("Settings")
-        Button(onClick = onLogoutClicked) {
-            Text("Back to auth")
-        }
-    }
+fun HomeGroceries() {
+    val viewModel: HomeGroceriesViewModel = viewModel()
+    HomeGroceriesScreen()
+}
+
+/**
+ * High-level composable that displays the home groceries screen
+ */
+@Composable
+private fun HomeGroceriesScreen() {
+    Text("Groceries")
 }
 
 @Preview
 @Composable
-private fun PreviewSettingsScreen() {
-    SettingsScreen(onLogoutClicked = {})
+private fun PreviewGroceriesScreen() {
+    HomeGroceriesScreen()
 }

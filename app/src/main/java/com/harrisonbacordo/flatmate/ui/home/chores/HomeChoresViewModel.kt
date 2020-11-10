@@ -26,7 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
- * [ViewModel] associated with [HomeChoresScreen]
+ * [ViewModel] associated with [HomeChores]
  */
 class HomeChoresViewModel : ViewModel() {
     //    TODO inject [ChoreRepository]

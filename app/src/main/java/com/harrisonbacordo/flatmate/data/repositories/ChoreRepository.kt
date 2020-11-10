@@ -15,8 +15,8 @@
  */
 package com.harrisonbacordo.flatmate.data.repositories
 
+import com.harrisonbacordo.flatmate.data.mocks.Mocks
 import com.harrisonbacordo.flatmate.data.models.Chore
-import com.harrisonbacordo.flatmate.data.models.Interval
 
 class ChoreRepository {
 
@@ -24,6 +24,6 @@ class ChoreRepository {
      * Fetches chores from either Room or Firestore
      */
     fun fetchChores(): List<Chore> {
-        return List(8) { Chore("Clean kitchen", "Elon Musk", Interval.Fortnightly) }
+        return List(8) { Mocks.ChoreMock }
     }
 }
