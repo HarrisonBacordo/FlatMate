@@ -18,6 +18,9 @@ package com.harrisonbacordo.flatmate.ui.home.chores
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harrisonbacordo.flatmate.data.models.Chore
@@ -28,22 +31,7 @@ import kotlinx.coroutines.launch
 /**
  * [ViewModel] associated with [HomeChores]
  */
-class HomeChoresViewModel : ViewModel() {
-    //    TODO inject [ChoreRepository]
-    val choreRepository = ChoreRepository()
-    var chores: List<Chore> by mutableStateOf(listOf())
+class HomeChoresViewModel @ViewModelInject constructor(private val choreRepository: ChoreRepository, @Assisted private val savedStateHandle: SavedStateHandle): ViewModel() {
+    var chores: List<Chore> by mutableStateOf(choreRepository.fetchChores())
         private set
-
-    init {
-        fetchChores()
-    }
-
-    /**
-     * Fetches chores from [ChoreRepository]
-     */
-    private fun fetchChores() {
-        viewModelScope.launch(Dispatchers.IO) {
-            choreRepository.fetchChores()
-        }
-    }
 }

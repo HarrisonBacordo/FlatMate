@@ -29,8 +29,10 @@ import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.viewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.ui.tooling.preview.Preview
 import com.harrisonbacordo.flatmate.R
 import com.harrisonbacordo.flatmate.data.models.Chore
@@ -42,7 +44,7 @@ import dev.chrisbanes.accompanist.coil.CoilImage
  */
 @Composable
 fun HomeChores() {
-    val viewModel: HomeChoresViewModel = viewModel()
+    val viewModel: HomeChoresViewModel = ViewModelProvider(ContextAmbient.current as ViewModelStoreOwner).get(HomeChoresViewModel::class.java)
     ChoresScreen(chores = viewModel.chores)
 }
 

@@ -19,27 +19,32 @@ import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.viewinterop.viewModel
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.ContextAmbient
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.ui.tooling.preview.Preview
 import com.harrisonbacordo.flatmate.ui.auth.AuthHiddenTextInput
 import com.harrisonbacordo.flatmate.ui.auth.AuthTextInput
 
 /**
  * High-level composable that holds the state and high-level UI composable of the auth login screen
- *
+ *C
  * @param onLoginSuccessful Callback that is executed when a login is successful
  * @param onForgotPasswordClicked Callback that is executed when the forgot password button is clicked
  */
 @Composable
 fun AuthLogin(onLoginSuccessful: () -> Unit, onForgotPasswordClicked: () -> Unit) {
-//    FIXME cannot instantiate this viewmodel with hilt
-    val viewModel: AuthLoginViewModel = viewModel()
+    val viewModel: AuthLoginViewModel = ViewModelProvider(ContextAmbient.current as ViewModelStoreOwner).get(AuthLoginViewModel::class.java)
+    val (email, setEmail) = remember { mutableStateOf("") }
+    val (password, setPassword) = remember { mutableStateOf("") }
     AuthLoginScreen(
-        viewModel.email,
-        viewModel.password,
-        viewModel::onEmailFieldChanged,
-        viewModel::onPasswordFieldChanged,
-        viewModel::executeLoginFlow,
+        email,
+        password,
+        setEmail,
+        setPassword,
+        { viewModel.executeLoginFlow(email, password) },
         onForgotPasswordClicked
     )
 }

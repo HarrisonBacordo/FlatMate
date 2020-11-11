@@ -16,10 +16,8 @@
 package com.harrisonbacordo.flatmate.ui
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.setContent
-import com.harrisonbacordo.flatmate.ui.auth.login.AuthLoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -27,7 +25,6 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private val authViewModel: AuthLoginViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

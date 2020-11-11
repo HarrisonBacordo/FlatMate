@@ -17,8 +17,9 @@ package com.harrisonbacordo.flatmate.data.repositories
 
 import com.harrisonbacordo.flatmate.data.mocks.Mocks
 import com.harrisonbacordo.flatmate.data.models.Chore
+import javax.inject.Inject
 
-class ChoreRepository {
+class ChoreRepository @Inject constructor() {
 
     /**
      * Fetches chores from either Room or Firestore

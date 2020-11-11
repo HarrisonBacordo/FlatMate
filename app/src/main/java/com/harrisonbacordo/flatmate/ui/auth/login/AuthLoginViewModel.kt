@@ -24,36 +24,17 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.harrisonbacordo.flatmate.data.repositories.AuthRepository
 import com.harrisonbacordo.flatmate.util.TextValidators
+import dagger.hilt.android.scopes.ActivityRetainedScoped
+import dagger.hilt.android.scopes.FragmentScoped
 
 /**
  * [ViewModel] associated with [AuthLogin]
  */
+@FragmentScoped
 class AuthLoginViewModel @ViewModelInject constructor(
     private val authRepository: AuthRepository,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    var email: String by mutableStateOf("")
-        private set
-    var password: String by mutableStateOf("")
-        private set
-
-    /**
-     * Sets [email] to [value]
-     *
-     * @param value new value for [email]
-     */
-    fun onEmailFieldChanged(value: String) {
-        email = value
-    }
-
-    /**
-     * Sets [password] to [value]
-     *
-     * @param value new value for [password]
-     */
-    fun onPasswordFieldChanged(value: String) {
-        password = value
-    }
 
     /**
      * Executes the login flow:
@@ -61,24 +42,16 @@ class AuthLoginViewModel @ViewModelInject constructor(
      * 2. Hits login endpoint
      * 3. Return results of login
      */
-    fun executeLoginFlow() {
-        if (loginFieldsAreValid()) {
-            attemptLogin()
+    fun executeLoginFlow(email: String, password: String) {
+        if (TextValidators.emailIsValid(email) && TextValidators.passwordIsValid(password)) {
+            attemptLogin(email, password)
         }
-    }
-
-    /**
-     * Validates [email] and [password]
-     *
-     * @return true if both [email] and [password] are in valid format
-     */
-    private fun loginFieldsAreValid(): Boolean {
-        return TextValidators.emailIsValid(email) && TextValidators.passwordIsValid(password)
     }
 
     /**
      * Attempts to log user in with [email] and [password]
      */
-    private fun attemptLogin() {
+    private fun attemptLogin(email: String, password: String) {
+        authRepository.attemptLogin(email, password)
     }
 }
