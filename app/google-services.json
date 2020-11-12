@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "803035832572",
+    "firebase_url": "https://flat-mate-app.firebaseio.com",
+    "project_id": "flat-mate-app",
+    "storage_bucket": "flat-mate-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:803035832572:android:ce285b5e9d318ac0",
+        "android_client_info": {
+          "package_name": "com.harrisonbacordo.flatmate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "803035832572-99othj7h3j8u0vnc5j2ieeu7mbbb37l7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.harrisonbacordo.flatmate",
+            "certificate_hash": "318cea2fb2e26842953afa3ab43f744881cf9f70"
+          }
+        },
+        {
+          "client_id": "803035832572-v2krt8aj1jvvsl6n7sld6rr8tn2i9mi4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn1Ce3DSTE9Ug8XorCK_ho9GYmckg76MM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "803035832572-ndb31ktm31o2puvg3utukk1brg48qlbr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "803035832572-4adi3gktvb35hg9h713ifi16127pconk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.harrisonbacordo.flatmate"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -25,7 +25,17 @@ object Libs {
         private const val version = "1.3.9"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
+        const val playServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$version"
         const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
+    }
+
+    object Firebase {
+        private const val version = "26.0.0"
+        const val bom = "com.google.firebase:firebase-bom:$version"
+        const val ktx = "com.google.firebase:firebase-firestore-ktx"
+        const val auth = "com.google.firebase:firebase-auth"
+        const val analytics = "com.google.firebase:firebase-analytics"
+        const val firestore = "com.google.firebase:firebase-firestore"
     }
 
     object AndroidX {

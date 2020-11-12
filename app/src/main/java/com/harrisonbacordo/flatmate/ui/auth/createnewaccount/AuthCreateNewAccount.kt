@@ -19,7 +19,11 @@ import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.viewinterop.viewModel
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.ContextAmbient
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.ui.tooling.preview.Preview
 import com.harrisonbacordo.flatmate.ui.auth.AuthHiddenTextInput
 import com.harrisonbacordo.flatmate.ui.auth.AuthTextInput
@@ -27,17 +31,20 @@ import com.harrisonbacordo.flatmate.ui.auth.AuthTextInput
 /**
  * High-level composable that holds the state and high-level UI composable of the auth create new account screen
  *
- * @param onCreateNewAccountClicked Callback that is executed when an account is successfully created
+ * @param onCreateNewAccountSuccessful Callback that is executed when an account is successfully created
  */
 @Composable
-fun AuthCreateNewAccount(onCreateNewAccountClicked: () -> Unit) {
-    val viewModel: AuthCreateNewAccountViewModel = viewModel()
+fun AuthCreateNewAccount(onCreateNewAccountSuccessful: () -> Unit) {
+    val viewModel: AuthCreateNewAccountViewModel = ViewModelProvider(ContextAmbient.current as ViewModelStoreOwner).get(AuthCreateNewAccountViewModel::class.java)
+    val (email, setEmail) = remember { mutableStateOf("") }
+    val (password, setPassword) = remember { mutableStateOf("") }
     CreateNewAccountScreen(
-        viewModel.email,
-        viewModel.password,
-        viewModel::onEmailFieldChanged,
-        viewModel::onPasswordFieldChanged,
-        viewModel::executeCreateNewAccountFlow
+        email,
+        password,
+        viewModel.errorMessage,
+        setEmail,
+        setPassword,
+        { viewModel.executeCreateNewAccountFlow(email, password, onCreateNewAccountSuccessful) }
     )
 }
 
@@ -46,6 +53,7 @@ fun AuthCreateNewAccount(onCreateNewAccountClicked: () -> Unit) {
  *
  * @param email String that represents the current state of the email text field
  * @param password String that represents the current state of the password text field
+ * @param errorMessage String that represents the current state of the error message
  * @param onEmailFieldChanged Callback that is executed when a change is made to the email text field
  * @param onPasswordFieldChanged Callback that is executed when a change is made to the password text field
  * @param onFormSubmitted Callback that is executed when the form's login  button has been clicked
@@ -54,6 +62,7 @@ fun AuthCreateNewAccount(onCreateNewAccountClicked: () -> Unit) {
 private fun CreateNewAccountScreen(
     email: String,
     password: String,
+    errorMessage: String,
     onEmailFieldChanged: (String) -> Unit,
     onPasswordFieldChanged: (String) -> Unit,
     onFormSubmitted: () -> Unit,
@@ -71,5 +80,5 @@ private fun CreateNewAccountScreen(
 @Preview
 @Composable
 private fun PreviewAuthCreateNewAccountScreen() {
-    CreateNewAccountScreen("harrisonbacordo@gmail.com", "TestTest", {}, {}, {})
+    CreateNewAccountScreen("harrisonbacordo@gmail.com", "TestTest", "Error", {}, {}, {})
 }

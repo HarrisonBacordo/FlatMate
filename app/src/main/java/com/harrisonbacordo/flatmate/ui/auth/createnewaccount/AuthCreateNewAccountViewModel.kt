@@ -18,60 +18,68 @@ package com.harrisonbacordo.flatmate.ui.auth.createnewaccount
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.harrisonbacordo.flatmate.data.repositories.AuthRepository
 import com.harrisonbacordo.flatmate.util.TextValidators
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * [ViewModel] associated with [AuthCreateNewAccount]
  */
-class AuthCreateNewAccountViewModel : ViewModel() {
-    var email: String by mutableStateOf("")
-        private set
-    var password: String by mutableStateOf("")
-        private set
+class AuthCreateNewAccountViewModel @ViewModelInject constructor(private val authRepository: AuthRepository) : ViewModel() {
 
-    /**
-     * Sets [email] to [value]
-     *
-     * @param value new value for [email]
-     */
-    fun onEmailFieldChanged(value: String) {
-        email = value
-    }
-
-    /**
-     * Sets [password] to [value]
-     *
-     * @param value new value for [password]
-     */
-    fun onPasswordFieldChanged(value: String) {
-        password = value
-    }
+    var errorMessage: String by mutableStateOf("")
+        private set
 
     /**
      * Executes the login flow:
-     * 1. Checks if login fields are valid
-     * 2. Hits login endpoint
-     * 3. Return results of login
+     * 1. Checks if create new account fields are valid
+     * 2. Hits create new account endpoint
+     * 3. Return results of create new account
+     *
+     * @param email String that represents the email to create a new account with
+     * @param password String that represents the password to create a new account with
+     * @param onCreateNewAccountSuccessful Callback that is executed when an account is successfully created
      */
-    fun executeCreateNewAccountFlow() {
-        if (createNewAccountFieldsAreValid()) {
-            attemptCreateNewAccount()
+    fun executeCreateNewAccountFlow(email: String, password: String, onCreateNewAccountSuccessful: () -> Unit) {
+        if (createNewAccountFieldsAreValid(email, password)) {
+            attemptCreateNewAccount(email, password, onCreateNewAccountSuccessful)
+        } else {
+            errorMessage = "Please make sure your email and password are valid and try again"
         }
     }
 
     /**
      * Validates [email] and [password]
      *
+     * @param email String that represents the email to create a new account with
+     * @param password String that represents the password to create a new account with
      * @return true if both [email] and [password] are in valid format
      */
-    private fun createNewAccountFieldsAreValid(): Boolean {
+    private fun createNewAccountFieldsAreValid(email: String, password: String): Boolean {
         return TextValidators.emailIsValid(email) && TextValidators.passwordIsValid(password)
     }
 
     /**
-     * Attempts to log user in with [email] and [password]
+     * Attempts to log user in with [email] and [password]. If successful, invoke [onCreateNewAccountSuccessful]
+     *
+     * @param email String that represents the email to create a new account with
+     * @param password String that represents the password to create a new account with
+     * @param onCreateNewAccountSuccessful Callback that is executed when an account is successfully created
      */
-    private fun attemptCreateNewAccount() {
+    private fun attemptCreateNewAccount(email: String, password: String, onCreateNewAccountSuccessful: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            authRepository.attemptCreateNewAccount(email, password)?.let {
+                if (it.user != null) {
+                    withContext(Dispatchers.Main) {
+                        onCreateNewAccountSuccessful.invoke()
+                    }
+                }
+            }
+        }
     }
 }

@@ -29,7 +29,6 @@ import com.harrisonbacordo.flatmate.ui.auth.createnewaccount.AuthCreateNewAccoun
 import com.harrisonbacordo.flatmate.ui.auth.forgotpassword.AuthForgotPassword
 import com.harrisonbacordo.flatmate.ui.auth.landing.AuthLanding
 import com.harrisonbacordo.flatmate.ui.auth.login.AuthLogin
-import com.harrisonbacordo.flatmate.ui.theme.FlatMateTheme
 
 /**
  * High level composable that coordinates the routes and screens for the Auth flow
@@ -55,7 +54,7 @@ fun AuthFlow(onLoginSuccessful: () -> Unit, onCreateNewAccountSuccessful: () -> 
                     AuthLanding(onCreateNewAccountClicked = createNewAccountRoute, onLoginClicked = loginRoute)
                 }
                 composable(AuthDestinations.CreateNewAccount.name) {
-                    AuthCreateNewAccount(onCreateNewAccountClicked = onCreateNewAccountSuccessful)
+                    AuthCreateNewAccount(onCreateNewAccountSuccessful = onCreateNewAccountSuccessful)
                 }
                 composable(AuthDestinations.LogIn.name) {
                     AuthLogin(onLoginSuccessful = onLoginSuccessful, onForgotPasswordClicked = forgotPasswordRoute)

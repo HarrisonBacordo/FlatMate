@@ -18,6 +18,7 @@ package com.harrisonbacordo.flatmate.ui.auth.login
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
+import androidx.compose.material.Snackbar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,7 +31,7 @@ import com.harrisonbacordo.flatmate.ui.auth.AuthTextInput
 
 /**
  * High-level composable that holds the state and high-level UI composable of the auth login screen
- *C
+ *
  * @param onLoginSuccessful Callback that is executed when a login is successful
  * @param onForgotPasswordClicked Callback that is executed when the forgot password button is clicked
  */
@@ -42,9 +43,10 @@ fun AuthLogin(onLoginSuccessful: () -> Unit, onForgotPasswordClicked: () -> Unit
     AuthLoginScreen(
         email,
         password,
+        viewModel.errorMessage,
         setEmail,
         setPassword,
-        { viewModel.executeLoginFlow(email, password) },
+        { viewModel.executeLoginFlow(email, password, onLoginSuccessful) },
         onForgotPasswordClicked
     )
 }
@@ -54,6 +56,7 @@ fun AuthLogin(onLoginSuccessful: () -> Unit, onForgotPasswordClicked: () -> Unit
  *
  * @param email String that represents the current state of the email text field
  * @param password String that represents the current state of the password text field
+ * @param errorMessage String that represents the current state of the error message
  * @param onEmailFieldChanged Callback that is executed when a change is made to the email text field
  * @param onPasswordFieldChanged Callback that is executed when a change is made to the password text field
  * @param onFormSubmitted Callback that is executed when the form's login  button has been clicked
@@ -63,6 +66,7 @@ fun AuthLogin(onLoginSuccessful: () -> Unit, onForgotPasswordClicked: () -> Unit
 private fun AuthLoginScreen(
     email: String,
     password: String,
+    errorMessage: String,
     onEmailFieldChanged: (String) -> Unit,
     onPasswordFieldChanged: (String) -> Unit,
     onFormSubmitted: () -> Unit,
@@ -85,5 +89,5 @@ private fun AuthLoginScreen(
 @Preview
 @Composable
 private fun PreviewAuthLoginForm() {
-    AuthLoginScreen("harrisonbacordo@gmail.com", "TestTest", {}, {}, {}, {})
+    AuthLoginScreen("harrisonbacordo@gmail.com", "TestTest", "Error", {}, {}, {}, {})
 }

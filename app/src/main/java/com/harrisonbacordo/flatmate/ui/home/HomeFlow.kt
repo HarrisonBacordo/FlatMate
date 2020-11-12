@@ -86,7 +86,7 @@ fun HomeFlow(onLogoutClicked: () -> Unit) {
             composable(HomeDestinations.Chores.route) { HomeChores() }
             composable(HomeDestinations.Calendar.route) { HomeCalendar() }
             composable(HomeDestinations.Groceries.route) { HomeGroceries() }
-            composable(HomeDestinations.Settings.route) { HomeSettings(onLogoutClicked = onLogoutClicked) }
+            composable(HomeDestinations.Settings.route) { HomeSettings(onLogoutSuccessful = onLogoutClicked) }
         }
     }
 }

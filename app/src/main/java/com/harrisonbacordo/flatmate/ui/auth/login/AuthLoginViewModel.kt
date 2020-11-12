@@ -22,36 +22,58 @@ import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.harrisonbacordo.flatmate.data.repositories.AuthRepository
 import com.harrisonbacordo.flatmate.util.TextValidators
-import dagger.hilt.android.scopes.ActivityRetainedScoped
-import dagger.hilt.android.scopes.FragmentScoped
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * [ViewModel] associated with [AuthLogin]
  */
-@FragmentScoped
 class AuthLoginViewModel @ViewModelInject constructor(
     private val authRepository: AuthRepository,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    var errorMessage: String by mutableStateOf("")
+        private set
 
     /**
      * Executes the login flow:
      * 1. Checks if login fields are valid
      * 2. Hits login endpoint
      * 3. Return results of login
+     *
+     * @param email String that represents the email to create a new account with
+     * @param password String that represents the password to create a new account with
+     * @param onLoginSuccessful Callback that is executed when a login is successful
      */
-    fun executeLoginFlow(email: String, password: String) {
+    fun executeLoginFlow(email: String, password: String, onLoginSuccessful: () -> Unit) {
         if (TextValidators.emailIsValid(email) && TextValidators.passwordIsValid(password)) {
-            attemptLogin(email, password)
+            attemptLogin(email, password, onLoginSuccessful)
+        } else {
+            errorMessage = "Please make sure your email and password are valid and try again"
         }
     }
 
     /**
-     * Attempts to log user in with [email] and [password]
+     * Attempts to log user in with [email] and [password]. If successful, invoke [onLoginSuccessful]
+     *
+     * @param email String that represents the email to create a new account with
+     * @param password String that represents the password to create a new account with
+     * @param onLoginSuccessful Callback that is executed when a login is successful
      */
-    private fun attemptLogin(email: String, password: String) {
-        authRepository.attemptLogin(email, password)
+    private fun attemptLogin(email: String, password: String, onLoginSuccessful: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            authRepository.attemptLogin(email, password)?.let {
+                if (it.user != null) {
+                    withContext(Dispatchers.Main) {
+                        onLoginSuccessful.invoke()
+                    }
+                }
+            }
+        }
     }
 }
