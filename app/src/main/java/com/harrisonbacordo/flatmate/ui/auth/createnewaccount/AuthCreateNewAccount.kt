@@ -18,15 +18,19 @@ package com.harrisonbacordo.flatmate.ui.auth.createnewaccount
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.ui.tooling.preview.Preview
+import com.harrisonbacordo.flatmate.ui.composables.textfield.EmailState
 import com.harrisonbacordo.flatmate.ui.composables.textfield.HiddenTextInput
+import com.harrisonbacordo.flatmate.ui.composables.textfield.PasswordState
+import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextInput
+import com.harrisonbacordo.flatmate.ui.theme.FlatMateTheme
 
 /**
  * High-level composable that holds the state and high-level UI composable of the auth create new account screen
@@ -36,49 +40,56 @@ import com.harrisonbacordo.flatmate.ui.composables.textfield.TextInput
 @Composable
 fun AuthCreateNewAccount(onCreateNewAccountSuccessful: () -> Unit) {
     val viewModel: AuthCreateNewAccountViewModel = ViewModelProvider(ContextAmbient.current as ViewModelStoreOwner).get(AuthCreateNewAccountViewModel::class.java)
-    val (email, setEmail) = remember { mutableStateOf("") }
-    val (password, setPassword) = remember { mutableStateOf("") }
+    val emailState = remember { EmailState() }
+    val passwordState = remember { PasswordState() }
     CreateNewAccountScreen(
-        email,
-        password,
-        viewModel.errorMessage,
-        setEmail,
-        setPassword,
-        { viewModel.executeCreateNewAccountFlow(email, password, onCreateNewAccountSuccessful) }
-    )
+        emailState,
+        passwordState,
+        viewModel.errorMessage
+    ) { viewModel.executeCreateNewAccountFlow(emailState.text, passwordState.text, onCreateNewAccountSuccessful) }
 }
 
 /**
  * High-level composable that displays the auth create new account screen
  *
- * @param email String that represents the current state of the email text field
- * @param password String that represents the current state of the password text field
+ * @param emailState State that represents the email text field
+ * @param passwordState State that represents the password text field
  * @param errorMessage String that represents the current state of the error message
- * @param onEmailFieldChanged Callback that is executed when a change is made to the email text field
- * @param onPasswordFieldChanged Callback that is executed when a change is made to the password text field
  * @param onFormSubmitted Callback that is executed when the form's login  button has been clicked
  */
 @Composable
 private fun CreateNewAccountScreen(
-    email: String,
-    password: String,
+    emailState: TextFieldState = remember { EmailState() },
+    passwordState: TextFieldState = remember { PasswordState() },
     errorMessage: String,
-    onEmailFieldChanged: (String) -> Unit,
-    onPasswordFieldChanged: (String) -> Unit,
     onFormSubmitted: () -> Unit,
 ) {
     Column {
         Text("Create New Account")
-        TextInput(value = email, hint = "Email", onValueChange = onEmailFieldChanged)
-        HiddenTextInput(value = password, hint = "Password", onValueChange = onPasswordFieldChanged)
+        TextInput(value = emailState.text, hint = "Email", onValueChange = emailState::updateText)
+        HiddenTextInput(value = passwordState.text, hint = "Password", onValueChange = passwordState::updateText)
         Button(onClick = onFormSubmitted) {
             Text("Create new account")
         }
     }
 }
 
-@Preview(name = "Create New Account Screen Preview")
+@Preview(name = "Create New Account Light Theme")
 @Composable
 private fun PreviewAuthCreateNewAccountScreen() {
-    CreateNewAccountScreen("harrisonbacordo@gmail.com", "TestTest", "Error", {}, {}, {})
+    FlatMateTheme {
+        Scaffold {
+            CreateNewAccountScreen(errorMessage = "Error", onFormSubmitted = {})
+        }
+    }
+}
+
+@Preview(name = "Create New Account Dark Theme")
+@Composable
+private fun PreviewAuthCreateNewAccountScreenDark() {
+    FlatMateTheme(darkTheme = true) {
+        Scaffold {
+            CreateNewAccountScreen(errorMessage = "Error", onFormSubmitted = {})
+        }
+    }
 }

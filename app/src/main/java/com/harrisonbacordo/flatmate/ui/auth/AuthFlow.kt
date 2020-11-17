@@ -29,6 +29,7 @@ import com.harrisonbacordo.flatmate.ui.auth.createnewaccount.AuthCreateNewAccoun
 import com.harrisonbacordo.flatmate.ui.auth.forgotpassword.AuthForgotPassword
 import com.harrisonbacordo.flatmate.ui.auth.landing.AuthLanding
 import com.harrisonbacordo.flatmate.ui.auth.login.AuthLogin
+import com.harrisonbacordo.flatmate.ui.theme.FlatMateTheme
 
 /**
  * High level composable that coordinates the routes and screens for the Auth flow
@@ -91,8 +92,18 @@ enum class AuthDestinations {
     ForgotPassword,
 }
 
-@Preview
+@Preview(name = "Auth Flow Light Theme")
 @Composable
-private fun PreviewAuthScreen() {
-    AuthFlow(onLoginSuccessful = {}, onCreateNewAccountSuccessful = {})
+private fun PreviewAuthFlow() {
+    FlatMateTheme {
+        AuthFlow(onLoginSuccessful = {}, onCreateNewAccountSuccessful = {})
+    }
+}
+
+@Preview(name = "Auth Flow Dark Theme")
+@Composable
+private fun PreviewAuthFlowDark() {
+    FlatMateTheme(darkTheme = true) {
+        AuthFlow(onLoginSuccessful = {}, onCreateNewAccountSuccessful = {})
+    }
 }

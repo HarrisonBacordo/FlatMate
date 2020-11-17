@@ -22,16 +22,13 @@ import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.harrisonbacordo.flatmate.data.models.Chore
 import com.harrisonbacordo.flatmate.data.repositories.ChoreRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 /**
  * [ViewModel] associated with [HomeChores]
  */
-class HomeChoresViewModel @ViewModelInject constructor(private val choreRepository: ChoreRepository, @Assisted private val savedStateHandle: SavedStateHandle): ViewModel() {
+class HomeChoresViewModel @ViewModelInject constructor(private val choreRepository: ChoreRepository, @Assisted private val savedStateHandle: SavedStateHandle) : ViewModel() {
     var chores: List<Chore> by mutableStateOf(choreRepository.fetchChores())
         private set
 }

@@ -18,15 +18,19 @@ package com.harrisonbacordo.flatmate.ui.auth.login
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.ui.tooling.preview.Preview
+import com.harrisonbacordo.flatmate.ui.composables.textfield.EmailState
 import com.harrisonbacordo.flatmate.ui.composables.textfield.HiddenTextInput
+import com.harrisonbacordo.flatmate.ui.composables.textfield.PasswordState
+import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextInput
+import com.harrisonbacordo.flatmate.ui.theme.FlatMateTheme
 
 /**
  * High-level composable that holds the state and high-level UI composable of the auth login screen
@@ -37,15 +41,13 @@ import com.harrisonbacordo.flatmate.ui.composables.textfield.TextInput
 @Composable
 fun AuthLogin(onLoginSuccessful: () -> Unit, onForgotPasswordClicked: () -> Unit) {
     val viewModel: AuthLoginViewModel = ViewModelProvider(ContextAmbient.current as ViewModelStoreOwner).get(AuthLoginViewModel::class.java)
-    val (email, setEmail) = remember { mutableStateOf("") }
-    val (password, setPassword) = remember { mutableStateOf("") }
+    val emailState = remember { EmailState() }
+    val passwordState = remember { PasswordState() }
     AuthLoginScreen(
-        email,
-        password,
+        emailState,
+        passwordState,
         viewModel.errorMessage,
-        setEmail,
-        setPassword,
-        { viewModel.executeLoginFlow(email, password, onLoginSuccessful) },
+        { viewModel.executeLoginFlow(emailState.text, passwordState.text, onLoginSuccessful) },
         onForgotPasswordClicked
     )
 }
@@ -53,29 +55,25 @@ fun AuthLogin(onLoginSuccessful: () -> Unit, onForgotPasswordClicked: () -> Unit
 /**
  * High-level composable that displays the auth login screen
  *
- * @param email String that represents the current state of the email text field
- * @param password String that represents the current state of the password text field
+ * @param emailState State that represents the email text field
+ * @param passwordState State that represents the password text field
  * @param errorMessage String that represents the current state of the error message
- * @param onEmailFieldChanged Callback that is executed when a change is made to the email text field
- * @param onPasswordFieldChanged Callback that is executed when a change is made to the password text field
  * @param onFormSubmitted Callback that is executed when the form's login  button has been clicked
  * @param onForgotPasswordClicked Callback that is executed when the form's forgot password button has been clicked
  */
 @Composable
 private fun AuthLoginScreen(
-    email: String,
-    password: String,
+    emailState: TextFieldState = remember { EmailState() },
+    passwordState: TextFieldState = remember { PasswordState() },
     errorMessage: String,
-    onEmailFieldChanged: (String) -> Unit,
-    onPasswordFieldChanged: (String) -> Unit,
     onFormSubmitted: () -> Unit,
     onForgotPasswordClicked: () -> Unit
 
 ) {
     Column {
         Text("Login")
-        TextInput(value = email, hint = "Email", onValueChange = onEmailFieldChanged)
-        HiddenTextInput(value = password, hint = "Password", onValueChange = onPasswordFieldChanged)
+        TextInput(value = emailState.text, hint = "Email", onValueChange = emailState::updateText)
+        HiddenTextInput(value = passwordState.text, hint = "Password", onValueChange = passwordState::updateText)
         Button(onClick = onFormSubmitted) {
             Text("Login")
         }
@@ -85,8 +83,22 @@ private fun AuthLoginScreen(
     }
 }
 
-@Preview
+@Preview(name = "Login Light Theme")
 @Composable
 private fun PreviewAuthLoginForm() {
-    AuthLoginScreen("harrisonbacordo@gmail.com", "TestTest", "Error", {}, {}, {}, {})
+    FlatMateTheme {
+        Scaffold {
+            AuthLoginScreen(errorMessage = "Error", onFormSubmitted = {}, onForgotPasswordClicked = {})
+        }
+    }
+}
+
+@Preview(name = "Login Dark Theme")
+@Composable
+private fun PreviewAuthLoginFormDark() {
+    FlatMateTheme(darkTheme = true) {
+        Scaffold {
+            AuthLoginScreen(errorMessage = "Error", onFormSubmitted = {}, onForgotPasswordClicked = {})
+        }
+    }
 }

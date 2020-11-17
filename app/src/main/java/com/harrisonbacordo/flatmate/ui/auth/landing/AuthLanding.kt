@@ -19,10 +19,12 @@ import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
+import com.harrisonbacordo.flatmate.ui.theme.FlatMateTheme
 
 /**
  * High-level composable that holds the state and high-level UI composable of the auth landing screen
@@ -55,8 +57,22 @@ private fun AuthLandingScreen(onCreateNewAccountClicked: () -> Unit, onLoginClic
     }
 }
 
-@Preview
+@Preview(name = "Auth Landing Light Theme")
 @Composable
 private fun AuthLandingScreenPreview() {
-    AuthLandingScreen({}, {})
+    FlatMateTheme {
+        Scaffold {
+            AuthLandingScreen({}, {})
+        }
+    }
+}
+
+@Preview(name = "Auth Landing Dark Theme")
+@Composable
+private fun AuthLandingScreenPreviewDark() {
+    FlatMateTheme(darkTheme = true) {
+        Scaffold {
+            AuthLandingScreen({}, {})
+        }
+    }
 }

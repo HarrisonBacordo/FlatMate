@@ -58,7 +58,6 @@ private fun AuthForgotPasswordScreen(
     }
 }
 
-
 @Preview
 @Composable
 private fun PreviewAuthForgotPasswordScreen() {
