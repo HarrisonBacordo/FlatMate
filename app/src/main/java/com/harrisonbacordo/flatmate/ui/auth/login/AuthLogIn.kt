@@ -18,7 +18,6 @@ package com.harrisonbacordo.flatmate.ui.auth.login
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
-import androidx.compose.material.Snackbar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,8 +25,8 @@ import androidx.compose.ui.platform.ContextAmbient
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.ui.tooling.preview.Preview
-import com.harrisonbacordo.flatmate.ui.auth.AuthHiddenTextInput
-import com.harrisonbacordo.flatmate.ui.auth.AuthTextInput
+import com.harrisonbacordo.flatmate.ui.composables.textfield.HiddenTextInput
+import com.harrisonbacordo.flatmate.ui.composables.textfield.TextInput
 
 /**
  * High-level composable that holds the state and high-level UI composable of the auth login screen
@@ -75,8 +74,8 @@ private fun AuthLoginScreen(
 ) {
     Column {
         Text("Login")
-        AuthTextInput(value = email, hint = "Email", onValueChange = onEmailFieldChanged)
-        AuthHiddenTextInput(value = password, hint = "Password", onValueChange = onPasswordFieldChanged)
+        TextInput(value = email, hint = "Email", onValueChange = onEmailFieldChanged)
+        HiddenTextInput(value = password, hint = "Password", onValueChange = onPasswordFieldChanged)
         Button(onClick = onFormSubmitted) {
             Text("Login")
         }

@@ -25,8 +25,8 @@ import androidx.compose.ui.platform.ContextAmbient
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.ui.tooling.preview.Preview
-import com.harrisonbacordo.flatmate.ui.auth.AuthHiddenTextInput
-import com.harrisonbacordo.flatmate.ui.auth.AuthTextInput
+import com.harrisonbacordo.flatmate.ui.composables.textfield.HiddenTextInput
+import com.harrisonbacordo.flatmate.ui.composables.textfield.TextInput
 
 /**
  * High-level composable that holds the state and high-level UI composable of the auth create new account screen
@@ -69,15 +69,15 @@ private fun CreateNewAccountScreen(
 ) {
     Column {
         Text("Create New Account")
-        AuthTextInput(value = email, hint = "Email", onValueChange = onEmailFieldChanged)
-        AuthHiddenTextInput(value = password, hint = "Password", onValueChange = onPasswordFieldChanged)
+        TextInput(value = email, hint = "Email", onValueChange = onEmailFieldChanged)
+        HiddenTextInput(value = password, hint = "Password", onValueChange = onPasswordFieldChanged)
         Button(onClick = onFormSubmitted) {
             Text("Create new account")
         }
     }
 }
 
-@Preview
+@Preview(name = "Create New Account Screen Preview")
 @Composable
 private fun PreviewAuthCreateNewAccountScreen() {
     CreateNewAccountScreen("harrisonbacordo@gmail.com", "TestTest", "Error", {}, {}, {})

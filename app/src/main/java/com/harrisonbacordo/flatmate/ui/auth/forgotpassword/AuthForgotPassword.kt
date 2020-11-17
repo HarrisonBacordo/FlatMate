@@ -21,7 +21,7 @@ import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
-import com.harrisonbacordo.flatmate.ui.auth.AuthTextInput
+import com.harrisonbacordo.flatmate.ui.composables.textfield.TextInput
 
 /**
  * High-level composable that holds the state and high-level UI composable of the auth forgot password screen
@@ -51,7 +51,7 @@ private fun AuthForgotPasswordScreen(
 ) {
     Column {
         Text("Forgot password Screen")
-        AuthTextInput(value = email, hint = "Email", onValueChange = onEmailFieldChanged)
+        TextInput(value = email, hint = "Email", onValueChange = onEmailFieldChanged)
         Button(onClick = onFormSubmitted) {
             Text("Submit Email")
         }
