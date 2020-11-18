@@ -18,10 +18,12 @@ package com.harrisonbacordo.flatmate.ui.auth.forgotpassword
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextInput
+import com.harrisonbacordo.flatmate.ui.theme.FlatmateAuthTheme
 
 /**
  * High-level composable that holds the state and high-level UI composable of the auth forgot password screen
@@ -61,5 +63,9 @@ private fun AuthForgotPasswordScreen(
 @Preview
 @Composable
 private fun PreviewAuthForgotPasswordScreen() {
-    AuthForgotPasswordScreen("harrisonbacordo@gmail.com", {}, {})
+    FlatmateAuthTheme {
+        Scaffold {
+            AuthForgotPasswordScreen("harrisonbacordo@gmail.com", {}, {})
+        }
+    }
 }

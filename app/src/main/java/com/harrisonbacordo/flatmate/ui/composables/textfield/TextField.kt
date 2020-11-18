@@ -18,6 +18,7 @@ package com.harrisonbacordo.flatmate.ui.composables.textfield
 import androidx.compose.foundation.Text
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.ui.tooling.preview.Preview
 
@@ -32,12 +33,14 @@ import androidx.ui.tooling.preview.Preview
 fun TextInput(
     value: String,
     hint: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     OutlinedTextField(
         value = value,
         label = { Text(hint) },
-        onValueChange = onValueChange
+        onValueChange = onValueChange,
+        modifier = modifier
     )
 }
 
@@ -52,13 +55,15 @@ fun TextInput(
 fun HiddenTextInput(
     value: String,
     hint: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     OutlinedTextField(
         value = value,
         label = { Text(hint) },
         visualTransformation = PasswordVisualTransformation(),
-        onValueChange = onValueChange
+        onValueChange = onValueChange,
+        modifier = modifier
     )
 }
 

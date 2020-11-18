@@ -30,7 +30,8 @@ import com.harrisonbacordo.flatmate.ui.composables.textfield.HiddenTextInput
 import com.harrisonbacordo.flatmate.ui.composables.textfield.PasswordState
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextInput
-import com.harrisonbacordo.flatmate.ui.theme.FlatMateTheme
+import com.harrisonbacordo.flatmate.ui.theme.FlatMateHomeTheme
+import com.harrisonbacordo.flatmate.ui.theme.FlatmateAuthTheme
 
 /**
  * High-level composable that holds the state and high-level UI composable of the auth create new account screen
@@ -46,7 +47,7 @@ fun AuthCreateNewAccount(onCreateNewAccountSuccessful: () -> Unit) {
         emailState,
         passwordState,
         viewModel.errorMessage
-    ) { viewModel.executeCreateNewAccountFlow(emailState.text, passwordState.text, onCreateNewAccountSuccessful) }
+    ) { viewModel.executeCreateNewAccountFlow(emailState, passwordState, onCreateNewAccountSuccessful) }
 }
 
 /**
@@ -74,20 +75,10 @@ private fun CreateNewAccountScreen(
     }
 }
 
-@Preview(name = "Create New Account Light Theme")
+@Preview(name = "Create New Account Theme")
 @Composable
 private fun PreviewAuthCreateNewAccountScreen() {
-    FlatMateTheme {
-        Scaffold {
-            CreateNewAccountScreen(errorMessage = "Error", onFormSubmitted = {})
-        }
-    }
-}
-
-@Preview(name = "Create New Account Dark Theme")
-@Composable
-private fun PreviewAuthCreateNewAccountScreenDark() {
-    FlatMateTheme(darkTheme = true) {
+    FlatmateAuthTheme {
         Scaffold {
             CreateNewAccountScreen(errorMessage = "Error", onFormSubmitted = {})
         }

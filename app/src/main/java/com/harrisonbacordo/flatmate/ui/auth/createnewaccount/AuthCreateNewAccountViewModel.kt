@@ -22,6 +22,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harrisonbacordo.flatmate.data.repositories.AuthRepository
+import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
 import com.harrisonbacordo.flatmate.util.TextValidators
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,27 +42,16 @@ class AuthCreateNewAccountViewModel @ViewModelInject constructor(private val aut
      * 2. Hits create new account endpoint
      * 3. Return results of create new account
      *
-     * @param email String that represents the email to create a new account with
-     * @param password String that represents the password to create a new account with
+     * @param emailState State that represents the email to create a new account with
+     * @param passwordState State that represents the password to create a new account with
      * @param onCreateNewAccountSuccessful Callback that is executed when an account is successfully created
      */
-    fun executeCreateNewAccountFlow(email: String, password: String, onCreateNewAccountSuccessful: () -> Unit) {
-        if (createNewAccountFieldsAreValid(email, password)) {
-            attemptCreateNewAccount(email, password, onCreateNewAccountSuccessful)
+    fun executeCreateNewAccountFlow(emailState: TextFieldState, passwordState: TextFieldState, onCreateNewAccountSuccessful: () -> Unit) {
+        if (emailState.isValid && passwordState.isValid) {
+            attemptCreateNewAccount(emailState.text, passwordState.text, onCreateNewAccountSuccessful)
         } else {
-            errorMessage = "Please make sure your email and password are valid and try again"
+            errorMessage = "${emailState.getError()}\n${passwordState.getError()}"
         }
-    }
-
-    /**
-     * Validates [email] and [password]
-     *
-     * @param email String that represents the email to create a new account with
-     * @param password String that represents the password to create a new account with
-     * @return true if both [email] and [password] are in valid format
-     */
-    private fun createNewAccountFieldsAreValid(email: String, password: String): Boolean {
-        return TextValidators.emailIsValid(email) && TextValidators.passwordIsValid(password)
     }
 
     /**

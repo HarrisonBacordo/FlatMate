@@ -16,21 +16,38 @@
 package com.harrisonbacordo.flatmate.ui.auth.login
 
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.ui.tooling.preview.Preview
+import com.harrisonbacordo.flatmate.R
+import com.harrisonbacordo.flatmate.ui.auth.CompanyLogo
 import com.harrisonbacordo.flatmate.ui.composables.textfield.EmailState
 import com.harrisonbacordo.flatmate.ui.composables.textfield.HiddenTextInput
 import com.harrisonbacordo.flatmate.ui.composables.textfield.PasswordState
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextInput
-import com.harrisonbacordo.flatmate.ui.theme.FlatMateTheme
+import com.harrisonbacordo.flatmate.ui.theme.FlatmateAuthTheme
+import com.harrisonbacordo.flatmate.ui.theme.typography
+import dev.chrisbanes.accompanist.coil.CoilImage
 
 /**
  * High-level composable that holds the state and high-level UI composable of the auth login screen
@@ -47,7 +64,7 @@ fun AuthLogin(onLoginSuccessful: () -> Unit, onForgotPasswordClicked: () -> Unit
         emailState,
         passwordState,
         viewModel.errorMessage,
-        { viewModel.executeLoginFlow(emailState.text, passwordState.text, onLoginSuccessful) },
+        { viewModel.executeLoginFlow(emailState, passwordState, onLoginSuccessful) },
         onForgotPasswordClicked
     )
 }
@@ -70,33 +87,29 @@ private fun AuthLoginScreen(
     onForgotPasswordClicked: () -> Unit
 
 ) {
-    Column {
-        Text("Login")
-        TextInput(value = emailState.text, hint = "Email", onValueChange = emailState::updateText)
-        HiddenTextInput(value = passwordState.text, hint = "Password", onValueChange = passwordState::updateText)
-        Button(onClick = onFormSubmitted) {
+    CompanyLogo()
+    Column(
+        Modifier.fillMaxWidth().fillMaxHeight().padding(horizontal = 32.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text("Login", style = typography.h4)
+        TextInput(value = emailState.text, hint = "Email", onValueChange = emailState::updateText, Modifier.fillMaxWidth())
+        HiddenTextInput(value = passwordState.text, hint = "Password", onValueChange = passwordState::updateText, Modifier.fillMaxWidth())
+        Spacer(Modifier.padding(top = 8.dp))
+        Button(onClick = onFormSubmitted, Modifier.fillMaxWidth()) {
             Text("Login")
         }
-        Button(onForgotPasswordClicked) {
-            Text("Forgot Password")
+        TextButton(onForgotPasswordClicked) {
+            Text("Forgot Password?")
         }
     }
 }
 
-@Preview(name = "Login Light Theme")
+@Preview(name = "Auth Login Theme")
 @Composable
 private fun PreviewAuthLoginForm() {
-    FlatMateTheme {
-        Scaffold {
-            AuthLoginScreen(errorMessage = "Error", onFormSubmitted = {}, onForgotPasswordClicked = {})
-        }
-    }
-}
-
-@Preview(name = "Login Dark Theme")
-@Composable
-private fun PreviewAuthLoginFormDark() {
-    FlatMateTheme(darkTheme = true) {
+    FlatmateAuthTheme {
         Scaffold {
             AuthLoginScreen(errorMessage = "Error", onFormSubmitted = {}, onForgotPasswordClicked = {})
         }

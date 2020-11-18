@@ -25,7 +25,8 @@ import androidx.ui.tooling.preview.Preview
 import com.harrisonbacordo.flatmate.ui.auth.AuthFlow
 import com.harrisonbacordo.flatmate.ui.home.HomeFlow
 import com.harrisonbacordo.flatmate.ui.onboarding.OnboardingFlow
-import com.harrisonbacordo.flatmate.ui.theme.FlatMateTheme
+import com.harrisonbacordo.flatmate.ui.theme.FlatMateHomeTheme
+import com.harrisonbacordo.flatmate.ui.theme.FlatmateAuthTheme
 
 /**
  * Entrypoint for the FlatMate application
@@ -39,7 +40,7 @@ fun FlatMateEntryPoint() {
     val homeRoute = { createNavRoute(navController, Destinations.Home.name) }
     NavHost(navController, startDestination = Destinations.Auth.name) {
         composable(Destinations.Auth.name) {
-            FlatMateTheme(darkTheme = false) {
+            FlatmateAuthTheme {
                 AuthFlow(
                     onLoginSuccessful = homeRoute,
                     onCreateNewAccountSuccessful = onboardingRoute
@@ -47,12 +48,12 @@ fun FlatMateEntryPoint() {
             }
         }
         composable(Destinations.Onboarding.name) {
-            FlatMateTheme(darkTheme = false) {
+            FlatMateHomeTheme(darkTheme = false) {
                 OnboardingFlow(onOnboardingComplete = homeRoute)
             }
         }
         composable(Destinations.Home.name) {
-            FlatMateTheme(darkTheme = false) {
+            FlatMateHomeTheme(darkTheme = false) {
                 HomeFlow(onLogoutClicked = authRoute)
             }
         }

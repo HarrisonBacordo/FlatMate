@@ -15,9 +15,7 @@
  */
 package com.harrisonbacordo.flatmate.ui.auth
 
-import androidx.compose.foundation.Text
 import androidx.compose.material.Scaffold
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -29,7 +27,7 @@ import com.harrisonbacordo.flatmate.ui.auth.createnewaccount.AuthCreateNewAccoun
 import com.harrisonbacordo.flatmate.ui.auth.forgotpassword.AuthForgotPassword
 import com.harrisonbacordo.flatmate.ui.auth.landing.AuthLanding
 import com.harrisonbacordo.flatmate.ui.auth.login.AuthLogin
-import com.harrisonbacordo.flatmate.ui.theme.FlatMateTheme
+import com.harrisonbacordo.flatmate.ui.theme.FlatMateHomeTheme
 
 /**
  * High level composable that coordinates the routes and screens for the Auth flow
@@ -46,9 +44,6 @@ fun AuthFlow(onLoginSuccessful: () -> Unit, onCreateNewAccountSuccessful: () -> 
     val createNewAccountRoute = { executeNavRoute(authNavController, AuthDestinations.CreateNewAccount.name) }
     val forgotPasswordRoute = { executeNavRoute(authNavController, AuthDestinations.ForgotPassword.name) }
     Scaffold(
-        topBar = {
-            TopAppBar(title = { Text("Flatmate") })
-        },
         bodyContent = {
             NavHost(authNavController, startDestination = AuthDestinations.Landing.name) {
                 composable(AuthDestinations.Landing.name) {
@@ -95,7 +90,7 @@ enum class AuthDestinations {
 @Preview(name = "Auth Flow Light Theme")
 @Composable
 private fun PreviewAuthFlow() {
-    FlatMateTheme {
+    FlatMateHomeTheme {
         AuthFlow(onLoginSuccessful = {}, onCreateNewAccountSuccessful = {})
     }
 }
@@ -103,7 +98,7 @@ private fun PreviewAuthFlow() {
 @Preview(name = "Auth Flow Dark Theme")
 @Composable
 private fun PreviewAuthFlowDark() {
-    FlatMateTheme(darkTheme = true) {
+    FlatMateHomeTheme(darkTheme = true) {
         AuthFlow(onLoginSuccessful = {}, onCreateNewAccountSuccessful = {})
     }
 }

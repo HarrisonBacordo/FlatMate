@@ -24,7 +24,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harrisonbacordo.flatmate.data.repositories.AuthRepository
-import com.harrisonbacordo.flatmate.util.TextValidators
+import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -46,23 +46,23 @@ class AuthLoginViewModel @ViewModelInject constructor(
      * 2. Hits login endpoint
      * 3. Return results of login
      *
-     * @param email String that represents the email to create a new account with
-     * @param password String that represents the password to create a new account with
+     * @param emailState State that represents the email to login with
+     * @param passwordState State that represents the password to login with
      * @param onLoginSuccessful Callback that is executed when a login is successful
      */
-    fun executeLoginFlow(email: String, password: String, onLoginSuccessful: () -> Unit) {
-        if (TextValidators.emailIsValid(email) && TextValidators.passwordIsValid(password)) {
-            attemptLogin(email, password, onLoginSuccessful)
+    fun executeLoginFlow(emailState: TextFieldState, passwordState: TextFieldState, onLoginSuccessful: () -> Unit) {
+        if (emailState.isValid && passwordState.isValid) {
+            attemptLogin(emailState.text, passwordState.text, onLoginSuccessful)
         } else {
-            errorMessage = "Please make sure your email and password are valid and try again"
+            errorMessage = "${emailState.getError()}\n${passwordState.getError()}"
         }
     }
 
     /**
      * Attempts to log user in with [email] and [password]. If successful, invoke [onLoginSuccessful]
      *
-     * @param email String that represents the email to create a new account with
-     * @param password String that represents the password to create a new account with
+     * @param email String that represents the email to login with
+     * @param password String that represents the password to login with
      * @param onLoginSuccessful Callback that is executed when a login is successful
      */
     private fun attemptLogin(email: String, password: String, onLoginSuccessful: () -> Unit) {

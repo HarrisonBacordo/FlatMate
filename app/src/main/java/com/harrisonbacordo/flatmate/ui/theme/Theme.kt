@@ -49,16 +49,39 @@ private val DarkColorPalette = lightColors(
     onBackground = grey50
 )
 
+private val AuthColorPalette = darkColors(
+    primary = grey50,
+    primaryVariant = flatMateLightBlue,
+    onPrimary = flatMateBlue,
+    secondary = flatMateBlue,
+    onSecondary = grey50,
+    error = red500,
+    onError = grey50,
+    surface = flatMateBlue,
+    onSurface = grey50,
+    background = flatMateBlue,
+    onBackground = grey50
+)
+
 @Composable
-fun FlatMateTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun FlatMateHomeTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
         LightColorPalette
     }
-
     MaterialTheme(
         colors = colors,
+        typography = typography,
+        shapes = shapes,
+        content = content
+    )
+}
+
+@Composable
+fun FlatmateAuthTheme(content: @Composable () -> Unit) {
+    MaterialTheme(
+        colors = AuthColorPalette,
         typography = typography,
         shapes = shapes,
         content = content
