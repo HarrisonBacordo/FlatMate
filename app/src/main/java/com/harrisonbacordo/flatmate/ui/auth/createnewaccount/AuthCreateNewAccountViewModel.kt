@@ -23,7 +23,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harrisonbacordo.flatmate.data.repositories.AuthRepository
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
-import com.harrisonbacordo.flatmate.util.TextValidators
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -47,10 +46,12 @@ class AuthCreateNewAccountViewModel @ViewModelInject constructor(private val aut
      * @param onCreateNewAccountSuccessful Callback that is executed when an account is successfully created
      */
     fun executeCreateNewAccountFlow(emailState: TextFieldState, passwordState: TextFieldState, onCreateNewAccountSuccessful: () -> Unit) {
-        if (emailState.isValid && passwordState.isValid) {
-            attemptCreateNewAccount(emailState.text, passwordState.text, onCreateNewAccountSuccessful)
+        if (!emailState.isValid && emailState.showErrors()) {
+            errorMessage = emailState.getError()!!
+        } else if (!passwordState.isValid && passwordState.showErrors()) {
+            errorMessage = passwordState.getError()!!
         } else {
-            errorMessage = "${emailState.getError()}\n${passwordState.getError()}"
+            attemptCreateNewAccount(emailState.text, passwordState.text, onCreateNewAccountSuccessful)
         }
     }
 

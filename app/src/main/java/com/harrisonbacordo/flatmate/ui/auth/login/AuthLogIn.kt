@@ -21,12 +21,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
@@ -38,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.ui.tooling.preview.Preview
-import com.harrisonbacordo.flatmate.R
 import com.harrisonbacordo.flatmate.ui.auth.CompanyLogo
 import com.harrisonbacordo.flatmate.ui.composables.textfield.EmailState
 import com.harrisonbacordo.flatmate.ui.composables.textfield.HiddenTextInput
@@ -47,7 +43,6 @@ import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextInput
 import com.harrisonbacordo.flatmate.ui.theme.FlatmateAuthTheme
 import com.harrisonbacordo.flatmate.ui.theme.typography
-import dev.chrisbanes.accompanist.coil.CoilImage
 
 /**
  * High-level composable that holds the state and high-level UI composable of the auth login screen
@@ -96,6 +91,7 @@ private fun AuthLoginScreen(
         Text("Login", style = typography.h4)
         TextInput(value = emailState.text, hint = "Email", onValueChange = emailState::updateText, Modifier.fillMaxWidth())
         HiddenTextInput(value = passwordState.text, hint = "Password", onValueChange = passwordState::updateText, Modifier.fillMaxWidth())
+        if (errorMessage.isNotEmpty()) Text(errorMessage, color = MaterialTheme.colors.error)
         Spacer(Modifier.padding(top = 8.dp))
         Button(onClick = onFormSubmitted, Modifier.fillMaxWidth()) {
             Text("Login")

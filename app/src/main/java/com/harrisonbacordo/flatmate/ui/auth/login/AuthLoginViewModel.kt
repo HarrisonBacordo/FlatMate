@@ -51,10 +51,12 @@ class AuthLoginViewModel @ViewModelInject constructor(
      * @param onLoginSuccessful Callback that is executed when a login is successful
      */
     fun executeLoginFlow(emailState: TextFieldState, passwordState: TextFieldState, onLoginSuccessful: () -> Unit) {
-        if (emailState.isValid && passwordState.isValid) {
-            attemptLogin(emailState.text, passwordState.text, onLoginSuccessful)
+        if (!emailState.isValid && emailState.showErrors()) {
+            errorMessage = emailState.getError()!!
+        } else if (!passwordState.isValid && passwordState.showErrors()) {
+            errorMessage = passwordState.getError()!!
         } else {
-            errorMessage = "${emailState.getError()}\n${passwordState.getError()}"
+            attemptLogin(emailState.text, passwordState.text, onLoginSuccessful)
         }
     }
 

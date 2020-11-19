@@ -16,13 +16,14 @@
 package com.harrisonbacordo.flatmate.ui.composables.textfield
 
 import android.text.TextUtils
+import android.util.Patterns
 
 class EmailState : TextFieldState(validator = ::isEmailValid, errorFor = ::emailValidationError)
 
 private fun emailValidationError(email: String): String {
-    return "Invalid email: $email"
+    return "Invalid email: ${if (email.isBlank()) "the email field cannot be blank." else email}"
 }
 
 private fun isEmailValid(email: String): Boolean {
-    return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    return !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()
 }

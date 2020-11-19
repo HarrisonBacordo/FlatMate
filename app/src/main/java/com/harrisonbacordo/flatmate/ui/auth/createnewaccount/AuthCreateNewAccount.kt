@@ -16,22 +16,32 @@
 package com.harrisonbacordo.flatmate.ui.auth.createnewaccount
 
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.ui.tooling.preview.Preview
+import com.harrisonbacordo.flatmate.ui.auth.CompanyLogo
 import com.harrisonbacordo.flatmate.ui.composables.textfield.EmailState
 import com.harrisonbacordo.flatmate.ui.composables.textfield.HiddenTextInput
 import com.harrisonbacordo.flatmate.ui.composables.textfield.PasswordState
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextInput
-import com.harrisonbacordo.flatmate.ui.theme.FlatMateHomeTheme
 import com.harrisonbacordo.flatmate.ui.theme.FlatmateAuthTheme
+import com.harrisonbacordo.flatmate.ui.theme.typography
 
 /**
  * High-level composable that holds the state and high-level UI composable of the auth create new account screen
@@ -65,12 +75,19 @@ private fun CreateNewAccountScreen(
     errorMessage: String,
     onFormSubmitted: () -> Unit,
 ) {
-    Column {
-        Text("Create New Account")
-        TextInput(value = emailState.text, hint = "Email", onValueChange = emailState::updateText)
-        HiddenTextInput(value = passwordState.text, hint = "Password", onValueChange = passwordState::updateText)
-        Button(onClick = onFormSubmitted) {
-            Text("Create new account")
+    CompanyLogo()
+    Column(
+        Modifier.fillMaxWidth().fillMaxHeight().padding(horizontal = 32.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text("Create New Account", style = typography.h4)
+        TextInput(value = emailState.text, hint = "Email", onValueChange = emailState::updateText, Modifier.fillMaxWidth())
+        HiddenTextInput(value = passwordState.text, hint = "Password", onValueChange = passwordState::updateText, Modifier.fillMaxWidth())
+        if (errorMessage.isNotEmpty()) Text(errorMessage, color = MaterialTheme.colors.error)
+        Spacer(Modifier.padding(top = 8.dp))
+        Button(onClick = onFormSubmitted, Modifier.fillMaxWidth()) {
+            Text("Create New Account")
         }
     }
 }

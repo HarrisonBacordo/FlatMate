@@ -20,9 +20,9 @@ private const val PASSWORD_REGEX = "[A-Z]+"
 class PasswordState : TextFieldState(validator = ::isPasswordValid, errorFor = ::passwordValidationError)
 
 private fun passwordValidationError(password: String): String {
-    return if (password.length < 8) "Please ensure your password is at least 8 characters long" else "Please ensure you use at least 1 uppercase letter"
+    return "Invalid password: ${if (password.length < 8) "Please ensure your password is at least 8 characters long." else "Please ensure you use at least 1 uppercase letter."}"
 }
 
 private fun isPasswordValid(password: String): Boolean {
-    return password.length >= 8 && password.matches(Regex(PASSWORD_REGEX))
+    return password.length >= 8 && password.contains(Regex(PASSWORD_REGEX))
 }
