@@ -20,4 +20,18 @@ import androidx.lifecycle.ViewModel
 /**
  * [ViewModel] associated with [AuthLanding]
  */
-class AuthLandingViewModel : ViewModel()
+class AuthLandingViewModel : ViewModel() {
+    /**
+     *
+     */
+    fun attemptLoginWithFacebook() {
+
+    }
+
+    /**
+     *
+     */
+    fun attemptLoginWithGoogle() {
+
+    }
+}

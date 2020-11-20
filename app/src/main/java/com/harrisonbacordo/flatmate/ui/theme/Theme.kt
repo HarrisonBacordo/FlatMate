@@ -49,7 +49,7 @@ private val DarkColorPalette = lightColors(
     onBackground = grey50
 )
 
-private val AuthColorPalette = darkColors(
+private val AuthColorPalette = lightColors(
     primary = grey50,
     primaryVariant = flatMateLightBlue,
     onPrimary = flatMateBlue,
