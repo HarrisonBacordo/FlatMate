@@ -18,9 +18,10 @@ package com.harrisonbacordo.flatmate.data.repositories
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.harrisonbacordo.flatmate.data.models.User
+import com.harrisonbacordo.flatmate.util.Keys
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.tasks.await
-import java.lang.Exception
 import javax.inject.Inject
 
 @ActivityRetainedScoped
@@ -34,7 +35,11 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth,
      */
     suspend fun attemptCreateNewAccount(email: String, password: String): AuthResult? {
         return try {
-            firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+            val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+            authResult.user?.let { user ->
+                createUserInFirestoreWithId(email, user.uid)
+            }
+            authResult
         } catch (e: Exception) {
             null
         }
@@ -59,5 +64,16 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth,
      */
     fun signCurrentUserOut() {
         firebaseAuth.signOut()
+    }
+
+    /**
+     *
+     */
+    private suspend fun createUserInFirestoreWithId(email: String, userId: String) {
+        firestore
+            .collection(Keys.Firestore.Users.firestoreCollection)
+            .document(userId)
+            .set(User(email = email, id = userId))
+            .await()
     }
 }

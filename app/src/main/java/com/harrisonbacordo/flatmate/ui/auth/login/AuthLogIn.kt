@@ -102,9 +102,9 @@ private fun AuthLoginScreen(
     }
 }
 
-@Preview(name = "Auth Login Theme")
+@Preview(name = "Auth Login Screen")
 @Composable
-private fun PreviewAuthLoginForm() {
+private fun PreviewAuthLoginScreen() {
     FlatmateAuthTheme {
         Scaffold {
             AuthLoginScreen(errorMessage = "Error", onFormSubmitted = {}, onForgotPasswordClicked = {})

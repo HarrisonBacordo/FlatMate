@@ -14,3 +14,33 @@
  * limitations under the License.
  */
 package com.harrisonbacordo.flatmate.ui.theme
+
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.unit.dp
+import com.harrisonbacordo.flatmate.R
+import dev.chrisbanes.accompanist.coil.CoilImage
+
+@Composable
+fun AuthOnboardingScreenOption(title: String, leadingIcon: Int, modifier: Modifier = Modifier, contentColor: Color = Color.White) {
+//    FIXME content color is screwy for facebookBlue and white, need to resolve this
+    Surface(modifier.fillMaxWidth().padding(vertical = 24.dp, horizontal = 16.dp), contentColor = contentColor) {
+        Row(horizontalArrangement = Arrangement.SpaceBetween) {
+            Row {
+                CoilImage(data = leadingIcon, Modifier.width(24.dp).height(24.dp), colorFilter = ColorFilter.tint(contentColor))
+                Text(title, modifier = Modifier.padding(start = 16.dp), color = contentColor)
+            }
+            CoilImage(data = R.drawable.ic_arrow_right_24dp, Modifier.width(24.dp).height(24.dp).padding(end = 8.dp), colorFilter = ColorFilter.tint(contentColor))
+        }
+    }
+}

@@ -13,20 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.harrisonbacordo.flatmate.ui.onboarding
+package com.harrisonbacordo.flatmate.ui.composables.textfield
 
-import androidx.compose.foundation.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import com.harrisonbacordo.flatmate.ui.theme.typography
+import android.text.TextUtils
 
-@Composable
-fun OnboardingHeaderText(text: String, modifier: Modifier = Modifier) {
-    Text(
-        text,
-        textAlign = TextAlign.Center,
-        style = typography.h4,
-        modifier = modifier
-    )
+class NameState : TextFieldState(validator = ::isNameValid, errorFor = ::nameValidationError)
+
+private fun nameValidationError(name: String): String {
+    return if (name.isBlank()) "Invalid name: the name field cannot be blank." else "Something unexpected occurred. Please try again"
+}
+
+private fun isNameValid(name: String): Boolean {
+    return !TextUtils.isEmpty(name)
 }

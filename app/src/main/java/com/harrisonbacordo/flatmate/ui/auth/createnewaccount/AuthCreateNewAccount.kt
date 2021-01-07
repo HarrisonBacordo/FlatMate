@@ -92,7 +92,7 @@ private fun CreateNewAccountScreen(
     }
 }
 
-@Preview(name = "Create New Account Theme")
+@Preview(name = "Create New Account Screen")
 @Composable
 private fun PreviewAuthCreateNewAccountScreen() {
     FlatmateAuthTheme {

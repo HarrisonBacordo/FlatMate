@@ -27,6 +27,7 @@ import com.harrisonbacordo.flatmate.ui.home.HomeFlow
 import com.harrisonbacordo.flatmate.ui.onboarding.OnboardingFlow
 import com.harrisonbacordo.flatmate.ui.theme.FlatMateHomeTheme
 import com.harrisonbacordo.flatmate.ui.theme.FlatmateAuthTheme
+import com.harrisonbacordo.flatmate.ui.theme.FlatmateOnboardingTheme
 
 /**
  * Entrypoint for the FlatMate application
@@ -48,7 +49,7 @@ fun FlatMateEntryPoint() {
             }
         }
         composable(Destinations.Onboarding.name) {
-            FlatMateHomeTheme(darkTheme = false) {
+            FlatmateOnboardingTheme {
                 OnboardingFlow(onOnboardingComplete = homeRoute)
             }
         }

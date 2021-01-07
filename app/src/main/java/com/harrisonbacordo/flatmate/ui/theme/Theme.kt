@@ -63,6 +63,20 @@ private val AuthColorPalette = lightColors(
     onBackground = grey50
 )
 
+private val OnboardingColorPalette = lightColors(
+    primary = grey50,
+    primaryVariant = flatMateLightBlue,
+    onPrimary = flatMateBlue,
+    secondary = flatMateBlue,
+    onSecondary = grey50,
+    error = red500,
+    onError = grey50,
+    surface = flatMateBlue,
+    onSurface = grey50,
+    background = flatMateBlue,
+    onBackground = grey50
+)
+
 @Composable
 fun FlatMateHomeTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
@@ -82,6 +96,16 @@ fun FlatMateHomeTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Comp
 fun FlatmateAuthTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colors = AuthColorPalette,
+        typography = typography,
+        shapes = shapes,
+        content = content
+    )
+}
+
+@Composable
+fun FlatmateOnboardingTheme(content: @Composable () -> Unit) {
+    MaterialTheme(
+        colors = OnboardingColorPalette,
         typography = typography,
         shapes = shapes,
         content = content

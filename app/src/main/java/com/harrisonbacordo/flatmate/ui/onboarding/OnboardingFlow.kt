@@ -15,13 +15,19 @@
  */
 package com.harrisonbacordo.flatmate.ui.onboarding
 
-import androidx.compose.foundation.Text
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigate
+import androidx.navigation.compose.rememberNavController
+import com.harrisonbacordo.flatmate.ui.onboarding.existingflatid.OnboardingExistingFlatId
+import com.harrisonbacordo.flatmate.ui.onboarding.existingflatidmanualentry.OnboardingExistingFlatIdManualEntry
+import com.harrisonbacordo.flatmate.ui.onboarding.existingflatqrscanner.OnboardingExistingFlatQrScanner
+import com.harrisonbacordo.flatmate.ui.onboarding.existingornewflat.OnboardingExistingOrNewFlat
+import com.harrisonbacordo.flatmate.ui.onboarding.newflatname.OnboardingNewFlatName
+import com.harrisonbacordo.flatmate.ui.onboarding.username.OnboardingUserName
 
 /**
  * High level composable that coordinates the routes and screens for the Onboarding flow
@@ -30,23 +36,58 @@ import androidx.ui.tooling.preview.Preview
  */
 @Composable
 fun OnboardingFlow(onOnboardingComplete: () -> Unit) {
+    val onboardingNavController = rememberNavController()
+    val userNameRoute = { executeNavRoute(onboardingNavController, OnboardingDestinations.UserName.name) }
+    val existingOrNewFlatRoute = { executeNavRoute(onboardingNavController, OnboardingDestinations.ExistingOrNewFlat.name) }
+    val newFlatNameRoute = { executeNavRoute(onboardingNavController, OnboardingDestinations.NewFlatName.name) }
+    val existingFlatIdRoute = { executeNavRoute(onboardingNavController, OnboardingDestinations.ExistingFlatId.name) }
+    val existingFlatQrScannerRoute = { executeNavRoute(onboardingNavController, OnboardingDestinations.ExistingFlatQrScanner.name) }
+    val existingFlatManualEntryIdRoute = { executeNavRoute(onboardingNavController, OnboardingDestinations.ExistingFlatIdManualEntry.name) }
     Scaffold(
-        topBar = {
-            TopAppBar(title = { Text("Flatmate") })
-        },
         bodyContent = {
-            Column {
-                Text("Onboarding")
-                Button(onClick = onOnboardingComplete) {
-                    Text("Complete onboarding")
+            NavHost(onboardingNavController, startDestination = OnboardingDestinations.UserName.name) {
+                composable(OnboardingDestinations.UserName.name) {
+                    OnboardingUserName(onNextClicked = existingOrNewFlatRoute)
+                }
+                composable(OnboardingDestinations.ExistingOrNewFlat.name) {
+                    OnboardingExistingOrNewFlat(onNewFlatClicked = newFlatNameRoute, onExistingFlatClicked = existingFlatIdRoute, onBackClicked = userNameRoute)
+                }
+                composable(OnboardingDestinations.NewFlatName.name) {
+                    OnboardingNewFlatName(onFlatSuccessfullyCreated = onOnboardingComplete, onBackClicked = existingOrNewFlatRoute)
+                }
+                composable(OnboardingDestinations.ExistingFlatId.name) {
+                    OnboardingExistingFlatId(onQrCodeClicked = existingFlatQrScannerRoute, onManualEntryClicked = existingFlatManualEntryIdRoute, onBackClicked = existingOrNewFlatRoute)
+                }
+                composable(OnboardingDestinations.ExistingFlatQrScanner.name) {
+                    OnboardingExistingFlatQrScanner(onFlatSuccessfullyJoined = onOnboardingComplete, onBackClicked = existingFlatIdRoute)
+                }
+                composable(OnboardingDestinations.ExistingFlatIdManualEntry.name) {
+                    OnboardingExistingFlatIdManualEntry(onFlatSuccessfullyJoined = onOnboardingComplete, onBackClicked = existingFlatIdRoute)
                 }
             }
         }
     )
 }
 
-@Preview
-@Composable
-private fun PreviewOnboarding() {
-    OnboardingFlow(onOnboardingComplete = {})
+/**
+ * Executes onboarding-specific navigation to [route] via [navController]. Clears the backstack if [route] is [OnboardingDestinations.UserName]
+ * to ensure that the application closes if back is pressed from there.
+ *
+ * @param navController [NavController] to navigate with
+ * @param route [String] that identifies the route
+ */
+private fun executeNavRoute(navController: NavController, route: String) {
+    if (route == OnboardingDestinations.UserName.name) {
+        navController.popBackStack()
+    }
+    navController.navigate(route)
+}
+
+enum class OnboardingDestinations {
+    UserName,
+    ExistingOrNewFlat,
+    NewFlatName,
+    ExistingFlatQrScanner,
+    ExistingFlatId,
+    ExistingFlatIdManualEntry,
 }

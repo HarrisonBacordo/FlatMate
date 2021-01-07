@@ -39,6 +39,7 @@ import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
 import com.harrisonbacordo.flatmate.R
 import com.harrisonbacordo.flatmate.ui.auth.CompanyLogo
+import com.harrisonbacordo.flatmate.ui.theme.AuthOnboardingScreenOption
 import com.harrisonbacordo.flatmate.ui.theme.FlatmateAuthTheme
 import com.harrisonbacordo.flatmate.ui.theme.facebookBlue
 import dev.chrisbanes.accompanist.coil.CoilImage
@@ -68,41 +69,27 @@ private fun AuthLandingScreen(
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        AuthLandingScreenOption(
+        AuthOnboardingScreenOption(
             title = "Create New Account",
             leadingIcon = R.drawable.ic_sign_up_24dp,
             modifier = Modifier.clickable(onClick = onCreateNewAccountClicked)
         )
-        AuthLandingScreenOption(
+        AuthOnboardingScreenOption(
             title = "Continue With Email",
             leadingIcon = R.drawable.ic_email_24dp,
             modifier = Modifier.clickable(onClick = onLoginClicked)
         )
-        AuthLandingScreenOption(
+        AuthOnboardingScreenOption(
             title = "Continue With Facebook",
             leadingIcon = R.drawable.ic_email_24dp,
             Modifier.background(facebookBlue).clickable(onClick = onContinueWithFacebookClicked)
         )
-        AuthLandingScreenOption(
+        AuthOnboardingScreenOption(
             title = "Continue With Google",
             leadingIcon = R.drawable.ic_email_24dp,
             modifier = Modifier.background(Color.White).clickable(onClick = onContinueWithGoogleClicked),
             contentColor = Color.Black
         )
-    }
-}
-
-@Composable
-private fun AuthLandingScreenOption(title: String, leadingIcon: Int, modifier: Modifier = Modifier, contentColor: Color = Color.White) {
-//    FIXME content color is screwy for facebookBlue and white, need to resolve this
-    Surface(modifier.fillMaxWidth().padding(vertical = 24.dp, horizontal = 16.dp), contentColor = contentColor) {
-        Row(horizontalArrangement = Arrangement.SpaceBetween) {
-            Row {
-                CoilImage(data = leadingIcon, Modifier.width(24.dp).height(24.dp), colorFilter = ColorFilter.tint(contentColor))
-                Text(title, modifier = Modifier.padding(start = 16.dp), color = contentColor)
-            }
-            CoilImage(data = R.drawable.ic_arrow_right_24dp, Modifier.width(24.dp).height(24.dp).padding(end = 8.dp), colorFilter = ColorFilter.tint(contentColor))
-        }
     }
 }
 
