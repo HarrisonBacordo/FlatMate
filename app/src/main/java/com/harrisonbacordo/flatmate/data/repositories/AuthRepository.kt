@@ -71,7 +71,7 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth,
      */
     private suspend fun createUserInFirestoreWithId(email: String, userId: String) {
         firestore
-            .collection(Keys.Firestore.Users.firestoreCollection)
+            .collection(Keys.Firestore.User.firestoreCollection)
             .document(userId)
             .set(User(email = email, id = userId))
             .await()

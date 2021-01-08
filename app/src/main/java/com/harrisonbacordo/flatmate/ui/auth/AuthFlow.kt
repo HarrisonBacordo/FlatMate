@@ -22,13 +22,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
-import androidx.ui.tooling.preview.Preview
 import com.harrisonbacordo.flatmate.ui.auth.createnewaccount.AuthCreateNewAccount
 import com.harrisonbacordo.flatmate.ui.auth.forgotpassword.AuthForgotPassword
 import com.harrisonbacordo.flatmate.ui.auth.landing.AuthLanding
 import com.harrisonbacordo.flatmate.ui.auth.login.AuthLogin
-import com.harrisonbacordo.flatmate.ui.theme.FlatMateHomeTheme
-import com.harrisonbacordo.flatmate.ui.theme.FlatmateAuthTheme
 
 /**
  * High level composable that coordinates the routes and screens for the Auth flow

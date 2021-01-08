@@ -14,3 +14,12 @@
  * limitations under the License.
  */
 package com.harrisonbacordo.flatmate.data.models
+
+data class Flat(
+    val id: String,
+    val name: String,
+    val flatmates: List<User>,
+    val chores: List<Chore>,
+    val groceries: List<Grocery>,
+    val calendarEvents: List<CalendarEvent>,
+)

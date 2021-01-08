@@ -14,3 +14,33 @@
  * limitations under the License.
  */
 package com.harrisonbacordo.flatmate.data.repositories
+
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.harrisonbacordo.flatmate.data.models.User
+import com.harrisonbacordo.flatmate.util.Keys
+import dagger.hilt.android.scopes.ActivityRetainedScoped
+import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
+
+@ActivityRetainedScoped
+class FlatRepository @Inject constructor( private val firestore: FirebaseFirestore) {
+
+    suspend fun attemptCreateNewFlat(flatName: String) {
+        try {
+            val flatDocument = firestore
+                .collection(Keys.Firestore.Flat.firestoreCollection)
+                .document()
+            val flatFirestoreMap = mapOf(
+                Keys.Firestore.Flat.id to flatDocument.id,
+                Keys.Firestore.Flat.name to flatName,
+                Keys.Firestore.Flat.flatmates to listOf<User>()
+            )
+            flatDocument
+                .set(flatFirestoreMap)
+                .await()
+        } catch (e: Exception) {
+
+        }
+    }
+}

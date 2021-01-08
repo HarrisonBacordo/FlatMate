@@ -29,12 +29,12 @@ class UserRepository @Inject constructor(private val firebaseAuth: FirebaseAuth,
         try {
             firebaseAuth.currentUser?.let { user ->
                 val userNameFirestoreMap = mapOf(
-                    Keys.Firestore.Users.firstName to firstName,
-                    Keys.Firestore.Users.lastName to lastName,
-                    Keys.Firestore.Users.fullName to "$firstName $lastName"
+                    Keys.Firestore.User.firstName to firstName,
+                    Keys.Firestore.User.lastName to lastName,
+                    Keys.Firestore.User.fullName to "$firstName $lastName"
                 )
                 firestore
-                    .collection(Keys.Firestore.Users.firestoreCollection)
+                    .collection(Keys.Firestore.User.firestoreCollection)
                     .document(user.uid)
                     .update(userNameFirestoreMap)
                     .await()
@@ -48,10 +48,10 @@ class UserRepository @Inject constructor(private val firebaseAuth: FirebaseAuth,
         try {
             firebaseAuth.currentUser?.let { user ->
                 val flatIdFirestoreMap = mapOf(
-                    Keys.Firestore.Users.flatId to flatId
+                    Keys.Firestore.User.flatId to flatId
                 )
                 firestore
-                    .collection(Keys.Firestore.Users.firestoreCollection)
+                    .collection(Keys.Firestore.User.firestoreCollection)
                     .document(user.uid)
                     .update(flatIdFirestoreMap)
                     .await()
