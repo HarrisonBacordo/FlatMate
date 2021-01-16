@@ -17,6 +17,9 @@ package com.harrisonbacordo.flatmate.ui.onboarding
 
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.AmbientContext
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -35,7 +38,10 @@ import com.harrisonbacordo.flatmate.ui.onboarding.username.OnboardingUserName
  * @param onOnboardingComplete Callback that is executed when onboarding has been successfully completed
  */
 @Composable
-fun OnboardingFlow(onOnboardingComplete: () -> Unit) {
+fun OnboardingFlow(userId: String, onOnboardingComplete: () -> Unit) {
+    val viewModel: OnboardingFlowViewModel = ViewModelProvider(AmbientContext.current as ViewModelStoreOwner).get(OnboardingFlowViewModel::class.java)
+//    TODO  look into how MC passes data around, especially during onboarding/auth processes.
+    viewModel.getUser(userId)
     val onboardingNavController = rememberNavController()
     val userNameRoute = { executeNavRoute(onboardingNavController, OnboardingDestinations.UserName.name) }
     val existingOrNewFlatRoute = { executeNavRoute(onboardingNavController, OnboardingDestinations.ExistingOrNewFlat.name) }

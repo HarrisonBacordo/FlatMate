@@ -15,7 +15,6 @@
  */
 package com.harrisonbacordo.flatmate.ui.home.chores
 
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -23,17 +22,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredSize
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
 import androidx.compose.material.Card
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
-import androidx.ui.tooling.preview.Preview
 import com.harrisonbacordo.flatmate.R
 import com.harrisonbacordo.flatmate.data.models.Chore
 import com.harrisonbacordo.flatmate.data.models.Interval
@@ -44,7 +44,7 @@ import dev.chrisbanes.accompanist.coil.CoilImage
  */
 @Composable
 fun HomeChores() {
-    val viewModel: HomeChoresViewModel = ViewModelProvider(ContextAmbient.current as ViewModelStoreOwner).get(HomeChoresViewModel::class.java)
+    val viewModel: HomeChoresViewModel = ViewModelProvider(AmbientContext.current as ViewModelStoreOwner).get(HomeChoresViewModel::class.java)
     ChoresScreen(chores = viewModel.chores)
 }
 
@@ -53,8 +53,10 @@ fun HomeChores() {
  */
 @Composable
 private fun ChoresScreen(chores: List<Chore>) {
-    LazyColumnFor(chores, Modifier.fillMaxHeight()) {
-        ChoreCard(it)
+    LazyColumn(Modifier.fillMaxHeight()) {
+        items(chores) {
+            ChoreCard(it)
+        }
     }
 }
 

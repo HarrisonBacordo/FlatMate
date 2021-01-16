@@ -16,11 +16,11 @@
 package com.harrisonbacordo.flatmate.ui.home
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.Text
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CleaningServices
@@ -29,15 +29,15 @@ import androidx.compose.material.icons.filled.LocalGroceryStore
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.vector.VectorAsset
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.KEY_ROUTE
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
-import androidx.ui.tooling.preview.Preview
 import com.harrisonbacordo.flatmate.R
 import com.harrisonbacordo.flatmate.ui.home.calendar.HomeCalendar
 import com.harrisonbacordo.flatmate.ui.home.chores.HomeChores
@@ -91,7 +91,7 @@ fun HomeFlow(onLogoutClicked: () -> Unit) {
     }
 }
 
-sealed class HomeDestinations(val route: String, @StringRes val resourceId: Int, val icon: VectorAsset) {
+sealed class HomeDestinations(val route: String, @StringRes val resourceId: Int, val icon: ImageVector) {
     object Chores : HomeDestinations("chores", R.string.chores, Icons.Filled.CleaningServices)
     object Calendar : HomeDestinations("calendar", R.string.calendar, Icons.Filled.Event)
     object Groceries : HomeDestinations("groceries", R.string.groceries, Icons.Filled.LocalGroceryStore)

@@ -15,7 +15,7 @@
  */
 package com.harrisonbacordo.flatmate.ui.onboarding
 
-import androidx.compose.foundation.Text
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign

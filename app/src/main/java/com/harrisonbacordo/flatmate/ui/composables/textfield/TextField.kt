@@ -15,66 +15,147 @@
  */
 package com.harrisonbacordo.flatmate.ui.composables.textfield
 
-import androidx.compose.foundation.Text
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.ui.tooling.preview.Preview
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
+import com.harrisonbacordo.flatmate.R
 
-/**
- * High-level composable that displays a standard [OutlinedTextField]
- *
- * @param value [String] that is currently populating the [OutlinedTextField]
- * @param hint [String] that is used in the [OutlinedTextField]
- * @param onValueChange Callback that is executed when the value of [OutlinedTextField] is changed
- */
 @Composable
-fun TextInput(
+fun EmailTextInput(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    imeAction: ImeAction = ImeAction.Done,
+    onImeAction: () -> Unit = {},
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(stringResource(id = R.string.auth_email_hint)) },
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Email),
+        onImeActionPerformed = { action, softKeyboardController ->
+            if (action == ImeAction.Done) {
+                softKeyboardController?.hideSoftwareKeyboard()
+            }
+            onImeAction()
+        },
+        modifier = modifier,
+    )
+}
+
+@Composable
+fun AlphaTextInput(
     value: String,
     hint: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    imeAction: ImeAction = ImeAction.Done,
+    onImeAction: () -> Unit = {},
 ) {
     OutlinedTextField(
         value = value,
-        label = { Text(hint) },
         onValueChange = onValueChange,
-        modifier = modifier
+        label = { Text(hint) },
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Text),
+        onImeActionPerformed = { action, softKeyboardController ->
+            if (action == ImeAction.Done) {
+                softKeyboardController?.hideSoftwareKeyboard()
+            }
+            onImeAction()
+        },
+        modifier = modifier,
     )
 }
 
-/**
- * High-level composable that displays a password-specific [OutlinedTextField]
- *
- * @param value [String] that is currently populating the [OutlinedTextField]
- * @param hint [String] that is used in the [OutlinedTextField]
- * @param onValueChange Callback that is executed when the value of [OutlinedTextField] is changed
- */
 @Composable
-fun HiddenTextInput(
+fun NumericTextInput(
     value: String,
     hint: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    imeAction: ImeAction = ImeAction.Done,
+    onImeAction: () -> Unit = {},
 ) {
     OutlinedTextField(
         value = value,
-        label = { Text(hint) },
-        visualTransformation = PasswordVisualTransformation(),
         onValueChange = onValueChange,
-        modifier = modifier
+        label = { Text(hint) },
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Number),
+        onImeActionPerformed = { action, softKeyboardController ->
+            if (action == ImeAction.Done) {
+                softKeyboardController?.hideSoftwareKeyboard()
+            }
+            onImeAction()
+        },
+        modifier = modifier,
     )
 }
 
-@Preview
 @Composable
-fun AuthTextInputPreview() {
-    TextInput(value = "", hint = "Email", onValueChange = {})
+fun PasswordTextInput(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    imeAction: ImeAction = ImeAction.Done,
+    onImeAction: () -> Unit = {},
+) {
+    var passwordIsVisible by remember { mutableStateOf(false) }
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(stringResource(id = R.string.auth_password_hint)) },
+        visualTransformation = if (passwordIsVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        trailingIcon = {
+            IconButton(onClick = { passwordIsVisible = !passwordIsVisible }) {
+                Icon(imageVector = vectorResource(id = if (passwordIsVisible) R.drawable.ic_visibility_on_24 else R.drawable.ic_visibility_off_24))
+            }
+        },
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Password),
+        onImeActionPerformed = { action, softKeyboardController ->
+            if (action == ImeAction.Done) {
+                softKeyboardController?.hideSoftwareKeyboard()
+            }
+            onImeAction()
+        },
+        modifier = modifier,
+    )
 }
 
-@Preview
+@Preview(name = "Email Text Input Preview")
 @Composable
-fun AuthHiddenTextInputPreview() {
-    HiddenTextInput(value = "", hint = "Password", onValueChange = {})
+fun AuthEmailTextInputPreview() {
+    EmailTextInput(value = "john.appleseed@gmail.com", onValueChange = {})
+}
+
+@Preview(name = "Password Text Input Preview")
+@Composable
+fun AuthPasswordTextInputPreview() {
+    PasswordTextInput(value = "Password", onValueChange = {})
+}
+
+@Preview(name = "Alpha Text Input Preview")
+@Composable
+fun AuthAlphaTextInputPreview() {
+    AlphaTextInput(value = "Alpha value", hint = "Alpha", onValueChange = {})
+}
+
+@Preview(name = "Number Text Input Preview")
+@Composable
+fun AuthNumericTextInputPreview() {
+    NumericTextInput(value = "123456789", hint = "Number", onValueChange = {})
 }

@@ -30,6 +30,6 @@ class HomeSettingsViewModel @ViewModelInject constructor(private val authReposit
      */
     fun signCurrentUserOut(onLogoutSuccessful: () -> Unit) {
         authRepository.signCurrentUserOut()
-        onLogoutSuccessful.invoke()
+        onLogoutSuccessful()
     }
 }

@@ -17,6 +17,7 @@ package com.harrisonbacordo.flatmate.data.repositories
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.harrisonbacordo.flatmate.data.models.User
 import com.harrisonbacordo.flatmate.util.Keys
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.tasks.await
@@ -40,7 +41,6 @@ class UserRepository @Inject constructor(private val firebaseAuth: FirebaseAuth,
                     .await()
             }
         } catch (e: Exception) {
-
         }
     }
 
@@ -57,7 +57,15 @@ class UserRepository @Inject constructor(private val firebaseAuth: FirebaseAuth,
                     .await()
             }
         } catch (e: Exception) {
-
         }
+    }
+
+    suspend fun getUserWithId(userId: String): User? {
+        return firestore
+            .collection(Keys.Firestore.User.firestoreCollection)
+            .document(userId)
+            .get()
+            .await()
+            .toObject(User::class.java)
     }
 }

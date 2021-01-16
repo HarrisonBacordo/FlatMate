@@ -15,22 +15,22 @@
  */
 package com.harrisonbacordo.flatmate.ui.home.settings
 
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
-import androidx.ui.tooling.preview.Preview
 
 /**
  * High-level composable that holds the state and high-level UI composable of the home settings screen
  */
 @Composable
 fun HomeSettings(onLogoutSuccessful: () -> Unit) {
-    val viewModel = ViewModelProvider(ContextAmbient.current as ViewModelStoreOwner).get(HomeSettingsViewModel::class.java)
+    val viewModel = ViewModelProvider(AmbientContext.current as ViewModelStoreOwner).get(HomeSettingsViewModel::class.java)
     HomeSettingsScreen { viewModel.signCurrentUserOut(onLogoutSuccessful) }
 }
 

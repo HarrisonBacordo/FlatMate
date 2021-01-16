@@ -22,6 +22,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
+import com.harrisonbacordo.flatmate.data.models.User
 import com.harrisonbacordo.flatmate.ui.auth.createnewaccount.AuthCreateNewAccount
 import com.harrisonbacordo.flatmate.ui.auth.forgotpassword.AuthForgotPassword
 import com.harrisonbacordo.flatmate.ui.auth.landing.AuthLanding
@@ -34,7 +35,7 @@ import com.harrisonbacordo.flatmate.ui.auth.login.AuthLogin
  * @param onCreateNewAccountSuccessful Callback that is executed when an account is successfully created
  */
 @Composable
-fun AuthFlow(onLoginSuccessful: () -> Unit, onCreateNewAccountSuccessful: () -> Unit) {
+fun AuthFlow(onLoginSuccessful: () -> Unit, onCreateNewAccountSuccessful: (user: User) -> Unit) {
 
     val authNavController = rememberNavController()
     val landingRoute = { executeNavRoute(authNavController, AuthDestinations.Landing.name) }

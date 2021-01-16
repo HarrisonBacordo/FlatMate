@@ -25,13 +25,11 @@ class AuthLandingViewModel : ViewModel() {
      *
      */
     fun attemptLoginWithFacebook() {
-
     }
 
     /**
      *
      */
     fun attemptLoginWithGoogle() {
-
     }
 }

@@ -15,7 +15,6 @@
  */
 package com.harrisonbacordo.flatmate.ui.auth.createnewaccount
 
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,21 +24,26 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focusRequester
+import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
-import androidx.ui.tooling.preview.Preview
+import com.harrisonbacordo.flatmate.data.models.User
 import com.harrisonbacordo.flatmate.ui.auth.CompanyLogo
 import com.harrisonbacordo.flatmate.ui.composables.textfield.EmailState
-import com.harrisonbacordo.flatmate.ui.composables.textfield.HiddenTextInput
+import com.harrisonbacordo.flatmate.ui.composables.textfield.EmailTextInput
 import com.harrisonbacordo.flatmate.ui.composables.textfield.PasswordState
+import com.harrisonbacordo.flatmate.ui.composables.textfield.PasswordTextInput
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
-import com.harrisonbacordo.flatmate.ui.composables.textfield.TextInput
 import com.harrisonbacordo.flatmate.ui.theme.FlatmateAuthTheme
 import com.harrisonbacordo.flatmate.ui.theme.typography
 
@@ -49,8 +53,8 @@ import com.harrisonbacordo.flatmate.ui.theme.typography
  * @param onCreateNewAccountSuccessful Callback that is executed when an account is successfully created
  */
 @Composable
-fun AuthCreateNewAccount(onCreateNewAccountSuccessful: () -> Unit) {
-    val viewModel: AuthCreateNewAccountViewModel = ViewModelProvider(ContextAmbient.current as ViewModelStoreOwner).get(AuthCreateNewAccountViewModel::class.java)
+fun AuthCreateNewAccount(onCreateNewAccountSuccessful: (user: User) -> Unit) {
+    val viewModel: AuthCreateNewAccountViewModel = ViewModelProvider(AmbientContext.current as ViewModelStoreOwner).get(AuthCreateNewAccountViewModel::class.java)
     val emailState = remember { EmailState() }
     val passwordState = remember { PasswordState() }
     CreateNewAccountScreen(
@@ -75,6 +79,7 @@ private fun CreateNewAccountScreen(
     errorMessage: String,
     onFormSubmitted: () -> Unit,
 ) {
+    val passwordFocusRequest = remember { FocusRequester() }
     CompanyLogo()
     Column(
         Modifier.fillMaxWidth().fillMaxHeight().padding(horizontal = 32.dp),
@@ -82,8 +87,18 @@ private fun CreateNewAccountScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text("Create New Account", style = typography.h4)
-        TextInput(value = emailState.text, hint = "Email", onValueChange = emailState::updateText, Modifier.fillMaxWidth())
-        HiddenTextInput(value = passwordState.text, hint = "Password", onValueChange = passwordState::updateText, Modifier.fillMaxWidth())
+        EmailTextInput(
+            value = emailState.text,
+            onValueChange = emailState::updateText,
+            Modifier.fillMaxWidth(),
+            imeAction = ImeAction.Next,
+            onImeAction = passwordFocusRequest::requestFocus
+        )
+        PasswordTextInput(
+            value = passwordState.text,
+            onValueChange = passwordState::updateText,
+            Modifier.fillMaxWidth().focusRequester(passwordFocusRequest)
+        )
         if (errorMessage.isNotEmpty()) Text(errorMessage, color = MaterialTheme.colors.error)
         Spacer(Modifier.padding(top = 8.dp))
         Button(onClick = onFormSubmitted, Modifier.fillMaxWidth()) {

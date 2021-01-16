@@ -33,13 +33,14 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth,
      * @param email String that represents the email to create a new account with
      * @param password String that represents the password to create a new account with
      */
-    suspend fun attemptCreateNewAccount(email: String, password: String): AuthResult? {
+    suspend fun attemptCreateNewAccount(email: String, password: String): User? {
         return try {
             val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             authResult.user?.let { user ->
                 createUserInFirestoreWithId(email, user.uid)
+            } ?: run {
+                null
             }
-            authResult
         } catch (e: Exception) {
             null
         }
@@ -69,11 +70,17 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth,
     /**
      *
      */
-    private suspend fun createUserInFirestoreWithId(email: String, userId: String) {
+    private suspend fun createUserInFirestoreWithId(email: String, userId: String): User? {
         firestore
             .collection(Keys.Firestore.User.firestoreCollection)
             .document(userId)
             .set(User(email = email, id = userId))
             .await()
+        return firestore
+            .collection(Keys.Firestore.User.firestoreCollection)
+            .document(userId)
+            .get()
+            .await()
+            .toObject(User::class.java)
     }
 }

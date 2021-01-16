@@ -72,7 +72,7 @@ class AuthLoginViewModel @ViewModelInject constructor(
             authRepository.attemptLogin(email, password)?.let {
                 if (it.user != null) {
                     withContext(Dispatchers.Main) {
-                        onLoginSuccessful.invoke()
+                        onLoginSuccessful()
                     }
                 }
             }

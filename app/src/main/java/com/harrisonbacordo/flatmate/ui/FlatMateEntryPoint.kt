@@ -16,12 +16,15 @@
 package com.harrisonbacordo.flatmate.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
-import androidx.ui.tooling.preview.Preview
+import com.harrisonbacordo.flatmate.data.models.User
 import com.harrisonbacordo.flatmate.ui.auth.AuthFlow
 import com.harrisonbacordo.flatmate.ui.home.HomeFlow
 import com.harrisonbacordo.flatmate.ui.onboarding.OnboardingFlow
@@ -36,9 +39,15 @@ import com.harrisonbacordo.flatmate.ui.theme.FlatmateOnboardingTheme
 @Composable
 fun FlatMateEntryPoint() {
     val navController = rememberNavController()
-    val authRoute = { createNavRoute(navController, Destinations.Auth.name) }
-    val onboardingRoute = { createNavRoute(navController, Destinations.Onboarding.name) }
-    val homeRoute = { createNavRoute(navController, Destinations.Home.name) }
+    val authRoute = { createNavRoute(navController, Destinations.Auth) }
+    val onboardingRoute: (user: User) -> Unit = {
+        createNavRoute(
+            navController,
+            Destinations.Onboarding,
+            "/$it",
+        )
+    }
+    val homeRoute = { createNavRoute(navController, Destinations.Home) }
     NavHost(navController, startDestination = Destinations.Auth.name) {
         composable(Destinations.Auth.name) {
             FlatmateAuthTheme {
@@ -48,9 +57,14 @@ fun FlatMateEntryPoint() {
                 )
             }
         }
-        composable(Destinations.Onboarding.name) {
+        composable(Destinations.Onboarding.name.plus("/{user}"), arguments = listOf(navArgument("user") { type = NavType.SerializableType(User::class.java) })) {
             FlatmateOnboardingTheme {
-                OnboardingFlow(onOnboardingComplete = homeRoute)
+                val user = it.arguments?.getSerializable("user") as User
+                /* TODO
+                   Need to pass the user object instead of the user id. This is a temporary fix since Kotlin/Compose does not yet support
+                   serializables/parcelables to be passed since they don't support default values. Keep an eye on that
+                 */
+                OnboardingFlow(user.id, onOnboardingComplete = homeRoute)
             }
         }
         composable(Destinations.Home.name) {
@@ -62,14 +76,18 @@ fun FlatMateEntryPoint() {
 }
 
 /**
- * Executes app-wide navigation to [route] via [navController]. Clears the backstack
+ * Executes app-wide navigation to [destination] via [navController]. Clears the backstack
  * to ensure that the application closes if back is pressed from the root of any flow.
  *
  * @param navController [NavController] to navigate with
- * @param route [String] that identifies the route
+ * @param destination Destination that identifies the route
  */
-private fun createNavRoute(navController: NavController, route: String) {
+private fun createNavRoute(navController: NavController, destination: Destinations, argument: String? = null) {
     navController.popBackStack()
+    var route = destination.name
+    argument?.let {
+        route = route.plus(argument)
+    }
     navController.navigate(route)
 }
 

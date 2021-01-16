@@ -15,7 +15,6 @@
  */
 package com.harrisonbacordo.flatmate.data.repositories
 
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.harrisonbacordo.flatmate.data.models.User
 import com.harrisonbacordo.flatmate.util.Keys
@@ -24,7 +23,7 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @ActivityRetainedScoped
-class FlatRepository @Inject constructor( private val firestore: FirebaseFirestore) {
+class FlatRepository @Inject constructor(private val firestore: FirebaseFirestore) {
 
     suspend fun attemptCreateNewFlat(flatName: String) {
         try {
@@ -40,7 +39,6 @@ class FlatRepository @Inject constructor( private val firestore: FirebaseFiresto
                 .set(flatFirestoreMap)
                 .await()
         } catch (e: Exception) {
-
         }
     }
 }

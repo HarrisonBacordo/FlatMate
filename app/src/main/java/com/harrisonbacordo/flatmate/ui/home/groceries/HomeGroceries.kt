@@ -15,11 +15,10 @@
  */
 package com.harrisonbacordo.flatmate.ui.home.groceries
 
-import androidx.compose.foundation.Text
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.viewModel
-import androidx.ui.tooling.preview.Preview
-
 /**
  * High-level composable that holds the state and high-level UI composable of the home groceries screen
  */
