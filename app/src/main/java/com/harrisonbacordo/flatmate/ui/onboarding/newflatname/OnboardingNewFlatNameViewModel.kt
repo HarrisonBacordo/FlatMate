@@ -22,30 +22,32 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harrisonbacordo.flatmate.data.repositories.FlatRepository
+import com.harrisonbacordo.flatmate.data.repositories.UserRepository
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class OnboardingNewFlatNameViewModel @ViewModelInject constructor(private val flatRepository: FlatRepository) : ViewModel() {
+class OnboardingNewFlatNameViewModel @ViewModelInject constructor(private val userRepository: UserRepository, private val flatRepository: FlatRepository) : ViewModel() {
 
     var errorMessage: String by mutableStateOf("")
         private set
 
-    fun executeCreateFlatFlow(flatNameState: TextFieldState, onFlatSuccessfullyJoined: () -> Unit) {
+    fun executeCreateFlatFlow(flatNameState: TextFieldState, userId: String, onFlatSuccessfullyJoined: (userId: String) -> Unit) {
         if (!flatNameState.isValid && flatNameState.showErrors()) {
             errorMessage = flatNameState.getError()!!
         } else {
-            attemptSaveCreateNewFlat(flatNameState.text, onFlatSuccessfullyJoined)
+            attemptSaveCreateNewFlat(flatNameState.text, userId = userId, onFlatSuccessfullyJoined)
         }
-        onFlatSuccessfullyJoined()
     }
 
-    private fun attemptSaveCreateNewFlat(flatName: String, onFlatSuccessfullyJoined: () -> Unit) {
+    private fun attemptSaveCreateNewFlat(flatName: String, userId: String, onFlatSuccessfullyJoined: (userId: String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            flatRepository.attemptCreateNewFlat(flatName = flatName)
-            withContext(Dispatchers.Main) {
-                onFlatSuccessfullyJoined()
+            flatRepository.attemptCreateNewFlat(flatName = flatName, userId = userId)?.let {
+                userRepository.attemptSetUserFlatId(flatId = it)
+                withContext(Dispatchers.Main) {
+                    onFlatSuccessfullyJoined(userId)
+                }
             }
         }
     }

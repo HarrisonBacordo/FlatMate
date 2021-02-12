@@ -32,7 +32,7 @@ import com.harrisonbacordo.flatmate.ui.theme.AuthOnboardingScreenOption
 import com.harrisonbacordo.flatmate.ui.theme.FlatmateOnboardingTheme
 
 @Composable
-fun OnboardingExistingFlatId(onQrCodeClicked: () -> Unit, onManualEntryClicked: () -> Unit, onBackClicked: () -> Unit) {
+fun OnboardingExistingFlatId(userId: String, onQrCodeClicked: () -> Unit, onManualEntryClicked: () -> Unit, onBackClicked: () -> Unit) {
     OnboardingExistingFlatIdScreen(onQrCodeClicked, onManualEntryClicked, onBackClicked)
 }
 

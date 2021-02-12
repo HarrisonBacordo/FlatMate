@@ -36,18 +36,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.harrisonbacordo.flatmate.ui.composables.textfield.NameState
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
-import com.harrisonbacordo.flatmate.ui.composables.textfield.AlphaTextInput
+import com.harrisonbacordo.flatmate.ui.composables.textfield.AlphaTextField
 import com.harrisonbacordo.flatmate.ui.onboarding.OnboardingHeaderText
 import com.harrisonbacordo.flatmate.ui.theme.FlatmateOnboardingTheme
 
 @Composable
-fun OnboardingExistingFlatIdManualEntry(onFlatSuccessfullyJoined: () -> Unit, onBackClicked: () -> Unit) {
+fun OnboardingExistingFlatIdManualEntry(userId: String, onFlatSuccessfullyJoined: (userId: String) -> Unit, onBackClicked: () -> Unit) {
     val viewModel: OnboardingExistingFlatIdManualEntryViewModel = ViewModelProvider(AmbientContext.current as ViewModelStoreOwner).get(OnboardingExistingFlatIdManualEntryViewModel::class.java)
     val flatIdState = remember { NameState() }
     OnboardingExistingFlatIdManualEntryScreen(
         flatIdState = flatIdState,
         errorMessage = "",
-        onFlatIdSubmitted = { viewModel.executeJoinFlatFlow(flatIdState = flatIdState, onFlatSuccessfullyJoined = onFlatSuccessfullyJoined) },
+        onFlatIdSubmitted = { viewModel.executeJoinExistingFlatFlow(flatIdState = flatIdState, userId = userId, onFlatSuccessfullyJoined = onFlatSuccessfullyJoined) },
         onBackClicked = onBackClicked
     )
 }
@@ -65,7 +65,7 @@ private fun OnboardingExistingFlatIdManualEntryScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OnboardingHeaderText(text = "What's your flat's ID?")
-        AlphaTextInput(
+        AlphaTextField(
             value = flatIdState.text,
             hint = "Flat ID",
             onValueChange = flatIdState::updateText,

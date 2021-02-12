@@ -37,17 +37,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
+import com.harrisonbacordo.flatmate.ui.composables.textfield.AlphaTextField
 import com.harrisonbacordo.flatmate.ui.composables.textfield.NameState
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
-import com.harrisonbacordo.flatmate.ui.composables.textfield.AlphaTextInput
 import com.harrisonbacordo.flatmate.ui.onboarding.OnboardingHeaderText
 import com.harrisonbacordo.flatmate.ui.theme.FlatmateOnboardingTheme
 
 @Composable
-fun OnboardingUserName(onNextClicked: () -> Unit) {
-    val viewModel: OnboardingUserNameViewModel = ViewModelProvider(AmbientContext.current as ViewModelStoreOwner).get(OnboardingUserNameViewModel::class.java)
+fun OnboardingUserName(userId: String, onNextClicked: () -> Unit) {
+    val viewModel: OnboardingUserNameViewModel = ViewModelProvider(AmbientContext.current as ViewModelStoreOwner).get(OnboardingUserNameViewModel::class.java).apply {
+        getUser(userId)
+    }
     val firstNameState = remember { NameState() }
     val lastNameState = remember { NameState() }
+    firstNameState.updateText(viewModel.user?.firstName ?: "")
+    lastNameState.updateText(viewModel.user?.lastName ?: "")
     OnboardingUserNameScreen(
         firstNameState = firstNameState,
         lastNameState = lastNameState,
@@ -70,7 +74,7 @@ private fun OnboardingUserNameScreen(
     ) {
         val lastNameFocusRequest = remember { FocusRequester() }
         OnboardingHeaderText(text = "Welcome! What's your name?")
-        AlphaTextInput(
+        AlphaTextField(
             value = firstNameState.text,
             hint = "First Name",
             onValueChange = firstNameState::updateText,
@@ -78,7 +82,7 @@ private fun OnboardingUserNameScreen(
             imeAction = ImeAction.Next,
             onImeAction = lastNameFocusRequest::requestFocus,
         )
-        AlphaTextInput(
+        AlphaTextField(
             value = lastNameState.text,
             hint = "Last Name",
             onValueChange = lastNameState::updateText,

@@ -22,8 +22,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.viewModel
-import com.harrisonbacordo.flatmate.ui.composables.textfield.AlphaTextInput
-import com.harrisonbacordo.flatmate.ui.composables.textfield.EmailTextInput
+import com.harrisonbacordo.flatmate.ui.composables.textfield.EmailTextField
 import com.harrisonbacordo.flatmate.ui.theme.FlatmateAuthTheme
 
 /**
@@ -54,7 +53,7 @@ private fun AuthForgotPasswordScreen(
 ) {
     Column {
         Text("Forgot password Screen")
-        EmailTextInput(value = email, onValueChange = onEmailFieldChanged)
+        EmailTextField(value = email, onValueChange = onEmailFieldChanged)
         Button(onClick = onFormSubmitted) {
             Text("Submit Email")
         }

@@ -40,9 +40,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.harrisonbacordo.flatmate.ui.auth.CompanyLogo
 import com.harrisonbacordo.flatmate.ui.composables.textfield.EmailState
-import com.harrisonbacordo.flatmate.ui.composables.textfield.EmailTextInput
+import com.harrisonbacordo.flatmate.ui.composables.textfield.EmailTextField
 import com.harrisonbacordo.flatmate.ui.composables.textfield.PasswordState
-import com.harrisonbacordo.flatmate.ui.composables.textfield.PasswordTextInput
+import com.harrisonbacordo.flatmate.ui.composables.textfield.PasswordTextField
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
 import com.harrisonbacordo.flatmate.ui.theme.FlatmateAuthTheme
 import com.harrisonbacordo.flatmate.ui.theme.typography
@@ -54,7 +54,7 @@ import com.harrisonbacordo.flatmate.ui.theme.typography
  * @param onForgotPasswordClicked Callback that is executed when the forgot password button is clicked
  */
 @Composable
-fun AuthLogin(onLoginSuccessful: () -> Unit, onForgotPasswordClicked: () -> Unit) {
+fun AuthLogin(onLoginSuccessful: (userId: String) -> Unit, onForgotPasswordClicked: () -> Unit) {
     val viewModel: AuthLoginViewModel = ViewModelProvider(AmbientContext.current as ViewModelStoreOwner).get(AuthLoginViewModel::class.java)
     val emailState = remember { EmailState() }
     val passwordState = remember { PasswordState() }
@@ -93,14 +93,14 @@ private fun AuthLoginScreen(
     ) {
         val passwordFocusRequest = remember { FocusRequester() }
         Text("Login", style = typography.h4)
-        EmailTextInput(
+        EmailTextField(
             value = emailState.text,
             onValueChange = emailState::updateText,
             Modifier.fillMaxWidth(),
             imeAction = ImeAction.Next,
             onImeAction = passwordFocusRequest::requestFocus
         )
-        PasswordTextInput(
+        PasswordTextField(
             value = passwordState.text,
             onValueChange = passwordState::updateText,
             Modifier.fillMaxWidth().focusRequester(passwordFocusRequest),

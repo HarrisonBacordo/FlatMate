@@ -41,6 +41,7 @@ class UserRepository @Inject constructor(private val firebaseAuth: FirebaseAuth,
                     .await()
             }
         } catch (e: Exception) {
+            TODO()
         }
     }
 
@@ -57,6 +58,7 @@ class UserRepository @Inject constructor(private val firebaseAuth: FirebaseAuth,
                     .await()
             }
         } catch (e: Exception) {
+            TODO()
         }
     }
 

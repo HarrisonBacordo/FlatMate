@@ -15,6 +15,8 @@
  */
 package com.harrisonbacordo.flatmate.data.repositories
 
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.harrisonbacordo.flatmate.data.models.User
 import com.harrisonbacordo.flatmate.util.Keys
@@ -23,22 +25,67 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @ActivityRetainedScoped
-class FlatRepository @Inject constructor(private val firestore: FirebaseFirestore) {
+class FlatRepository @Inject constructor(private val firebaseAuth: FirebaseAuth, private val firestore: FirebaseFirestore) {
 
-    suspend fun attemptCreateNewFlat(flatName: String) {
-        try {
+    suspend fun attemptCreateNewFlat(flatName: String, userId: String): String? {
+        return try {
             val flatDocument = firestore
                 .collection(Keys.Firestore.Flat.firestoreCollection)
                 .document()
             val flatFirestoreMap = mapOf(
                 Keys.Firestore.Flat.id to flatDocument.id,
                 Keys.Firestore.Flat.name to flatName,
-                Keys.Firestore.Flat.flatmates to listOf<User>()
+                Keys.Firestore.Flat.flatmates to listOf(userId)
             )
             flatDocument
                 .set(flatFirestoreMap)
                 .await()
+            flatDocument.id
         } catch (e: Exception) {
+            null
+        }
+    }
+
+    suspend fun attemptJoinExistingFlat(flatId: String, userId: String) {
+        try {
+            firestore
+                .collection(Keys.Firestore.Flat.firestoreCollection)
+                .document(flatId)
+                .update(
+                    mapOf(
+                        Keys.Firestore.Flat.flatmates to FieldValue.arrayUnion(userId)
+                    )
+                )
+                .await()
+        } catch (e: Exception) {
+            TODO()
+        }
+    }
+
+    suspend fun getFlatmates(): List<User> {
+        try {
+            val flatId = firestore.collection(Keys.Firestore.User.firestoreCollection)
+                .document(firebaseAuth.currentUser!!.uid)
+                .get()
+                .await()
+                .get(Keys.Firestore.User.flatId) as String
+            val flatmates = firestore.collection(Keys.Firestore.Flat.firestoreCollection)
+                .document(flatId)
+                .get()
+                .await()
+                .get(Keys.Firestore.Flat.flatmates) as List<String>
+            return flatmates.map {
+                val flatmate = firestore.collection(Keys.Firestore.User.firestoreCollection)
+                    .document(it)
+                    .get()
+                    .await()
+                    .toObject(User::class.java)
+                flatmate ?: run {
+                    throw Exception()
+                }
+            }
+        } catch (e: Exception) {
+            TODO()
         }
     }
 }

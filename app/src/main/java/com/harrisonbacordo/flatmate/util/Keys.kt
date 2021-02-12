@@ -50,6 +50,5 @@ object Keys {
             const val personal = "personal"
         }
 
-        const val FlatsCollection = "flats"
     }
 }

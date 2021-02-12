@@ -24,6 +24,7 @@ import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.harrisonbacordo.flatmate.data.models.User
 import com.harrisonbacordo.flatmate.ui.auth.createnewaccount.AuthCreateNewAccount
+import com.harrisonbacordo.flatmate.ui.auth.debug.AuthDebug
 import com.harrisonbacordo.flatmate.ui.auth.forgotpassword.AuthForgotPassword
 import com.harrisonbacordo.flatmate.ui.auth.landing.AuthLanding
 import com.harrisonbacordo.flatmate.ui.auth.login.AuthLogin
@@ -35,18 +36,18 @@ import com.harrisonbacordo.flatmate.ui.auth.login.AuthLogin
  * @param onCreateNewAccountSuccessful Callback that is executed when an account is successfully created
  */
 @Composable
-fun AuthFlow(onLoginSuccessful: () -> Unit, onCreateNewAccountSuccessful: (user: User) -> Unit) {
-
+fun AuthFlow(onLoginSuccessful: (userId: String) -> Unit, onCreateNewAccountSuccessful: (userId: String) -> Unit) {
     val authNavController = rememberNavController()
     val landingRoute = { executeNavRoute(authNavController, AuthDestinations.Landing.name) }
     val loginRoute = { executeNavRoute(authNavController, AuthDestinations.LogIn.name) }
     val createNewAccountRoute = { executeNavRoute(authNavController, AuthDestinations.CreateNewAccount.name) }
     val forgotPasswordRoute = { executeNavRoute(authNavController, AuthDestinations.ForgotPassword.name) }
+    val debugRoute = { executeNavRoute(authNavController, AuthDestinations.Debug.name) }
     Scaffold(
         bodyContent = {
             NavHost(authNavController, startDestination = AuthDestinations.Landing.name) {
                 composable(AuthDestinations.Landing.name) {
-                    AuthLanding(onCreateNewAccountClicked = createNewAccountRoute, onLoginClicked = loginRoute)
+                    AuthLanding(onCreateNewAccountClicked = createNewAccountRoute, onLoginClicked = loginRoute, onDebugClicked = debugRoute)
                 }
                 composable(AuthDestinations.CreateNewAccount.name) {
                     AuthCreateNewAccount(onCreateNewAccountSuccessful = onCreateNewAccountSuccessful)
@@ -56,6 +57,9 @@ fun AuthFlow(onLoginSuccessful: () -> Unit, onCreateNewAccountSuccessful: (user:
                 }
                 composable(AuthDestinations.ForgotPassword.name) {
                     AuthForgotPassword()
+                }
+                composable(AuthDestinations.Debug.name) {
+                    AuthDebug()
                 }
             }
         }
@@ -84,4 +88,5 @@ enum class AuthDestinations {
     CreateNewAccount,
     LogIn,
     ForgotPassword,
+    Debug,
 }

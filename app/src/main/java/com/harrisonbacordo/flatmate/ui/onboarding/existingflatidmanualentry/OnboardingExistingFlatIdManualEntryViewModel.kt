@@ -15,12 +15,39 @@
  */
 package com.harrisonbacordo.flatmate.ui.onboarding.existingflatidmanualentry
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.harrisonbacordo.flatmate.data.repositories.FlatRepository
+import com.harrisonbacordo.flatmate.data.repositories.UserRepository
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class OnboardingExistingFlatIdManualEntryViewModel @ViewModelInject constructor() : ViewModel() {
-    fun executeJoinFlatFlow(flatIdState: TextFieldState, onFlatSuccessfullyJoined: () -> Unit) {
-        onFlatSuccessfullyJoined()
+class OnboardingExistingFlatIdManualEntryViewModel @ViewModelInject constructor(private val flatRepository: FlatRepository, private val userRepository: UserRepository) : ViewModel() {
+
+    var errorMessage: String by mutableStateOf("")
+        private set
+
+    fun executeJoinExistingFlatFlow(flatIdState: TextFieldState, userId: String, onFlatSuccessfullyJoined: (userId: String) -> Unit) {
+        if (!flatIdState.isValid && flatIdState.showErrors()) {
+            errorMessage = flatIdState.getError()!!
+        } else {
+            attemptJoinExistingFlat(flatId = flatIdState.text, userId = userId, onFlatSuccessfullyJoined)
+        }
+    }
+
+    private fun attemptJoinExistingFlat(flatId: String, userId: String, onFlatSuccessfullyJoined: (userId: String) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            flatRepository.attemptJoinExistingFlat(flatId = flatId, userId = userId)
+            userRepository.attemptSetUserFlatId(flatId = flatId)
+            withContext(Dispatchers.Main) {
+                onFlatSuccessfullyJoined(userId)
+            }
+        }
     }
 }

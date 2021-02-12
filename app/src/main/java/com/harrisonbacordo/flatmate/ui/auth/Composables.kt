@@ -29,9 +29,9 @@ import com.harrisonbacordo.flatmate.R
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
-fun CompanyLogo() {
+fun CompanyLogo(modifier: Modifier = Modifier) {
     Column(Modifier.fillMaxWidth().wrapContentHeight(), verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.CenterHorizontally) {
-        CoilImage(data = R.drawable.ic_logo_transparent, Modifier.width(250.dp))
+        CoilImage(data = R.drawable.ic_logo_transparent, modifier.width(250.dp))
     }
 }
 

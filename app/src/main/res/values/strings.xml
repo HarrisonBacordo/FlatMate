@@ -8,6 +8,9 @@
     <string name="groceries">Groceries</string>
     <string name="settings">Settings</string>
 
+    <!-- Home Screens -->
+    <string name="new_chore">New Chore</string>
+
     <!-- Auth Login -->
     <string name="auth_email_hint">Email</string>
     <string name="auth_password_hint">Password</string>

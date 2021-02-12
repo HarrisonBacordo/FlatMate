@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.harrisonbacordo.flatmate.data.models.User
 import com.harrisonbacordo.flatmate.data.repositories.UserRepository
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
 import kotlinx.coroutines.Dispatchers
@@ -29,8 +30,17 @@ import kotlinx.coroutines.withContext
 
 class OnboardingUserNameViewModel @ViewModelInject constructor(private val userRepository: UserRepository) : ViewModel() {
 
+    var user: User? by mutableStateOf(null)
+        private set
+
     var errorMessage: String by mutableStateOf("")
         private set
+
+    fun getUser(userId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            user = userRepository.getUserWithId(userId)
+        }
+    }
 
     fun executeSaveUserNameFlow(firstNameState: TextFieldState, lastNameState: TextFieldState, onUserNameSuccessfullySaved: () -> Unit) {
         if (!firstNameState.isValid && firstNameState.showErrors()) {

@@ -38,10 +38,8 @@ import com.harrisonbacordo.flatmate.ui.onboarding.username.OnboardingUserName
  * @param onOnboardingComplete Callback that is executed when onboarding has been successfully completed
  */
 @Composable
-fun OnboardingFlow(userId: String, onOnboardingComplete: () -> Unit) {
+fun OnboardingFlow(userId: String, onOnboardingComplete: (userId: String) -> Unit) {
     val viewModel: OnboardingFlowViewModel = ViewModelProvider(AmbientContext.current as ViewModelStoreOwner).get(OnboardingFlowViewModel::class.java)
-//    TODO  look into how MC passes data around, especially during onboarding/auth processes.
-    viewModel.getUser(userId)
     val onboardingNavController = rememberNavController()
     val userNameRoute = { executeNavRoute(onboardingNavController, OnboardingDestinations.UserName.name) }
     val existingOrNewFlatRoute = { executeNavRoute(onboardingNavController, OnboardingDestinations.ExistingOrNewFlat.name) }
@@ -53,22 +51,22 @@ fun OnboardingFlow(userId: String, onOnboardingComplete: () -> Unit) {
         bodyContent = {
             NavHost(onboardingNavController, startDestination = OnboardingDestinations.UserName.name) {
                 composable(OnboardingDestinations.UserName.name) {
-                    OnboardingUserName(onNextClicked = existingOrNewFlatRoute)
+                    OnboardingUserName(userId = userId, onNextClicked = existingOrNewFlatRoute)
                 }
                 composable(OnboardingDestinations.ExistingOrNewFlat.name) {
                     OnboardingExistingOrNewFlat(onNewFlatClicked = newFlatNameRoute, onExistingFlatClicked = existingFlatIdRoute, onBackClicked = userNameRoute)
                 }
                 composable(OnboardingDestinations.NewFlatName.name) {
-                    OnboardingNewFlatName(onFlatSuccessfullyCreated = onOnboardingComplete, onBackClicked = existingOrNewFlatRoute)
+                    OnboardingNewFlatName(userId = userId, onFlatSuccessfullyCreated = onOnboardingComplete, onBackClicked = existingOrNewFlatRoute)
                 }
                 composable(OnboardingDestinations.ExistingFlatId.name) {
-                    OnboardingExistingFlatId(onQrCodeClicked = existingFlatQrScannerRoute, onManualEntryClicked = existingFlatManualEntryIdRoute, onBackClicked = existingOrNewFlatRoute)
+                    OnboardingExistingFlatId(userId = userId, onQrCodeClicked = existingFlatQrScannerRoute, onManualEntryClicked = existingFlatManualEntryIdRoute, onBackClicked = existingOrNewFlatRoute)
                 }
                 composable(OnboardingDestinations.ExistingFlatQrScanner.name) {
-                    OnboardingExistingFlatQrScanner(onFlatSuccessfullyJoined = onOnboardingComplete, onBackClicked = existingFlatIdRoute)
+                    OnboardingExistingFlatQrScanner(userId = userId, onFlatSuccessfullyJoined = onOnboardingComplete, onBackClicked = existingFlatIdRoute)
                 }
                 composable(OnboardingDestinations.ExistingFlatIdManualEntry.name) {
-                    OnboardingExistingFlatIdManualEntry(onFlatSuccessfullyJoined = onOnboardingComplete, onBackClicked = existingFlatIdRoute)
+                    OnboardingExistingFlatIdManualEntry(userId = userId, onFlatSuccessfullyJoined = onOnboardingComplete, onBackClicked = existingFlatIdRoute)
                 }
             }
         }

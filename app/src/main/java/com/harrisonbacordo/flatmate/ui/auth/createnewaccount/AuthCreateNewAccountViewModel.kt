@@ -21,7 +21,6 @@ import androidx.compose.runtime.setValue
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.harrisonbacordo.flatmate.data.models.User
 import com.harrisonbacordo.flatmate.data.repositories.AuthRepository
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +45,7 @@ class AuthCreateNewAccountViewModel @ViewModelInject constructor(private val aut
      * @param passwordState State that represents the password to create a new account with
      * @param onCreateNewAccountSuccessful Callback that is executed when an account is successfully created
      */
-    fun executeCreateNewAccountFlow(emailState: TextFieldState, passwordState: TextFieldState, onCreateNewAccountSuccessful: (user: User) -> Unit) {
+    fun executeCreateNewAccountFlow(emailState: TextFieldState, passwordState: TextFieldState, onCreateNewAccountSuccessful: (userId: String) -> Unit) {
         if (!emailState.isValid && emailState.showErrors()) {
             errorMessage = emailState.getError()!!
         } else if (!passwordState.isValid && passwordState.showErrors()) {
@@ -63,7 +62,7 @@ class AuthCreateNewAccountViewModel @ViewModelInject constructor(private val aut
      * @param password String that represents the password to create a new account with
      * @param onCreateNewAccountSuccessful Callback that is executed when an account is successfully created
      */
-    private fun attemptCreateNewAccount(email: String, password: String, onCreateNewAccountSuccessful: (user: User) -> Unit) {
+    private fun attemptCreateNewAccount(email: String, password: String, onCreateNewAccountSuccessful: (userId: String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             authRepository.attemptCreateNewAccount(email, password)?.let {
                 withContext(Dispatchers.Main) {

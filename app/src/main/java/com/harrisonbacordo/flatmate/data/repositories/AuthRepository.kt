@@ -27,17 +27,22 @@ import javax.inject.Inject
 @ActivityRetainedScoped
 class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth, private val firestore: FirebaseFirestore) {
 
+    fun getCurrentUserId(): String? {
+        return firebaseAuth.currentUser?.uid
+    }
+
     /**
      * Makes a network call to create a new account
      *
      * @param email String that represents the email to create a new account with
      * @param password String that represents the password to create a new account with
      */
-    suspend fun attemptCreateNewAccount(email: String, password: String): User? {
+    suspend fun attemptCreateNewAccount(email: String, password: String): String? {
         return try {
             val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             authResult.user?.let { user ->
                 createUserInFirestoreWithId(email, user.uid)
+                user.uid
             } ?: run {
                 null
             }
@@ -70,17 +75,11 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth,
     /**
      *
      */
-    private suspend fun createUserInFirestoreWithId(email: String, userId: String): User? {
+    private suspend fun createUserInFirestoreWithId(email: String, userId: String) {
         firestore
             .collection(Keys.Firestore.User.firestoreCollection)
             .document(userId)
             .set(User(email = email, id = userId))
             .await()
-        return firestore
-            .collection(Keys.Firestore.User.firestoreCollection)
-            .document(userId)
-            .get()
-            .await()
-            .toObject(User::class.java)
     }
 }

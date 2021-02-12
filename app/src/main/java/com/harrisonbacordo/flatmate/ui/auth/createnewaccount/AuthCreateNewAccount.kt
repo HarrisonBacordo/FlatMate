@@ -37,12 +37,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
-import com.harrisonbacordo.flatmate.data.models.User
 import com.harrisonbacordo.flatmate.ui.auth.CompanyLogo
 import com.harrisonbacordo.flatmate.ui.composables.textfield.EmailState
-import com.harrisonbacordo.flatmate.ui.composables.textfield.EmailTextInput
+import com.harrisonbacordo.flatmate.ui.composables.textfield.EmailTextField
 import com.harrisonbacordo.flatmate.ui.composables.textfield.PasswordState
-import com.harrisonbacordo.flatmate.ui.composables.textfield.PasswordTextInput
+import com.harrisonbacordo.flatmate.ui.composables.textfield.PasswordTextField
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
 import com.harrisonbacordo.flatmate.ui.theme.FlatmateAuthTheme
 import com.harrisonbacordo.flatmate.ui.theme.typography
@@ -53,7 +52,7 @@ import com.harrisonbacordo.flatmate.ui.theme.typography
  * @param onCreateNewAccountSuccessful Callback that is executed when an account is successfully created
  */
 @Composable
-fun AuthCreateNewAccount(onCreateNewAccountSuccessful: (user: User) -> Unit) {
+fun AuthCreateNewAccount(onCreateNewAccountSuccessful: (userId: String) -> Unit) {
     val viewModel: AuthCreateNewAccountViewModel = ViewModelProvider(AmbientContext.current as ViewModelStoreOwner).get(AuthCreateNewAccountViewModel::class.java)
     val emailState = remember { EmailState() }
     val passwordState = remember { PasswordState() }
@@ -87,14 +86,14 @@ private fun CreateNewAccountScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text("Create New Account", style = typography.h4)
-        EmailTextInput(
+        EmailTextField(
             value = emailState.text,
             onValueChange = emailState::updateText,
             Modifier.fillMaxWidth(),
             imeAction = ImeAction.Next,
             onImeAction = passwordFocusRequest::requestFocus
         )
-        PasswordTextInput(
+        PasswordTextField(
             value = passwordState.text,
             onValueChange = passwordState::updateText,
             Modifier.fillMaxWidth().focusRequester(passwordFocusRequest)

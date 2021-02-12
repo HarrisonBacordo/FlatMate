@@ -32,6 +32,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import androidx.navigation.compose.KEY_ROUTE
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -40,9 +41,13 @@ import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.harrisonbacordo.flatmate.R
 import com.harrisonbacordo.flatmate.ui.home.calendar.HomeCalendar
+import com.harrisonbacordo.flatmate.ui.home.calendar.HomeNewEvent
 import com.harrisonbacordo.flatmate.ui.home.chores.HomeChores
+import com.harrisonbacordo.flatmate.ui.home.chores.HomeNewChore
 import com.harrisonbacordo.flatmate.ui.home.groceries.HomeGroceries
+import com.harrisonbacordo.flatmate.ui.home.groceries.HomeNewGrocery
 import com.harrisonbacordo.flatmate.ui.home.settings.HomeSettings
+import com.harrisonbacordo.flatmate.ui.home.settings.flatmates.HomeSettingsFlatmates
 
 /**
  * High level composable that coordinates the routes and screens for the Home flow
@@ -50,31 +55,32 @@ import com.harrisonbacordo.flatmate.ui.home.settings.HomeSettings
  * @param onLogoutClicked Callback that is executed when a logout event has successfully completed
  */
 @Composable
-fun HomeFlow(onLogoutClicked: () -> Unit) {
-    val bottomNavController = rememberNavController()
+fun HomeFlow(userId: String, onLogoutClicked: () -> Unit) {
+    val homeNavController = rememberNavController()
     val homeDestinations = listOf(
         HomeDestinations.Chores,
         HomeDestinations.Calendar,
         HomeDestinations.Groceries,
         HomeDestinations.Settings
     )
+    val flatmatesRoute = { executeNavRoute(homeNavController, HomeDestinations.Flatmates.route) }
     Scaffold(
         topBar = {
             TopAppBar(title = { Text("Flatmate") })
         },
         bottomBar = {
             BottomNavigation {
-                val navBackStackEntry by bottomNavController.currentBackStackEntryAsState()
+                val navBackStackEntry by homeNavController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.arguments?.get(KEY_ROUTE)
                 homeDestinations.forEach { screen ->
                     BottomNavigationItem(
-                        icon = { Icon(screen.icon) },
-                        label = { Text(stringResource(screen.resourceId)) },
+                        icon = { Icon(screen.icon!!) },
+                        label = { Text(stringResource(screen.resourceId!!)) },
                         selected = currentRoute == screen.route,
                         onClick = {
-                            bottomNavController.popBackStack(bottomNavController.graph.startDestination, false)
+                            homeNavController.popBackStack(homeNavController.graph.startDestination, false)
                             if (currentRoute != screen.route) {
-                                bottomNavController.navigate(screen.route)
+                                homeNavController.navigate(screen.route)
                             }
                         }
                     )
@@ -82,24 +88,46 @@ fun HomeFlow(onLogoutClicked: () -> Unit) {
             }
         }
     ) {
-        NavHost(bottomNavController, startDestination = HomeDestinations.Chores.route) {
+        NavHost(homeNavController, startDestination = HomeDestinations.Chores.route) {
             composable(HomeDestinations.Chores.route) { HomeChores() }
             composable(HomeDestinations.Calendar.route) { HomeCalendar() }
             composable(HomeDestinations.Groceries.route) { HomeGroceries() }
-            composable(HomeDestinations.Settings.route) { HomeSettings(onLogoutSuccessful = onLogoutClicked) }
+            composable(HomeDestinations.Settings.route) { HomeSettings(onFlatmatesClicked = flatmatesRoute, onLogoutSuccessful = onLogoutClicked) }
+            composable(HomeDestinations.NewChore.route) { HomeNewChore() }
+            composable(HomeDestinations.NewEvent.route) { HomeNewEvent() }
+            composable(HomeDestinations.NewGrocery.route) { HomeNewGrocery() }
+            composable(HomeDestinations.Flatmates.route) { HomeSettingsFlatmates() }
         }
     }
 }
 
-sealed class HomeDestinations(val route: String, @StringRes val resourceId: Int, val icon: ImageVector) {
+/**
+ * Executes home-specific navigation to [route] via [navController]. Clears the backstack if [route] is [HomeDestinations.Chores]
+ * to ensure that the application closes if back is pressed from there.
+ *
+ * @param navController [NavController] to navigate with
+ * @param route [String] that identifies the route
+ */
+private fun executeNavRoute(navController: NavController, route: String) {
+    if (route == HomeDestinations.Chores.route) {
+        navController.popBackStack()
+    }
+    navController.navigate(route)
+}
+
+sealed class HomeDestinations(val route: String, @StringRes val resourceId: Int? = null, val icon: ImageVector? = null) {
     object Chores : HomeDestinations("chores", R.string.chores, Icons.Filled.CleaningServices)
     object Calendar : HomeDestinations("calendar", R.string.calendar, Icons.Filled.Event)
     object Groceries : HomeDestinations("groceries", R.string.groceries, Icons.Filled.LocalGroceryStore)
     object Settings : HomeDestinations("settings", R.string.settings, Icons.Filled.Settings)
+    object NewChore : HomeDestinations("newChore")
+    object NewEvent : HomeDestinations("newEvent")
+    object NewGrocery : HomeDestinations("newGrocery")
+    object Flatmates : HomeDestinations("flatmates")
 }
 
 @Preview
 @Composable
 private fun PreviewHomeScreen() {
-    HomeFlow(onLogoutClicked = {})
+    HomeFlow("", onLogoutClicked = {})
 }

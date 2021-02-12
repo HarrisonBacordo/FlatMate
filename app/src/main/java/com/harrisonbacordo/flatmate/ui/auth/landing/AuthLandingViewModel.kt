@@ -15,12 +15,23 @@
  */
 package com.harrisonbacordo.flatmate.ui.auth.landing
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.harrisonbacordo.flatmate.data.repositories.AuthRepository
 
 /**
  * [ViewModel] associated with [AuthLanding]
  */
-class AuthLandingViewModel : ViewModel() {
+class AuthLandingViewModel @ViewModelInject constructor(
+    private val authRepository: AuthRepository,
+    @Assisted private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
+
     /**
      *
      */

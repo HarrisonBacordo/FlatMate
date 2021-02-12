@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -36,7 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.harrisonbacordo.flatmate.R
 
 @Composable
-fun EmailTextInput(
+fun EmailTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -59,19 +60,20 @@ fun EmailTextInput(
 }
 
 @Composable
-fun AlphaTextInput(
+fun AlphaTextField(
     value: String,
     hint: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     imeAction: ImeAction = ImeAction.Done,
+    capitalization: KeyboardCapitalization = KeyboardCapitalization.Sentences,
     onImeAction: () -> Unit = {},
 ) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(hint) },
-        keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Text),
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Text, capitalization = capitalization),
         onImeActionPerformed = { action, softKeyboardController ->
             if (action == ImeAction.Done) {
                 softKeyboardController?.hideSoftwareKeyboard()
@@ -83,7 +85,7 @@ fun AlphaTextInput(
 }
 
 @Composable
-fun NumericTextInput(
+fun NumericTextField(
     value: String,
     hint: String,
     onValueChange: (String) -> Unit,
@@ -107,7 +109,7 @@ fun NumericTextInput(
 }
 
 @Composable
-fun PasswordTextInput(
+fun PasswordTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -136,26 +138,26 @@ fun PasswordTextInput(
     )
 }
 
-@Preview(name = "Email Text Input Preview")
+@Preview(name = "Email Text Field Preview")
 @Composable
-fun AuthEmailTextInputPreview() {
-    EmailTextInput(value = "john.appleseed@gmail.com", onValueChange = {})
+fun Field() {
+    EmailTextField(value = "john.appleseed@gmail.com", onValueChange = {})
 }
 
-@Preview(name = "Password Text Input Preview")
+@Preview(name = "Password Text Field Preview")
 @Composable
-fun AuthPasswordTextInputPreview() {
-    PasswordTextInput(value = "Password", onValueChange = {})
+fun AuthPasswordTextFieldPreview() {
+    PasswordTextField(value = "Password", onValueChange = {})
 }
 
-@Preview(name = "Alpha Text Input Preview")
+@Preview(name = "Alpha Text Field Preview")
 @Composable
-fun AuthAlphaTextInputPreview() {
-    AlphaTextInput(value = "Alpha value", hint = "Alpha", onValueChange = {})
+fun AuthAlphaTextFieldPreview() {
+    AlphaTextField(value = "Alpha value", hint = "Alpha", onValueChange = {})
 }
 
-@Preview(name = "Number Text Input Preview")
+@Preview(name = "Number Text Field Preview")
 @Composable
-fun AuthNumericTextInputPreview() {
-    NumericTextInput(value = "123456789", hint = "Number", onValueChange = {})
+fun AuthNumericTextFieldPreview() {
+    NumericTextField(value = "123456789", hint = "Number", onValueChange = {})
 }

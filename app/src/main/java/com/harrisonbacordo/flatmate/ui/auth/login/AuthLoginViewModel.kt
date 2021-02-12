@@ -50,7 +50,7 @@ class AuthLoginViewModel @ViewModelInject constructor(
      * @param passwordState State that represents the password to login with
      * @param onLoginSuccessful Callback that is executed when a login is successful
      */
-    fun executeLoginFlow(emailState: TextFieldState, passwordState: TextFieldState, onLoginSuccessful: () -> Unit) {
+    fun executeLoginFlow(emailState: TextFieldState, passwordState: TextFieldState, onLoginSuccessful: (userId: String) -> Unit) {
         if (!emailState.isValid && emailState.showErrors()) {
             errorMessage = emailState.getError()!!
         } else if (!passwordState.isValid && passwordState.showErrors()) {
@@ -67,12 +67,12 @@ class AuthLoginViewModel @ViewModelInject constructor(
      * @param password String that represents the password to login with
      * @param onLoginSuccessful Callback that is executed when a login is successful
      */
-    private fun attemptLogin(email: String, password: String, onLoginSuccessful: () -> Unit) {
+    private fun attemptLogin(email: String, password: String, onLoginSuccessful: (userId: String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             authRepository.attemptLogin(email, password)?.let {
-                if (it.user != null) {
+                it.user?.let { user ->
                     withContext(Dispatchers.Main) {
-                        onLoginSuccessful()
+                        onLoginSuccessful(user.uid)
                     }
                 }
             }

@@ -25,8 +25,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.viewinterop.viewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import com.harrisonbacordo.flatmate.R
 import com.harrisonbacordo.flatmate.ui.auth.CompanyLogo
 import com.harrisonbacordo.flatmate.ui.theme.AuthOnboardingScreenOption
@@ -37,9 +39,9 @@ import com.harrisonbacordo.flatmate.ui.theme.facebookBlue
  * High-level composable that holds the state and high-level UI composable of the auth landing screen
  */
 @Composable
-fun AuthLanding(onCreateNewAccountClicked: () -> Unit, onLoginClicked: () -> Unit) {
-    val viewModel: AuthLandingViewModel = viewModel()
-    AuthLandingScreen(onCreateNewAccountClicked, onLoginClicked, viewModel::attemptLoginWithFacebook, viewModel::attemptLoginWithGoogle)
+fun AuthLanding(onCreateNewAccountClicked: () -> Unit, onLoginClicked: () -> Unit, onDebugClicked: () -> Unit) {
+    val viewModel: AuthLandingViewModel = ViewModelProvider(AmbientContext.current as ViewModelStoreOwner).get(AuthLandingViewModel::class.java)
+    AuthLandingScreen(onCreateNewAccountClicked, onLoginClicked, onDebugClicked, viewModel::attemptLoginWithFacebook, viewModel::attemptLoginWithGoogle)
 }
 
 /**
@@ -49,10 +51,11 @@ fun AuthLanding(onCreateNewAccountClicked: () -> Unit, onLoginClicked: () -> Uni
 private fun AuthLandingScreen(
     onCreateNewAccountClicked: () -> Unit,
     onLoginClicked: () -> Unit,
+    onDebugClicked: () -> Unit,
     onContinueWithFacebookClicked: () -> Unit,
     onContinueWithGoogleClicked: () -> Unit
 ) {
-    CompanyLogo()
+    CompanyLogo(modifier = Modifier.clickable(onClick = onDebugClicked))
     Column(
         Modifier.fillMaxHeight(),
         verticalArrangement = Arrangement.Bottom,
@@ -71,12 +74,16 @@ private fun AuthLandingScreen(
         AuthOnboardingScreenOption(
             title = "Continue With Facebook",
             leadingIcon = R.drawable.ic_email_24dp,
-            Modifier.background(facebookBlue).clickable(onClick = onContinueWithFacebookClicked)
+            Modifier
+                .background(facebookBlue)
+                .clickable(onClick = onContinueWithFacebookClicked)
         )
         AuthOnboardingScreenOption(
             title = "Continue With Google",
             leadingIcon = R.drawable.ic_email_24dp,
-            modifier = Modifier.background(Color.White).clickable(onClick = onContinueWithGoogleClicked),
+            modifier = Modifier
+                .background(Color.White)
+                .clickable(onClick = onContinueWithGoogleClicked),
             contentColor = Color.Black
         )
     }
@@ -87,7 +94,7 @@ private fun AuthLandingScreen(
 private fun AuthLandingScreenPreview() {
     FlatmateAuthTheme {
         Scaffold {
-            AuthLandingScreen({}, {}, {}, {})
+            AuthLandingScreen({}, {}, {}, {}, {})
         }
     }
 }

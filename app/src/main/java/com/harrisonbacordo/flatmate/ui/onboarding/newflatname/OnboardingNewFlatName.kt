@@ -29,23 +29,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.harrisonbacordo.flatmate.ui.composables.textfield.NameState
 import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
-import com.harrisonbacordo.flatmate.ui.composables.textfield.AlphaTextInput
+import com.harrisonbacordo.flatmate.ui.composables.textfield.AlphaTextField
 import com.harrisonbacordo.flatmate.ui.onboarding.OnboardingHeaderText
 import com.harrisonbacordo.flatmate.ui.theme.FlatmateOnboardingTheme
 
 @Composable
-fun OnboardingNewFlatName(onFlatSuccessfullyCreated: () -> Unit, onBackClicked: () -> Unit) {
+fun OnboardingNewFlatName(userId: String, onFlatSuccessfullyCreated: (userId: String) -> Unit, onBackClicked: () -> Unit) {
     val viewModel: OnboardingNewFlatNameViewModel = ViewModelProvider(AmbientContext.current as ViewModelStoreOwner).get(OnboardingNewFlatNameViewModel::class.java)
     val nameState = remember { NameState() }
     OnboardingNewFlatNameScreen(
         nameState,
-        { viewModel.executeCreateFlatFlow(nameState, onFlatSuccessfullyCreated) },
+        { viewModel.executeCreateFlatFlow(nameState, userId, onFlatSuccessfullyCreated) },
         onBackClicked,
     )
 }
@@ -62,11 +63,12 @@ private fun OnboardingNewFlatNameScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         OnboardingHeaderText(text = "What is the name of your new flat?")
-        AlphaTextInput(
+        AlphaTextField(
             value = flatNameState.text,
             hint = "Flat name",
             onValueChange = flatNameState::updateText,
-            Modifier.fillMaxWidth(),
+            capitalization = KeyboardCapitalization.Words,
+            modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.padding(top = 8.dp))
         Button(
