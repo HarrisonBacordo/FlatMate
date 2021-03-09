@@ -15,9 +15,13 @@ class HomeSettingsFlatmatesViewModel @ViewModelInject constructor(private val fl
     var flatMates: List<User> by mutableStateOf(emptyList())
         private set
 
+    var flatId: String by mutableStateOf("")
+        private set
+
     init {
         viewModelScope.launch(Dispatchers.IO) {
             flatMates = flatRepository.getFlatmates()
+            flatId = flatRepository.getFlatId()
         }
     }
 }

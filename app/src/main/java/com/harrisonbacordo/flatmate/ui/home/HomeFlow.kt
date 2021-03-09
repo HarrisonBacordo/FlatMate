@@ -16,6 +16,7 @@
 package com.harrisonbacordo.flatmate.ui.home
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -54,6 +55,7 @@ import com.harrisonbacordo.flatmate.ui.home.settings.flatmates.HomeSettingsFlatm
  *
  * @param onLogoutClicked Callback that is executed when a logout event has successfully completed
  */
+@ExperimentalAnimationApi
 @Composable
 fun HomeFlow(userId: String, onLogoutClicked: () -> Unit) {
     val homeNavController = rememberNavController()
@@ -74,7 +76,7 @@ fun HomeFlow(userId: String, onLogoutClicked: () -> Unit) {
                 val currentRoute = navBackStackEntry?.arguments?.get(KEY_ROUTE)
                 homeDestinations.forEach { screen ->
                     BottomNavigationItem(
-                        icon = { Icon(screen.icon!!) },
+                        icon = { Icon(screen.icon!!, "") },
                         label = { Text(stringResource(screen.resourceId!!)) },
                         selected = currentRoute == screen.route,
                         onClick = {
@@ -126,6 +128,7 @@ sealed class HomeDestinations(val route: String, @StringRes val resourceId: Int?
     object Flatmates : HomeDestinations("flatmates")
 }
 
+@ExperimentalAnimationApi
 @Preview
 @Composable
 private fun PreviewHomeScreen() {

@@ -15,6 +15,8 @@
  */
 package com.harrisonbacordo.flatmate.ui.composables.textfield
 
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -26,8 +28,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -42,19 +44,14 @@ fun EmailTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     imeAction: ImeAction = ImeAction.Done,
-    onImeAction: () -> Unit = {},
+    keyboardActions: KeyboardActions = KeyboardActions(),
 ) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(stringResource(id = R.string.auth_email_hint)) },
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Email),
-        onImeActionPerformed = { action, softKeyboardController ->
-            if (action == ImeAction.Done) {
-                softKeyboardController?.hideSoftwareKeyboard()
-            }
-            onImeAction()
-        },
+        keyboardActions = keyboardActions,
         modifier = modifier,
     )
 }
@@ -67,19 +64,14 @@ fun AlphaTextField(
     modifier: Modifier = Modifier,
     imeAction: ImeAction = ImeAction.Done,
     capitalization: KeyboardCapitalization = KeyboardCapitalization.Sentences,
-    onImeAction: () -> Unit = {},
+    keyboardActions: KeyboardActions = KeyboardActions(),
 ) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(hint) },
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Text, capitalization = capitalization),
-        onImeActionPerformed = { action, softKeyboardController ->
-            if (action == ImeAction.Done) {
-                softKeyboardController?.hideSoftwareKeyboard()
-            }
-            onImeAction()
-        },
+        keyboardActions = keyboardActions,
         modifier = modifier,
     )
 }
@@ -91,19 +83,14 @@ fun NumericTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     imeAction: ImeAction = ImeAction.Done,
-    onImeAction: () -> Unit = {},
+    keyboardActions: KeyboardActions = KeyboardActions(),
 ) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(hint) },
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Number),
-        onImeActionPerformed = { action, softKeyboardController ->
-            if (action == ImeAction.Done) {
-                softKeyboardController?.hideSoftwareKeyboard()
-            }
-            onImeAction()
-        },
+        keyboardActions = keyboardActions,
         modifier = modifier,
     )
 }
@@ -114,7 +101,7 @@ fun PasswordTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     imeAction: ImeAction = ImeAction.Done,
-    onImeAction: () -> Unit = {},
+    keyboardActions: KeyboardActions = KeyboardActions(),
 ) {
     var passwordIsVisible by remember { mutableStateOf(false) }
     OutlinedTextField(
@@ -124,18 +111,33 @@ fun PasswordTextField(
         visualTransformation = if (passwordIsVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             IconButton(onClick = { passwordIsVisible = !passwordIsVisible }) {
-                Icon(imageVector = vectorResource(id = if (passwordIsVisible) R.drawable.ic_visibility_on_24 else R.drawable.ic_visibility_off_24))
+                Icon(painter = painterResource(id = if (passwordIsVisible) R.drawable.ic_visibility_on_24 else R.drawable.ic_visibility_off_24), "")
             }
         },
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Password),
-        onImeActionPerformed = { action, softKeyboardController ->
-            if (action == ImeAction.Done) {
-                softKeyboardController?.hideSoftwareKeyboard()
-            }
-            onImeAction()
-        },
+        keyboardActions = keyboardActions,
         modifier = modifier,
     )
+}
+
+@Composable
+fun TransparentTextField(
+    value: String,
+    hint: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    imeAction: ImeAction = ImeAction.Done,
+    keyboardActions: KeyboardActions = KeyboardActions(),
+) {
+    BasicTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier,
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Text, capitalization = KeyboardCapitalization.Sentences),
+        keyboardActions = keyboardActions
+    ) {
+        Text(hint)
+    }
 }
 
 @Preview(name = "Email Text Field Preview")

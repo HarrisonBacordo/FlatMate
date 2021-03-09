@@ -15,15 +15,33 @@
  */
 package com.harrisonbacordo.flatmate.data.models
 
+import com.harrisonbacordo.flatmate.util.Keys
+import java.util.*
+
 data class Chore(
-    val title: String,
-    val assignedFlatmateName: String,
-    val interval: Interval
-)
+    val id: UUID = UUID.randomUUID(),
+    val name: String = "New Chore",
+    val assignedFlatmateName: String = "",
+    val assignedFlatmateId: String = "",
+    val interval: Interval = Interval.NotSelected,
+    val completed: Boolean = false,
+) {
+    fun toApiMap(): Map <String, Any> {
+        return mapOf(
+            Keys.Firestore.Chore.id to id.toString(),
+            Keys.Firestore.Chore.name to name,
+            Keys.Firestore.Chore.flatmateId to assignedFlatmateId,
+            Keys.Firestore.Chore.flatmateName to assignedFlatmateName,
+            Keys.Firestore.Chore.interval to interval,
+            Keys.Firestore.Chore.completed to completed,
+        )
+    }
+}
 
 enum class Interval {
     Daily,
     Weekly,
     Fortnightly,
-    Monthly
+    Monthly,
+    NotSelected,
 }

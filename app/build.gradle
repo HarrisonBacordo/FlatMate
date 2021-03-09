@@ -66,6 +66,7 @@ dependencies {
     implementation Libs.AndroidX.coreKtx
     implementation Libs.AndroidX.appcompat
     implementation Libs.AndroidX.navCompose
+    implementation Libs.AndroidX.activityCompose
     implementation Libs.AndroidX.Navigation.fragment
     implementation Libs.AndroidX.Navigation.uiKtx
     implementation Libs.material

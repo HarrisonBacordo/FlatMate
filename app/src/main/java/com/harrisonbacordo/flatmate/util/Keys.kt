@@ -47,7 +47,14 @@ object Keys {
         object Grocery {
             const val id = "id"
             const val name = "name"
-            const val personal = "personal"
+            const val isChecked = "isChecked"
+        }
+        object GroceryList {
+            const val id = "id"
+            const val name = "name"
+            const val ownerId = "ownerId"
+            const val sharedUserIds = "sharedUserIds"
+            const val groceries = "groceries"
         }
 
     }

@@ -15,6 +15,21 @@
  */
 package com.harrisonbacordo.flatmate.data.models
 
+import com.harrisonbacordo.flatmate.util.Keys
+import java.util.*
+import javax.annotation.concurrent.Immutable
+
+@Immutable
 data class Grocery(
-    val name: String
-)
+    val name: String,
+    val id: UUID = UUID.randomUUID(),
+    var isChecked: Boolean = false
+) {
+    fun toApiMap(): Map<String, Any> {
+        return mapOf(
+            Keys.Firestore.Grocery.id to id.toString(),
+            Keys.Firestore.Grocery.name to name,
+            Keys.Firestore.Grocery.isChecked to isChecked,
+        )
+    }
+}

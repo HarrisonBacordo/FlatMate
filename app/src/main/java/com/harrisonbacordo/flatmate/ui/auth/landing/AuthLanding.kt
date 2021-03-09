@@ -21,11 +21,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
@@ -40,7 +41,7 @@ import com.harrisonbacordo.flatmate.ui.theme.facebookBlue
  */
 @Composable
 fun AuthLanding(onCreateNewAccountClicked: () -> Unit, onLoginClicked: () -> Unit, onDebugClicked: () -> Unit) {
-    val viewModel: AuthLandingViewModel = ViewModelProvider(AmbientContext.current as ViewModelStoreOwner).get(AuthLandingViewModel::class.java)
+    val viewModel: AuthLandingViewModel = ViewModelProvider(LocalContext.current as ViewModelStoreOwner).get(AuthLandingViewModel::class.java)
     AuthLandingScreen(onCreateNewAccountClicked, onLoginClicked, onDebugClicked, viewModel::attemptLoginWithFacebook, viewModel::attemptLoginWithGoogle)
 }
 

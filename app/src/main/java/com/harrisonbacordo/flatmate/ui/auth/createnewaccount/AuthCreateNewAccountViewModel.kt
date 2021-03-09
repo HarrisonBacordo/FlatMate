@@ -64,7 +64,7 @@ class AuthCreateNewAccountViewModel @ViewModelInject constructor(private val aut
      */
     private fun attemptCreateNewAccount(email: String, password: String, onCreateNewAccountSuccessful: (userId: String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            authRepository.attemptCreateNewAccount(email, password)?.let {
+            authRepository.createNewAccount(email, password)?.let {
                 withContext(Dispatchers.Main) {
                     onCreateNewAccountSuccessful(it)
                 }

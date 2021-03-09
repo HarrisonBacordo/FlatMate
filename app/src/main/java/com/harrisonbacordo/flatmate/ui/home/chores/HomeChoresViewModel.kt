@@ -22,13 +22,99 @@ import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.harrisonbacordo.flatmate.data.models.Chore
 import com.harrisonbacordo.flatmate.data.repositories.ChoreRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.*
 
 /**
  * [ViewModel] associated with [HomeChores]
  */
 class HomeChoresViewModel @ViewModelInject constructor(private val choreRepository: ChoreRepository, @Assisted private val savedStateHandle: SavedStateHandle) : ViewModel() {
-    var chores: List<Chore> by mutableStateOf(choreRepository.fetchChores())
+    var chores: List<Chore> by mutableStateOf(emptyList())
         private set
+
+    init {
+        fetchChores()
+    }
+
+    private fun fetchChores() {
+        viewModelScope.launch(Dispatchers.IO) {
+            chores = choreRepository.getChores()
+        }
+    }
+
+    fun onChoreNudged(id: UUID) {
+
+    }
+
+    fun onChoreCompleteToggled(id: UUID) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val chore = chores.find { it.id == id }!!
+                val updateChore = choreRepository.updateChore(chore.copy(completed = !chore.completed))
+                val newChoreList = mutableListOf<Chore>()
+                chores.forEach {
+                    if (it.id == id) {
+                        newChoreList.add(updateChore)
+                    } else {
+                        newChoreList.add(it)
+                    }
+                }
+                chores = newChoreList
+            } catch (e: Exception) {
+                TODO()
+            }
+        }
+    }
+
+    fun onChoreAdded() {
+        val chore = Chore()
+        chores = chores.toMutableList().also {
+            it.add(chore)
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val chore = Chore()
+                choreRepository.addChore(chore)
+            } catch (e: Exception) {
+                TODO()
+            }
+        }
+    }
+
+    fun onChoreRemoved(chore: Chore) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                choreRepository.removeChore(chore)
+                chores = chores.toMutableList().also {
+                    it.removeIf { currentChore -> currentChore.id == chore.id }
+                }
+            } catch (e: Exception) {
+                TODO()
+            }
+        }
+
+    }
+
+    fun onChoreEdited(chore: Chore) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val updateChore = choreRepository.updateChore(chore)
+                val newChoreList = mutableListOf<Chore>()
+                chores.forEach {
+                    if (it.id == chore.id) {
+                        newChoreList.add(updateChore)
+                    } else {
+                        newChoreList.add(it)
+                    }
+                }
+                chores = newChoreList
+            } catch (e: Exception) {
+                TODO()
+            }
+        }
+    }
 }

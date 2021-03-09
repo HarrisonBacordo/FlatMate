@@ -16,19 +16,15 @@
 package com.harrisonbacordo.flatmate.data.repositories
 
 import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.harrisonbacordo.flatmate.data.models.User
-import com.harrisonbacordo.flatmate.util.Keys
+import com.harrisonbacordo.flatmate.network.AuthApi
 import dagger.hilt.android.scopes.ActivityRetainedScoped
-import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @ActivityRetainedScoped
-class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth, private val firestore: FirebaseFirestore) {
+class AuthRepository @Inject constructor(private val authApi: AuthApi) {
 
     fun getCurrentUserId(): String? {
-        return firebaseAuth.currentUser?.uid
+        return authApi.getCurrentUserId()
     }
 
     /**
@@ -37,15 +33,9 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth,
      * @param email String that represents the email to create a new account with
      * @param password String that represents the password to create a new account with
      */
-    suspend fun attemptCreateNewAccount(email: String, password: String): String? {
+    suspend fun createNewAccount(email: String, password: String): String? {
         return try {
-            val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
-            authResult.user?.let { user ->
-                createUserInFirestoreWithId(email, user.uid)
-                user.uid
-            } ?: run {
-                null
-            }
+            authApi.createNewAccountWithEmail(email, password)
         } catch (e: Exception) {
             null
         }
@@ -57,9 +47,9 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth,
      * @param email String that represents the email to log in with
      * @param password String that represents the password to log in with
      */
-    suspend fun attemptLogin(email: String, password: String): AuthResult? {
+    suspend fun login(email: String, password: String): AuthResult? {
         return try {
-            firebaseAuth.signInWithEmailAndPassword(email, password).await()
+            authApi.login(email, password)
         } catch (e: Exception) {
             null
         }
@@ -69,17 +59,6 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth,
      * Signs the current user out
      */
     fun signCurrentUserOut() {
-        firebaseAuth.signOut()
-    }
-
-    /**
-     *
-     */
-    private suspend fun createUserInFirestoreWithId(email: String, userId: String) {
-        firestore
-            .collection(Keys.Firestore.User.firestoreCollection)
-            .document(userId)
-            .set(User(email = email, id = userId))
-            .await()
+        authApi.logout()
     }
 }

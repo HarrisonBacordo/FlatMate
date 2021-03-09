@@ -15,16 +15,47 @@
  */
 package com.harrisonbacordo.flatmate.data.repositories
 
-import com.harrisonbacordo.flatmate.data.mocks.Mocks
+import android.util.Log
 import com.harrisonbacordo.flatmate.data.models.Chore
+import com.harrisonbacordo.flatmate.network.ChoreApi
 import javax.inject.Inject
 
-class ChoreRepository @Inject constructor() {
+class ChoreRepository @Inject constructor(private val choreApi: ChoreApi) {
 
     /**
      * Fetches chores from either Room or Firestore
      */
-    fun fetchChores(): List<Chore> {
-        return List(8) { Mocks.ChoreMock }
+    suspend fun getChores(): List<Chore> {
+        return try {
+            choreApi.getChores()
+        } catch (e: Exception) {
+            val ex = e
+            Log.d("", ex.message!!)
+            emptyList()
+        }
+    }
+
+    suspend fun addChore(chore: Chore): Chore {
+        return try {
+            choreApi.addChore(chore)
+        } catch (e: Exception) {
+            TODO()
+        }
+    }
+
+    suspend fun removeChore(chore: Chore) {
+        try {
+            choreApi.removeChore(chore)
+        } catch (e: Exception) {
+            TODO()
+        }
+    }
+
+    suspend fun updateChore(chore: Chore): Chore {
+        return try {
+            choreApi.updateChore(chore)
+        } catch (e: Exception) {
+            TODO()
+        }
     }
 }

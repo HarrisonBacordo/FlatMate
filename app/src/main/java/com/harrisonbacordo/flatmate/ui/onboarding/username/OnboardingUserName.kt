@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -30,8 +31,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focusRequester
-import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,7 +46,7 @@ import com.harrisonbacordo.flatmate.ui.theme.FlatmateOnboardingTheme
 
 @Composable
 fun OnboardingUserName(userId: String, onNextClicked: () -> Unit) {
-    val viewModel: OnboardingUserNameViewModel = ViewModelProvider(AmbientContext.current as ViewModelStoreOwner).get(OnboardingUserNameViewModel::class.java).apply {
+    val viewModel: OnboardingUserNameViewModel = ViewModelProvider(LocalContext.current as ViewModelStoreOwner).get(OnboardingUserNameViewModel::class.java).apply {
         getUser(userId)
     }
     val firstNameState = remember { NameState() }
@@ -72,6 +73,7 @@ private fun OnboardingUserNameScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        firstNameState.getError()
         val lastNameFocusRequest = remember { FocusRequester() }
         OnboardingHeaderText(text = "Welcome! What's your name?")
         AlphaTextField(
@@ -80,13 +82,14 @@ private fun OnboardingUserNameScreen(
             onValueChange = firstNameState::updateText,
             Modifier.fillMaxWidth(),
             imeAction = ImeAction.Next,
-            onImeAction = lastNameFocusRequest::requestFocus,
+            keyboardActions = KeyboardActions(onNext = { lastNameFocusRequest.requestFocus() }),
         )
         AlphaTextField(
             value = lastNameState.text,
             hint = "Last Name",
             onValueChange = lastNameState::updateText,
             Modifier.fillMaxWidth().focusRequester(lastNameFocusRequest),
+            imeAction = ImeAction.Done,
         )
         if (errorMessage.isNotEmpty()) Text(errorMessage, color = MaterialTheme.colors.error)
         Spacer(Modifier.padding(top = 8.dp))

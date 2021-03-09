@@ -29,7 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
@@ -42,7 +42,7 @@ import com.harrisonbacordo.flatmate.ui.theme.FlatmateOnboardingTheme
 
 @Composable
 fun OnboardingExistingFlatIdManualEntry(userId: String, onFlatSuccessfullyJoined: (userId: String) -> Unit, onBackClicked: () -> Unit) {
-    val viewModel: OnboardingExistingFlatIdManualEntryViewModel = ViewModelProvider(AmbientContext.current as ViewModelStoreOwner).get(OnboardingExistingFlatIdManualEntryViewModel::class.java)
+    val viewModel: OnboardingExistingFlatIdManualEntryViewModel = ViewModelProvider(LocalContext.current as ViewModelStoreOwner).get(OnboardingExistingFlatIdManualEntryViewModel::class.java)
     val flatIdState = remember { NameState() }
     OnboardingExistingFlatIdManualEntryScreen(
         flatIdState = flatIdState,

@@ -69,7 +69,7 @@ class AuthLoginViewModel @ViewModelInject constructor(
      */
     private fun attemptLogin(email: String, password: String, onLoginSuccessful: (userId: String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            authRepository.attemptLogin(email, password)?.let {
+            authRepository.login(email, password)?.let {
                 it.user?.let { user ->
                     withContext(Dispatchers.Main) {
                         onLoginSuccessful(user.uid)

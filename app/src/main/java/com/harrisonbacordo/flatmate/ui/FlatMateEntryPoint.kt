@@ -15,6 +15,7 @@
  */
 package com.harrisonbacordo.flatmate.ui
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
@@ -33,6 +34,7 @@ import com.harrisonbacordo.flatmate.ui.theme.FlatmateOnboardingTheme
 /**
  * Entrypoint for the FlatMate application
  */
+@ExperimentalAnimationApi
 @Preview
 @Composable
 fun FlatMateEntryPoint() {

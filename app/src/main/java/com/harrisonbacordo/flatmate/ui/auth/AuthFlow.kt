@@ -44,7 +44,7 @@ fun AuthFlow(onLoginSuccessful: (userId: String) -> Unit, onCreateNewAccountSucc
     val forgotPasswordRoute = { executeNavRoute(authNavController, AuthDestinations.ForgotPassword.name) }
     val debugRoute = { executeNavRoute(authNavController, AuthDestinations.Debug.name) }
     Scaffold(
-        bodyContent = {
+        content = {
             NavHost(authNavController, startDestination = AuthDestinations.Landing.name) {
                 composable(AuthDestinations.Landing.name) {
                     AuthLanding(onCreateNewAccountClicked = createNewAccountRoute, onLoginClicked = loginRoute, onDebugClicked = debugRoute)

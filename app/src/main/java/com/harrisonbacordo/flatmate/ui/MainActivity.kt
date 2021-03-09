@@ -16,8 +16,9 @@
 package com.harrisonbacordo.flatmate.ui
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.platform.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -25,6 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

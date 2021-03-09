@@ -18,7 +18,7 @@ package com.harrisonbacordo.flatmate.ui.home.calendar
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.viewinterop.viewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 /**
  * High-level composable that holds the state and high-level UI composable of the home calendar screen
  */

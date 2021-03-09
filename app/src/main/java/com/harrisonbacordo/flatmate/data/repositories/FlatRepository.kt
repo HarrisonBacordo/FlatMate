@@ -27,6 +27,18 @@ import javax.inject.Inject
 @ActivityRetainedScoped
 class FlatRepository @Inject constructor(private val firebaseAuth: FirebaseAuth, private val firestore: FirebaseFirestore) {
 
+    suspend fun getFlatId(): String {
+        return try {
+            firestore.collection(Keys.Firestore.User.firestoreCollection)
+                .document(firebaseAuth.currentUser!!.uid)
+                .get()
+                .await()
+                .get(Keys.Firestore.User.flatId) as String
+        } catch (e: Exception) {
+            TODO()
+        }
+    }
+
     suspend fun attemptCreateNewFlat(flatName: String, userId: String): String? {
         return try {
             val flatDocument = firestore

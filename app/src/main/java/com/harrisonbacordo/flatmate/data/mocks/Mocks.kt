@@ -16,8 +16,25 @@
 package com.harrisonbacordo.flatmate.data.mocks
 
 import com.harrisonbacordo.flatmate.data.models.Chore
+import com.harrisonbacordo.flatmate.data.models.ExpandableGroceryCardModel
+import com.harrisonbacordo.flatmate.data.models.Grocery
 import com.harrisonbacordo.flatmate.data.models.Interval
 
 object Mocks {
-    val ChoreMock = Chore("Clean kitchen", "Elon Musk", Interval.Fortnightly)
+    val ChoreMock
+        get() = Chore(name = "Clean kitchen", assignedFlatmateName = "Elon Musk", assignedFlatmateId = "", interval = Interval.Fortnightly)
+    val GroceryListMock: List<Grocery>
+        get() = listOf(
+            Grocery("Bananas"),
+            Grocery("Apple"),
+            Grocery("Ground beef"),
+            Grocery("Soup"),
+            Grocery("Beans"),
+            Grocery("Broccolli"),
+            Grocery("Bananas"),
+            Grocery("Bananas")
+        )
+    val GroceryListCardMock
+        get() = ExpandableGroceryCardModel(title = "Harrison's Groceries", expanded = false, groceries = GroceryListMock)
+
 }

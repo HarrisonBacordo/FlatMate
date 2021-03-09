@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -30,8 +31,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focusRequester
-import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,7 +54,7 @@ import com.harrisonbacordo.flatmate.ui.theme.typography
  */
 @Composable
 fun AuthCreateNewAccount(onCreateNewAccountSuccessful: (userId: String) -> Unit) {
-    val viewModel: AuthCreateNewAccountViewModel = ViewModelProvider(AmbientContext.current as ViewModelStoreOwner).get(AuthCreateNewAccountViewModel::class.java)
+    val viewModel: AuthCreateNewAccountViewModel = ViewModelProvider(LocalContext.current as ViewModelStoreOwner).get(AuthCreateNewAccountViewModel::class.java)
     val emailState = remember { EmailState() }
     val passwordState = remember { PasswordState() }
     CreateNewAccountScreen(
@@ -91,7 +92,7 @@ private fun CreateNewAccountScreen(
             onValueChange = emailState::updateText,
             Modifier.fillMaxWidth(),
             imeAction = ImeAction.Next,
-            onImeAction = passwordFocusRequest::requestFocus
+            keyboardActions = KeyboardActions(onNext = { passwordFocusRequest.requestFocus() })
         )
         PasswordTextField(
             value = passwordState.text,

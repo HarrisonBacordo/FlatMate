@@ -15,6 +15,7 @@
  */
 package com.harrisonbacordo.flatmate.ui.theme
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.harrisonbacordo.flatmate.R
 import dev.chrisbanes.accompanist.coil.CoilImage
@@ -37,10 +39,10 @@ fun AuthOnboardingScreenOption(title: String, leadingIcon: Int, modifier: Modifi
     Surface(modifier.fillMaxWidth().padding(vertical = 24.dp, horizontal = 16.dp), contentColor = contentColor) {
         Row(horizontalArrangement = Arrangement.SpaceBetween) {
             Row {
-                CoilImage(data = leadingIcon, Modifier.width(24.dp).height(24.dp), colorFilter = ColorFilter.tint(contentColor))
+                Image(painterResource(id = leadingIcon), "", Modifier.width(24.dp).height(24.dp), colorFilter = ColorFilter.tint(contentColor))
                 Text(title, modifier = Modifier.padding(start = 16.dp), color = contentColor)
             }
-            CoilImage(data = R.drawable.ic_arrow_right_24dp, Modifier.width(24.dp).height(24.dp).padding(end = 8.dp), colorFilter = ColorFilter.tint(contentColor))
+            Image(painterResource(id = R.drawable.ic_arrow_right_24dp), "", Modifier.width(24.dp).height(24.dp).padding(end = 8.dp), colorFilter = ColorFilter.tint(contentColor))
         }
     }
 }

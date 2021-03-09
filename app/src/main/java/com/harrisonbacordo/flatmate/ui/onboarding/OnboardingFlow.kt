@@ -17,7 +17,7 @@ package com.harrisonbacordo.flatmate.ui.onboarding
 
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
@@ -39,7 +39,7 @@ import com.harrisonbacordo.flatmate.ui.onboarding.username.OnboardingUserName
  */
 @Composable
 fun OnboardingFlow(userId: String, onOnboardingComplete: (userId: String) -> Unit) {
-    val viewModel: OnboardingFlowViewModel = ViewModelProvider(AmbientContext.current as ViewModelStoreOwner).get(OnboardingFlowViewModel::class.java)
+    val viewModel: OnboardingFlowViewModel = ViewModelProvider(LocalContext.current as ViewModelStoreOwner).get(OnboardingFlowViewModel::class.java)
     val onboardingNavController = rememberNavController()
     val userNameRoute = { executeNavRoute(onboardingNavController, OnboardingDestinations.UserName.name) }
     val existingOrNewFlatRoute = { executeNavRoute(onboardingNavController, OnboardingDestinations.ExistingOrNewFlat.name) }
@@ -48,7 +48,7 @@ fun OnboardingFlow(userId: String, onOnboardingComplete: (userId: String) -> Uni
     val existingFlatQrScannerRoute = { executeNavRoute(onboardingNavController, OnboardingDestinations.ExistingFlatQrScanner.name) }
     val existingFlatManualEntryIdRoute = { executeNavRoute(onboardingNavController, OnboardingDestinations.ExistingFlatIdManualEntry.name) }
     Scaffold(
-        bodyContent = {
+        content = {
             NavHost(onboardingNavController, startDestination = OnboardingDestinations.UserName.name) {
                 composable(OnboardingDestinations.UserName.name) {
                     OnboardingUserName(userId = userId, onNextClicked = existingOrNewFlatRoute)

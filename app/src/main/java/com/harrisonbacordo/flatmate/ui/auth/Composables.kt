@@ -15,6 +15,7 @@
  */
 package com.harrisonbacordo.flatmate.ui.auth
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +24,8 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.harrisonbacordo.flatmate.R
@@ -31,7 +34,7 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 @Composable
 fun CompanyLogo(modifier: Modifier = Modifier) {
     Column(Modifier.fillMaxWidth().wrapContentHeight(), verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.CenterHorizontally) {
-        CoilImage(data = R.drawable.ic_logo_transparent, modifier.width(250.dp))
+        Image(painterResource(id = R.drawable.ic_logo_transparent), "Logo", modifier = modifier.width(250.dp))
     }
 }
 
