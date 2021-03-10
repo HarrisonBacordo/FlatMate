@@ -58,13 +58,13 @@ import java.util.*
  * High-level composable that holds the state and high-level UI composable of the home chores screen
  */
 @Composable
-fun HomeChores() {
+fun HomeChores(onNewChoreClicked: () -> Unit) {
     val viewModel: HomeChoresViewModel = ViewModelProvider(LocalContext.current as ViewModelStoreOwner).get(HomeChoresViewModel::class.java)
     ChoresScreen(
         chores = viewModel.chores,
         onChoreNudged = viewModel::onChoreNudged,
         onChoreCompleteToggled = viewModel::onChoreCompleteToggled,
-        onChoreAdded = viewModel::onChoreAdded,
+        onChoreAdded = onNewChoreClicked,
         onChoreRemoved = viewModel::onChoreRemoved,
         onChoreEdited = viewModel::onChoreEdited
     )

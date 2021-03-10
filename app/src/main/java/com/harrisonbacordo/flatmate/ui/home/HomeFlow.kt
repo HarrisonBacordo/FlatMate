@@ -66,6 +66,7 @@ fun HomeFlow(userId: String, onLogoutClicked: () -> Unit) {
         HomeDestinations.Settings
     )
     val flatmatesRoute = { executeNavRoute(homeNavController, HomeDestinations.Flatmates.route) }
+    val newChoreRoute = { executeNavRoute(homeNavController, HomeDestinations.NewChore.route) }
     Scaffold(
         topBar = {
             TopAppBar(title = { Text("Flatmate") })
@@ -91,7 +92,7 @@ fun HomeFlow(userId: String, onLogoutClicked: () -> Unit) {
         }
     ) {
         NavHost(homeNavController, startDestination = HomeDestinations.Chores.route) {
-            composable(HomeDestinations.Chores.route) { HomeChores() }
+            composable(HomeDestinations.Chores.route) { HomeChores(onNewChoreClicked = newChoreRoute) }
             composable(HomeDestinations.Calendar.route) { HomeCalendar() }
             composable(HomeDestinations.Groceries.route) { HomeGroceries() }
             composable(HomeDestinations.Settings.route) { HomeSettings(onFlatmatesClicked = flatmatesRoute, onLogoutSuccessful = onLogoutClicked) }
