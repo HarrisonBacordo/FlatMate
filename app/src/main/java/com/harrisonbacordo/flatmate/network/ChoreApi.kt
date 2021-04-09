@@ -1,5 +1,6 @@
 package com.harrisonbacordo.flatmate.network
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.harrisonbacordo.flatmate.data.models.Chore
@@ -24,6 +25,7 @@ class ChoreApiImpl @Inject constructor(private val firebaseAuth: FirebaseAuth, p
                 .await()
                 .toObjects(Chore::class.java)
         } catch (e: Exception) {
+            Log.d("EXCEPTION", e.message!!)
             emptyList()
         }
     }

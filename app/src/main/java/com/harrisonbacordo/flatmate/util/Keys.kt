@@ -41,8 +41,8 @@ object Keys {
             const val name = "name"
             const val completed = "completed"
             const val interval = "interval"
-            const val flatmateName = "flatmateName"
-            const val flatmateId = "flatmateId"
+            const val flatmateName = "assignedFlatmateName"
+            const val flatmateId = "assignedFlatmateId"
         }
         object Grocery {
             const val id = "id"

@@ -21,8 +21,7 @@ import androidx.compose.runtime.setValue
 
 open class TextFieldState(private val validator: (String) -> Boolean = { true }, private val errorFor: (String) -> String = { "" }) {
     var text: String by mutableStateOf("")
-    private var displayErrors: Boolean by mutableStateOf(true)
-        private set
+    var displayErrors: Boolean by mutableStateOf(false)
     open val isValid: Boolean
         get() = validator(text)
 

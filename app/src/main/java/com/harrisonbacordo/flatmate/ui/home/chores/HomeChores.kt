@@ -58,13 +58,12 @@ import java.util.*
  * High-level composable that holds the state and high-level UI composable of the home chores screen
  */
 @Composable
-fun HomeChores(onNewChoreClicked: () -> Unit) {
+fun HomeChores() {
     val viewModel: HomeChoresViewModel = ViewModelProvider(LocalContext.current as ViewModelStoreOwner).get(HomeChoresViewModel::class.java)
     ChoresScreen(
         chores = viewModel.chores,
         onChoreNudged = viewModel::onChoreNudged,
         onChoreCompleteToggled = viewModel::onChoreCompleteToggled,
-        onChoreAdded = onNewChoreClicked,
         onChoreRemoved = viewModel::onChoreRemoved,
         onChoreEdited = viewModel::onChoreEdited
     )
@@ -76,9 +75,8 @@ fun HomeChores(onNewChoreClicked: () -> Unit) {
 @Composable
 private fun ChoresScreen(
     chores: List<Chore>,
-    onChoreNudged: (UUID) -> Unit,
-    onChoreCompleteToggled: (UUID) -> Unit,
-    onChoreAdded: () -> Unit,
+    onChoreNudged: (String) -> Unit,
+    onChoreCompleteToggled: (String) -> Unit,
     onChoreRemoved: (Chore) -> Unit,
     onChoreEdited: (Chore) -> Unit,
 ) {
@@ -92,9 +90,6 @@ private fun ChoresScreen(
                 onChoreRemoved = onChoreRemoved
             )
         }
-        item {
-            AddNewChoreCard(onClicked = { onChoreAdded() })
-        }
     }
 }
 
@@ -106,8 +101,8 @@ private fun ChoresScreen(
 @Composable
 private fun ChoreCard(
     chore: Chore,
-    onChoreNudged: (UUID) -> Unit,
-    onChoreCompleteToggled: (UUID) -> Unit,
+    onChoreNudged: (String) -> Unit,
+    onChoreCompleteToggled: (String) -> Unit,
     onChoreEdited: (Chore) -> Unit,
     onChoreRemoved: (Chore) -> Unit,
     ) {
@@ -159,7 +154,7 @@ private fun ChorePopupMenu(
 @Composable
 fun ChoresScreenPreview() {
     FlatMateHomeTheme {
-        ChoresScreen(List(10) { Mocks.ChoreMock }, {}, {}, {}, {}, {})
+        ChoresScreen(List(10) { Mocks.ChoreMock }, {}, {}, {}, {})
     }
 }
 

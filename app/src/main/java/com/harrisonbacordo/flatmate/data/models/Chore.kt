@@ -19,7 +19,7 @@ import com.harrisonbacordo.flatmate.util.Keys
 import java.util.*
 
 data class Chore(
-    val id: UUID = UUID.randomUUID(),
+    val id: String = UUID.randomUUID().toString(),
     val name: String = "New Chore",
     val assignedFlatmateName: String = "",
     val assignedFlatmateId: String = "",
@@ -28,7 +28,7 @@ data class Chore(
 ) {
     fun toApiMap(): Map <String, Any> {
         return mapOf(
-            Keys.Firestore.Chore.id to id.toString(),
+            Keys.Firestore.Chore.id to id,
             Keys.Firestore.Chore.name to name,
             Keys.Firestore.Chore.flatmateId to assignedFlatmateId,
             Keys.Firestore.Chore.flatmateName to assignedFlatmateName,

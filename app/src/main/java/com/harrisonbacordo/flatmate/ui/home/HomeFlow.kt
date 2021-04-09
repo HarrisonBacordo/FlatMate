@@ -24,6 +24,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExtendedFloatingActionButton
@@ -37,6 +40,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CleaningServices
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.LocalGroceryStore
 import androidx.compose.material.icons.filled.Menu
@@ -45,7 +49,10 @@ import androidx.compose.material.rememberDrawerState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -60,6 +67,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.harrisonbacordo.flatmate.R
+import com.harrisonbacordo.flatmate.network.FlatmateNetworkResult
+import com.harrisonbacordo.flatmate.network.FlatmateSuccessNetworkResult
 import com.harrisonbacordo.flatmate.ui.home.calendar.HomeCalendar
 import com.harrisonbacordo.flatmate.ui.home.calendar.HomeNewEvent
 import com.harrisonbacordo.flatmate.ui.home.chores.HomeChores
@@ -84,11 +93,16 @@ fun HomeFlow(userId: String, onLogoutClicked: () -> Unit) {
     val scopedCoroutine = rememberCoroutineScope()
     val navBackStackEntry by homeNavController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.arguments?.get(KEY_ROUTE)
-
+    var savePressed by remember { mutableStateOf(false) }
+    val inSecondaryScreen = homeNewDestinations.find { it.route == currentRoute } != null
+    val navIconImageVector = if (inSecondaryScreen) Icons.Default.Close else Icons.Default.Menu
+    val onSaveComplete: (FlatmateNetworkResult) -> Unit = {
+        savePressed = false
+        if (it is FlatmateSuccessNetworkResult) {
+        }
+    }
     val flatmatesRoute = { executeNavRoute(homeNavController, HomeDestinations.Flatmates.route) }
     val newChoreRoute = { executeNavRoute(homeNavController, HomeDestinations.NewChore.route) }
-    val newEventRoute = { executeNavRoute(homeNavController, HomeDestinations.NewEvent.route) }
-    val newGroceryRoute = { executeNavRoute(homeNavController, HomeDestinations.NewGrocery.route) }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -96,16 +110,35 @@ fun HomeFlow(userId: String, onLogoutClicked: () -> Unit) {
                 title = { Text("Flatmate") },
                 navigationIcon = {
                     Icon(
-                        Icons.Default.Menu,
+                        navIconImageVector,
                         contentDescription = null,
                         modifier = Modifier
                             .clickable {
-                                scopedCoroutine.launch {
-                                    scaffoldState.drawerState.open()
+                                if (inSecondaryScreen) {
+                                    homeNavController.popBackStack()
+                                } else {
+                                    scopedCoroutine.launch {
+                                        scaffoldState.drawerState.open()
+                                    }
                                 }
                             }
                             .padding(start = 16.dp)
                     )
+                },
+                actions = {
+                    if (inSecondaryScreen) {
+                        if (savePressed) {
+                            CircularProgressIndicator(color = MaterialTheme.colors.onPrimary)
+                        } else {
+                            Button(
+                                onClick = { savePressed = true },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.onPrimary, contentColor = MaterialTheme.colors.primary),
+                                 modifier = Modifier.padding(end = 8.dp)
+                            ) {
+                                Text("Save")   // TODO dynamic color
+                            }
+                        }
+                    }
                 }
             )
         },
@@ -157,13 +190,13 @@ fun HomeFlow(userId: String, onLogoutClicked: () -> Unit) {
         scaffoldState = scaffoldState,
     ) {
         NavHost(homeNavController, startDestination = HomeDestinations.Chores.route) {
-            composable(HomeDestinations.Chores.route) { HomeChores(onNewChoreClicked = newChoreRoute) }
+            composable(HomeDestinations.Chores.route) { HomeChores() }
             composable(HomeDestinations.Calendar.route) { HomeCalendar() }
             composable(HomeDestinations.Groceries.route) { HomeGroceries() }
             composable(HomeDestinations.Settings.route) { HomeSettings(onFlatmatesClicked = flatmatesRoute, onLogoutSuccessful = onLogoutClicked) }
-            composable(HomeDestinations.NewChore.route) { HomeNewChore() }
-            composable(HomeDestinations.NewEvent.route) { HomeNewEvent() }
-            composable(HomeDestinations.NewGrocery.route) { HomeNewGrocery() }
+            composable(HomeDestinations.NewChore.route) { HomeNewChore(initiateSave = savePressed, onSaveComplete = onSaveComplete) }
+            composable(HomeDestinations.NewEvent.route) { HomeNewEvent(initiateSave = savePressed, onSaveComplete = onSaveComplete) }
+            composable(HomeDestinations.NewGrocery.route) { HomeNewGrocery(initiateSave = savePressed, onSaveComplete = onSaveComplete) }
             composable(HomeDestinations.Flatmates.route) { HomeSettingsFlatmates() }
         }
     }
@@ -217,6 +250,12 @@ private val homeDestinations = listOf(
     HomeDestinations.Calendar,
     HomeDestinations.Groceries,
     HomeDestinations.Settings
+)
+
+private val homeNewDestinations = listOf(
+    HomeDestinations.NewChore,
+    HomeDestinations.NewEvent,
+    HomeDestinations.NewGrocery,
 )
 
 @ExperimentalMaterialApi

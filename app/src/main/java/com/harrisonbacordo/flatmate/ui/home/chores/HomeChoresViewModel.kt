@@ -43,14 +43,15 @@ class HomeChoresViewModel @ViewModelInject constructor(private val choreReposito
     private fun fetchChores() {
         viewModelScope.launch(Dispatchers.IO) {
             chores = choreRepository.getChores()
+            println()
         }
     }
 
-    fun onChoreNudged(id: UUID) {
+    fun onChoreNudged(id: String) {
 
     }
 
-    fun onChoreCompleteToggled(id: UUID) {
+    fun onChoreCompleteToggled(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val chore = chores.find { it.id == id }!!

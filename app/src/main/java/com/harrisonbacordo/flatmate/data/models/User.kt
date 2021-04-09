@@ -23,7 +23,9 @@ data class User(
     val email: String = "",
     val firstName: String = "",
     val lastName: String = "",
-    val fullName: String = "",
     val profPicUri: String = "",
     val nudgeCount: Int = 0,
-) : Serializable
+) : Serializable {
+    val fullName
+        get() = "$firstName $lastName"
+}

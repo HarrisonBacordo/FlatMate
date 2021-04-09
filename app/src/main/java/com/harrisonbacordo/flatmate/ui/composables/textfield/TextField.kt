@@ -15,19 +15,24 @@
  */
 package com.harrisonbacordo.flatmate.ui.composables.textfield
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -43,6 +48,7 @@ fun EmailTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    errorMessage: String? = null,
     imeAction: ImeAction = ImeAction.Done,
     keyboardActions: KeyboardActions = KeyboardActions(),
 ) {
@@ -62,18 +68,29 @@ fun AlphaTextField(
     hint: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    errorMessage: String? = null,
     imeAction: ImeAction = ImeAction.Done,
     capitalization: KeyboardCapitalization = KeyboardCapitalization.Sentences,
     keyboardActions: KeyboardActions = KeyboardActions(),
 ) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        label = { Text(hint) },
-        keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Text, capitalization = capitalization),
-        keyboardActions = keyboardActions,
-        modifier = modifier,
-    )
+    Column {
+        TextField(
+            value = value,
+            onValueChange = onValueChange,
+            label = { Text(hint) },
+            isError = !errorMessage.isNullOrEmpty(),
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Text, capitalization = capitalization),
+            keyboardActions = keyboardActions,
+            modifier = modifier,
+        )
+        if (!errorMessage.isNullOrEmpty()) {
+            Text(
+                text = errorMessage,
+                style = MaterialTheme.typography.caption,
+                color = MaterialTheme.colors.error
+            )
+        }
+    }
 }
 
 @Composable
@@ -82,6 +99,7 @@ fun NumericTextField(
     hint: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    errorMessage: String? = null,
     imeAction: ImeAction = ImeAction.Done,
     keyboardActions: KeyboardActions = KeyboardActions(),
 ) {
@@ -100,6 +118,7 @@ fun PasswordTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    errorMessage: String? = null,
     imeAction: ImeAction = ImeAction.Done,
     keyboardActions: KeyboardActions = KeyboardActions(),
 ) {
@@ -126,6 +145,7 @@ fun TransparentTextField(
     hint: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    errorMessage: String? = null,
     imeAction: ImeAction = ImeAction.Done,
     keyboardActions: KeyboardActions = KeyboardActions(),
 ) {
