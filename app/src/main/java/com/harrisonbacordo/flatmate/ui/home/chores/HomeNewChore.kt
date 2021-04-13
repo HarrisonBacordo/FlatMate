@@ -13,6 +13,8 @@ import androidx.compose.material.RadioButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -27,7 +29,6 @@ import com.harrisonbacordo.flatmate.data.models.Interval
 import com.harrisonbacordo.flatmate.data.models.User
 import com.harrisonbacordo.flatmate.network.FlatmateNetworkResult
 import com.harrisonbacordo.flatmate.ui.composables.textfield.AlphaTextField
-import com.harrisonbacordo.flatmate.ui.composables.textfield.RequiredTextFieldState
 import com.harrisonbacordo.flatmate.ui.theme.FlatMateHomeTheme
 
 @Composable
@@ -36,14 +37,15 @@ fun HomeNewChore(initiateSave: Boolean, onSaveComplete: (FlatmateNetworkResult) 
     if (initiateSave) {
         viewModel.onChoreSaved(onSaveComplete)
     }
+    val viewState by viewModel.state.collectAsState()
     NewChoreScreen(
-        viewModel.state,
+        viewState,
         onIntervalClicked = viewModel::onIntervalClicked,
         onIntervalSelected = viewModel::onIntervalSelected,
-        onIntervalDialogDismissRequest = viewModel::onIntervalDialogDismissRequest,
+        onIntervalDialogDismissRequest = viewModel::dismissDialog,
         onFlatmatesClicked = viewModel::onFlatmatesClicked,
         onFlatmateSelected = viewModel::onFlatmateSelected,
-        onFlatmateDialogDismissRequest = viewModel::onFlatmateDialogDismissRequest,
+        onFlatmateDialogDismissRequest = viewModel::dismissDialog,
     )
 }
 
@@ -62,24 +64,29 @@ private fun NewChoreScreen(
             .padding(horizontal = 16.dp)
             .fillMaxSize()
     ) {
-        AlphaTextField(value = state.choreName.text, hint = "Chore Name", onValueChange = state.choreName::updateText, errorMessage = state.choreName.getError())
-        SelectableFormOption(iconResId = R.drawable.ic_interval, label = state.choreInterval.name) {
+        AlphaTextField(
+            value = state.choreFieldsState.choreName.text,
+            hint = "Chore Name",
+            onValueChange = state.choreFieldsState.choreName::updateText,
+            errorMessage = state.choreFieldsState.choreName.getError()
+        )
+        SelectableFormOption(iconResId = R.drawable.ic_interval, label = state.choreFieldsState.choreInterval.name) {
             onIntervalClicked()
         }
-        SelectableFormOption(iconResId = R.drawable.ic_person, label = state.assignedFlatmate?.fullName ?: "Assign flatmate") {
+        SelectableFormOption(iconResId = R.drawable.ic_person, label = state.choreFieldsState.assignedFlatmate?.fullName ?: "Assign flatmate") {
             onFlatmatesClicked()
         }
     }
-    if (state.showIntervalDialog) {
+    if (state.currentDialog == NewChoreDialog.Interval) {
         IntervalDialog(
-            selected = state.choreInterval,
+            selected = state.choreFieldsState.choreInterval,
             onIntervalSelected = onIntervalSelected,
             onIntervalDialogDismissRequest = onIntervalDialogDismissRequest,
         )
     }
-    if (state.showFlatmatesDialog && !state.flatmates.isNullOrEmpty()) {
+    if (state.currentDialog == NewChoreDialog.Flatmates && !state.flatmates.isNullOrEmpty()) {
         FlatmatesDialog(
-            selectedFlatmate = state.assignedFlatmate,
+            selectedFlatmate = state.choreFieldsState.assignedFlatmate,
             flatmates = state.flatmates,
             onFlatmateSelected = onFlatmateSelected,
             onFlatmatesDialogDismissRequest = onFlatmateDialogDismissRequest,
@@ -164,7 +171,7 @@ private fun FlatmatesDialog(
 @Composable
 private fun NewChorePreview() {
     FlatMateHomeTheme {
-        NewChoreScreen(state = HomeNewChoreState(choreName = RequiredTextFieldState(), choreInterval = Interval.Daily, assignedFlatmate = User(), errorMessage = ""), {}, {}, {}, {}, {}, {})
+        NewChoreScreen(state = HomeNewChoreState(), {}, {}, {}, {}, {}, {})
     }
 }
 

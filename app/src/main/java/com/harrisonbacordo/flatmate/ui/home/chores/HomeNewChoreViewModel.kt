@@ -15,9 +15,6 @@
  */
 package com.harrisonbacordo.flatmate.ui.home.chores
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
@@ -32,6 +29,10 @@ import com.harrisonbacordo.flatmate.network.FlatmateErrorNetworkResult
 import com.harrisonbacordo.flatmate.network.FlatmateNetworkResult
 import com.harrisonbacordo.flatmate.network.FlatmateSuccessNetworkResult
 import com.harrisonbacordo.flatmate.ui.composables.textfield.RequiredTextFieldState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 /**
@@ -42,44 +43,54 @@ class HomeNewChoreViewModel @ViewModelInject constructor(
     private val choreRepository: ChoreRepository,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    var state: HomeNewChoreState by mutableStateOf(
-        HomeNewChoreState(
-            choreName = RequiredTextFieldState(),
-            errorMessage = "",
-        )
-    )
-        private set
+
+    val state: StateFlow<HomeNewChoreState> get() = _state
+    private val _state = MutableStateFlow(HomeNewChoreState())
+
+    private val choreFieldsState = MutableStateFlow(HomeNewChoreFieldsState())
+    private val flatmates = MutableStateFlow(listOf<User>())
+    private val errorMessage = MutableStateFlow<String?>(null)
+    private val currentDialog = MutableStateFlow(NewChoreDialog.None)
+    private val saveComplete = MutableStateFlow(false)
+
 
     init {
         viewModelScope.launch {
-            state = state.copy(
-                flatmates = flatRepository.getFlatmates()
-            )
+            flatmates.value = flatRepository.getFlatmates()
+            combine(choreFieldsState, flatmates, errorMessage, currentDialog, saveComplete) { choreFieldsState, flatmates, errorMessage, currentDialog, saveComplete ->
+                HomeNewChoreState(
+                    choreFieldsState = choreFieldsState,
+                    flatmates = flatmates,
+                    errorMessage = errorMessage,
+                    currentDialog = currentDialog,
+                    saveComplete = saveComplete
+                )
+            }.collect {
+                _state.value = it
+            }
         }
     }
 
     fun onIntervalClicked() {
-        state = state.copy(showIntervalDialog = true)
+        currentDialog.value = NewChoreDialog.Interval
     }
 
     fun onIntervalSelected(interval: Interval) {
-        state = state.copy(choreInterval = interval, showIntervalDialog = false)
-    }
-
-    fun onIntervalDialogDismissRequest() {
-        state = state.copy(showIntervalDialog = false)
+        choreFieldsState.value = choreFieldsState.value.copy(choreInterval = interval)
+        currentDialog.value = NewChoreDialog.None
     }
 
     fun onFlatmatesClicked() {
-        state = state.copy(showFlatmatesDialog = true)
+        currentDialog.value = NewChoreDialog.Flatmates
     }
 
     fun onFlatmateSelected(flatmate: User) {
-        state = state.copy(assignedFlatmate = flatmate, showFlatmatesDialog = false)
+        choreFieldsState.value = choreFieldsState.value.copy(assignedFlatmate = flatmate)
+        dismissDialog()
     }
 
-    fun onFlatmateDialogDismissRequest() {
-        state = state.copy(showFlatmatesDialog = false)
+    fun dismissDialog() {
+        currentDialog.value = NewChoreDialog.None
     }
 
     fun onChoreSaved(onSaveComplete: (FlatmateNetworkResult) -> Unit) {
@@ -89,11 +100,10 @@ class HomeNewChoreViewModel @ViewModelInject constructor(
         }
         viewModelScope.launch {
             val newChore = Chore(
-                name = state.choreName.text,
-                assignedFlatmateId = state.assignedFlatmate!!.id,
-                assignedFlatmateName = state.assignedFlatmate!!.fullName,
-                interval = state.choreInterval,
-                completed = false,
+                name = choreFieldsState.value.choreName.text,
+                assignedFlatmateId = choreFieldsState.value.assignedFlatmate!!.id,
+                assignedFlatmateName = choreFieldsState.value.assignedFlatmate!!.fullName,
+                interval = choreFieldsState.value.choreInterval,
             )
             choreRepository.addChore(newChore)
             onSaveComplete(FlatmateSuccessNetworkResult)
@@ -102,29 +112,38 @@ class HomeNewChoreViewModel @ViewModelInject constructor(
 
     private fun fieldsAreValid(): Boolean {
         var isValid = true
-        if (!state.choreName.isValid) {
-            state.choreName.displayErrors = true
-            isValid =  false
+        if (!choreFieldsState.value.choreName.isValid) {
+            choreFieldsState.value.choreName.displayErrors = true
+            isValid = false
         }
-        if (state.assignedFlatmate == null) {
+        if (choreFieldsState.value.assignedFlatmate == null) {
             // TODO no assigned flatmate error
-            isValid =  false
+            isValid = false
         }
-        if (state.choreInterval == Interval.NotSelected) {
+        if (choreFieldsState.value.choreInterval == Interval.NotSelected) {
             // TODO no interval selected error
-            isValid =  false
+            isValid = false
         }
         return isValid
     }
 }
 
+enum class NewChoreDialog {
+    Interval,
+    Flatmates,
+    None
+}
+
 data class HomeNewChoreState(
-    val choreName: RequiredTextFieldState,
+    val choreFieldsState: HomeNewChoreFieldsState = HomeNewChoreFieldsState(),
+    val flatmates: List<User>? = null,
+    val errorMessage: String? = null,
+    val currentDialog: NewChoreDialog = NewChoreDialog.None,
+    val saveComplete: Boolean = false
+)
+
+data class HomeNewChoreFieldsState(
+    val choreName: RequiredTextFieldState = RequiredTextFieldState(),
     val choreInterval: Interval = Interval.NotSelected,
     val assignedFlatmate: User? = null,
-    val flatmates: List<User>? = null,
-    val errorMessage: String,
-    val showIntervalDialog: Boolean = false,
-    val showFlatmatesDialog: Boolean = false,
-    val saveComplete: Boolean = false
 )
