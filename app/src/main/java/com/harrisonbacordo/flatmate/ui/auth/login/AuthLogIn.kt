@@ -40,11 +40,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.harrisonbacordo.flatmate.ui.auth.CompanyLogo
-import com.harrisonbacordo.flatmate.ui.composables.textfield.EmailState
-import com.harrisonbacordo.flatmate.ui.composables.textfield.EmailTextField
-import com.harrisonbacordo.flatmate.ui.composables.textfield.PasswordState
-import com.harrisonbacordo.flatmate.ui.composables.textfield.PasswordTextField
-import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
+import com.harrisonbacordo.flatmate.ui.composables.field.textfield.EmailState
+import com.harrisonbacordo.flatmate.ui.composables.field.textfield.EmailTextField
+import com.harrisonbacordo.flatmate.ui.composables.field.textfield.PasswordState
+import com.harrisonbacordo.flatmate.ui.composables.field.textfield.PasswordTextField
+import com.harrisonbacordo.flatmate.ui.composables.field.textfield.TextFieldState
 import com.harrisonbacordo.flatmate.ui.theme.FlatmateAuthTheme
 import com.harrisonbacordo.flatmate.ui.theme.typography
 

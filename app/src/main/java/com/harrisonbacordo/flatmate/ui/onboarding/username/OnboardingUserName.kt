@@ -38,9 +38,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
-import com.harrisonbacordo.flatmate.ui.composables.textfield.AlphaTextField
-import com.harrisonbacordo.flatmate.ui.composables.textfield.NameState
-import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
+import com.harrisonbacordo.flatmate.ui.composables.field.textfield.AlphaTextField
+import com.harrisonbacordo.flatmate.ui.composables.field.textfield.NameState
+import com.harrisonbacordo.flatmate.ui.composables.field.textfield.TextFieldState
 import com.harrisonbacordo.flatmate.ui.onboarding.OnboardingHeaderText
 import com.harrisonbacordo.flatmate.ui.theme.FlatmateOnboardingTheme
 

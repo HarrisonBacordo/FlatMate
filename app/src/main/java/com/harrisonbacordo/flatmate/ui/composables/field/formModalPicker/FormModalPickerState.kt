@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.harrisonbacordo.flatmate.ui.composables.textfield
+package com.harrisonbacordo.flatmate.ui.composables.field.formModalPicker
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
-open class TextFieldState(private val validator: (String) -> Boolean = { true }, private val errorFor: (String) -> String = { "" }) {
+open class FormModalPickerState(private val validator: (String) -> Boolean = { true }, private val errorFor: (String) -> String = { "" }) {
     var text: String by mutableStateOf("")
     var displayErrors: Boolean by mutableStateOf(false)
     open val isValid: Boolean

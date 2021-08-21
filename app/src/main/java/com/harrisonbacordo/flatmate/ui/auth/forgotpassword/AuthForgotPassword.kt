@@ -22,7 +22,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.harrisonbacordo.flatmate.ui.composables.textfield.EmailTextField
+import com.harrisonbacordo.flatmate.ui.composables.field.textfield.EmailTextField
 import com.harrisonbacordo.flatmate.ui.theme.FlatmateAuthTheme
 
 /**

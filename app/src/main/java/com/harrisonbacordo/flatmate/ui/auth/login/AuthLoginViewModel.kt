@@ -24,7 +24,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harrisonbacordo.flatmate.data.repositories.AuthRepository
-import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
+import com.harrisonbacordo.flatmate.ui.composables.field.textfield.TextFieldState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

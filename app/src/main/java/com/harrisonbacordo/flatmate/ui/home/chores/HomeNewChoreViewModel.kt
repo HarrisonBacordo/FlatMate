@@ -28,7 +28,7 @@ import com.harrisonbacordo.flatmate.data.repositories.FlatRepository
 import com.harrisonbacordo.flatmate.network.FlatmateErrorNetworkResult
 import com.harrisonbacordo.flatmate.network.FlatmateNetworkResult
 import com.harrisonbacordo.flatmate.network.FlatmateSuccessNetworkResult
-import com.harrisonbacordo.flatmate.ui.composables.textfield.RequiredTextFieldState
+import com.harrisonbacordo.flatmate.ui.composables.field.textfield.RequiredTextFieldState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect

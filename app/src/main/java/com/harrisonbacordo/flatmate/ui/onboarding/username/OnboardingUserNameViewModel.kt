@@ -23,7 +23,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harrisonbacordo.flatmate.data.models.User
 import com.harrisonbacordo.flatmate.data.repositories.UserRepository
-import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
+import com.harrisonbacordo.flatmate.ui.composables.field.textfield.TextFieldState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

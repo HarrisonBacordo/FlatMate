@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.harrisonbacordo.flatmate.ui.composables.textfield
+package com.harrisonbacordo.flatmate.ui.composables.field.textfield
 
 import android.text.TextUtils
-import android.util.Patterns
 
-class EmailState : TextFieldState(validator = ::isEmailValid, errorFor = ::emailValidationError)
+class NameState : TextFieldState(validator = ::isNameValid, errorFor = ::nameValidationError)
 
-private fun emailValidationError(email: String): String {
-    return "Invalid email: ${if (email.isBlank()) "the email field cannot be blank." else email}"
+private fun nameValidationError(name: String): String {
+    return if (name.isBlank()) "Invalid name: the name field cannot be blank." else "Something unexpected occurred. Please try again"
 }
 
-private fun isEmailValid(email: String): Boolean {
-    return !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()
+private fun isNameValid(name: String): Boolean {
+    return !TextUtils.isEmpty(name)
 }

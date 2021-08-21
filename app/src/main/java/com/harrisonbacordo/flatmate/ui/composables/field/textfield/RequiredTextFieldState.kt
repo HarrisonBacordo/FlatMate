@@ -1,4 +1,4 @@
-package com.harrisonbacordo.flatmate.ui.composables.textfield
+package com.harrisonbacordo.flatmate.ui.composables.field.textfield
 
 class RequiredTextFieldState: TextFieldState(validator = ::isRequiredTextFieldValid, errorFor = ::requiredTextFieldValidationError)
 

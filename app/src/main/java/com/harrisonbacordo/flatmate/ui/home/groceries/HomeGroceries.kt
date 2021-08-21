@@ -51,8 +51,8 @@ import com.harrisonbacordo.flatmate.data.models.ExpandableGroceryCardModel
 import com.harrisonbacordo.flatmate.data.models.Grocery
 import com.harrisonbacordo.flatmate.ui.composables.card.AddNewGroceryCard
 import com.harrisonbacordo.flatmate.ui.composables.card.ExpandableCard
-import com.harrisonbacordo.flatmate.ui.composables.textfield.RequiredTextFieldState
-import com.harrisonbacordo.flatmate.ui.composables.textfield.TextFieldState
+import com.harrisonbacordo.flatmate.ui.composables.field.textfield.RequiredTextFieldState
+import com.harrisonbacordo.flatmate.ui.composables.field.textfield.TextFieldState
 import com.harrisonbacordo.flatmate.ui.theme.FlatMateHomeTheme
 import com.harrisonbacordo.flatmate.ui.theme.grey700
 import java.util.*

@@ -10,7 +10,7 @@ buildscript {
         classpath Libs.androidGradlePlugin
         classpath Libs.Kotlin.gradlePlugin
         classpath Libs.AndroidX.Hilt.plugin
-        classpath 'com.android.tools.build:gradle:7.0.0-alpha14'
+        classpath 'com.android.tools.build:gradle:7.1.0-alpha02'
         classpath 'com.google.gms:google-services:4.3.5'
     }
 }

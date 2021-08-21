@@ -28,7 +28,8 @@ import com.harrisonbacordo.flatmate.R
 import com.harrisonbacordo.flatmate.data.models.Interval
 import com.harrisonbacordo.flatmate.data.models.User
 import com.harrisonbacordo.flatmate.network.FlatmateNetworkResult
-import com.harrisonbacordo.flatmate.ui.composables.textfield.AlphaTextField
+import com.harrisonbacordo.flatmate.ui.composables.field.formModalPicker.FormModalPicker
+import com.harrisonbacordo.flatmate.ui.composables.field.textfield.AlphaTextField
 import com.harrisonbacordo.flatmate.ui.theme.FlatMateHomeTheme
 
 @Composable
@@ -70,10 +71,10 @@ private fun NewChoreScreen(
             onValueChange = state.choreFieldsState.choreName::updateText,
             errorMessage = state.choreFieldsState.choreName.getError()
         )
-        SelectableFormOption(iconResId = R.drawable.ic_interval, label = state.choreFieldsState.choreInterval.name) {
+        FormModalPicker(iconResId = R.drawable.ic_interval, label = state.choreFieldsState.choreInterval.name, isError = false) {
             onIntervalClicked()
         }
-        SelectableFormOption(iconResId = R.drawable.ic_person, label = state.choreFieldsState.assignedFlatmate?.fullName ?: "Assign flatmate") {
+        FormModalPicker(iconResId = R.drawable.ic_person, label = state.choreFieldsState.assignedFlatmate?.fullName ?: "Assign flatmate") {
             onFlatmatesClicked()
         }
     }
@@ -91,26 +92,6 @@ private fun NewChoreScreen(
             onFlatmateSelected = onFlatmateSelected,
             onFlatmatesDialogDismissRequest = onFlatmateDialogDismissRequest,
         )
-    }
-}
-
-@Composable
-private fun SelectableFormOption(
-    iconResId: Int,
-    label: String,
-    onOptionClicked: () -> Unit
-) {
-    Row(
-        Modifier
-            .clickable { onOptionClicked() }
-            .padding(vertical = 8.dp)
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-
-        ) {
-        Icon(painterResource(id = iconResId), contentDescription = null)
-        Spacer(Modifier.padding(horizontal = 8.dp))
-        Text(label)
     }
 }
 
